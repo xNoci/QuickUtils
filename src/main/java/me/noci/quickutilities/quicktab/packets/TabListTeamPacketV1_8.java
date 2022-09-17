@@ -2,7 +2,7 @@ package me.noci.quickutilities.quicktab.packets;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
-import me.noci.quickutilities.quicktab.TabListTeam;
+import me.noci.quickutilities.quicktab.builder.TabListTeam;
 
 import java.util.Collection;
 

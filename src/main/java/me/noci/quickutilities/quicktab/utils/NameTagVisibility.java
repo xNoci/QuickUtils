@@ -1,4 +1,4 @@
-package me.noci.quickutilities.quicktab;
+package me.noci.quickutilities.quicktab.utils;
 
 import lombok.Getter;
 

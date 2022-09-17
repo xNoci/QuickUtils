@@ -1,7 +1,10 @@
 package me.noci.quickutilities.quicktab;
 
 import com.google.common.collect.Sets;
+import me.noci.quickutilities.quicktab.builder.DefaultTabListTeamBuilder;
+import me.noci.quickutilities.quicktab.builder.TabListTeamBuilder;
 import me.noci.quickutilities.quicktab.packets.TabListPacketManager;
+import me.noci.quickutilities.quicktab.builder.TabListTeam;
 import me.noci.quickutilities.utils.ReflectionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

@@ -1,6 +1,8 @@
-package me.noci.quickutilities.quicktab;
+package me.noci.quickutilities.quicktab.builder;
 
 
+import me.noci.quickutilities.quicktab.utils.CollisionRule;
+import me.noci.quickutilities.quicktab.utils.NameTagVisibility;
 import me.noci.quickutilities.quicktab.utils.TabListCondition;
 import me.noci.quickutilities.quicktab.utils.TabListFunction;
 import org.bukkit.ChatColor;

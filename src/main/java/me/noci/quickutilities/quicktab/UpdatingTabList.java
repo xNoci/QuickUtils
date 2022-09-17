@@ -1,5 +1,6 @@
 package me.noci.quickutilities.quicktab;
 
+import me.noci.quickutilities.quicktab.builder.TabListTeamBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

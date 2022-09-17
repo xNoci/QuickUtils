@@ -1,7 +1,7 @@
 package me.noci.quickutilities.quicktab.packets;
 
 import lombok.Getter;
-import me.noci.quickutilities.quicktab.TabListTeam;
+import me.noci.quickutilities.quicktab.builder.TabListTeam;
 
 public interface TabListTeamPacket {
 

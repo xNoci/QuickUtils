@@ -1,6 +1,6 @@
 package me.noci.quickutilities.quicktab.packets;
 
-import me.noci.quickutilities.quicktab.TabListTeam;
+import me.noci.quickutilities.quicktab.builder.TabListTeam;
 import me.noci.quickutilities.utils.ProtocolLibHook;
 import me.noci.quickutilities.utils.ReflectionUtils;
 import org.jetbrains.annotations.ApiStatus;
