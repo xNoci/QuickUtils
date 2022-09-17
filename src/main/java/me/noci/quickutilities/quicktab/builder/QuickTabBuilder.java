@@ -12,7 +12,7 @@ import org.jetbrains.annotations.ApiStatus;
 /**
  * This interface is used to create custom tab lists.
  */
-public interface TabListTeamBuilder {
+public interface QuickTabBuilder {
 
     /**
      * The order in which players will be sorted. Lower number means the player will be higher up.
@@ -20,9 +20,9 @@ public interface TabListTeamBuilder {
      * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
      *
      * @param sortID The sort order for the given player.
-     * @return the used {@link TabListTeamBuilder}
+     * @return the used {@link QuickTabBuilder}
      */
-    TabListTeamBuilder sortID(TabListFunction<Player, Integer> sortID);
+    QuickTabBuilder sortID(TabListFunction<Player, Integer> sortID);
 
     /**
      * Adds the specified entry into this builder.
@@ -30,9 +30,9 @@ public interface TabListTeamBuilder {
      * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
      *
      * @param entries The entries that are in the team of the given player.
-     * @return the used {@link TabListTeamBuilder}
+     * @return the used {@link QuickTabBuilder}
      */
-    TabListTeamBuilder entries(TabListFunction<Player, String[]> entries);
+    QuickTabBuilder entries(TabListFunction<Player, String[]> entries);
 
     /**
      * This method set the prefix for the given player if the {@param condition} is true, otherwise the prefix will be empty.
@@ -41,9 +41,9 @@ public interface TabListTeamBuilder {
      *
      * @param prefix    The string that will be in front of the given player name
      * @param condition if the condition equals to false the suffix will not be set
-     * @return the used {@link TabListTeamBuilder}
+     * @return the used {@link QuickTabBuilder}
      */
-    TabListTeamBuilder prefix(TabListFunction<Player, String> prefix, TabListCondition<Player> condition);
+    QuickTabBuilder prefix(TabListFunction<Player, String> prefix, TabListCondition<Player> condition);
 
     /**
      * This method will always set the prefix for the given player.
@@ -52,9 +52,9 @@ public interface TabListTeamBuilder {
      * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
      *
      * @param prefix The string that will be in front of the given player name
-     * @return the used {@link TabListTeamBuilder}
+     * @return the used {@link QuickTabBuilder}
      */
-    default TabListTeamBuilder prefix(TabListFunction<Player, String> prefix) {
+    default QuickTabBuilder prefix(TabListFunction<Player, String> prefix) {
         return prefix(prefix, (player, target) -> true);
     }
 
@@ -65,9 +65,9 @@ public interface TabListTeamBuilder {
      *
      * @param suffix    The string that will be behind the given player name
      * @param condition if the condition equals to false the suffix will not be set
-     * @return the used {@link TabListTeamBuilder}
+     * @return the used {@link QuickTabBuilder}
      */
-    TabListTeamBuilder suffix(TabListFunction<Player, String> suffix, TabListCondition<Player> condition);
+    QuickTabBuilder suffix(TabListFunction<Player, String> suffix, TabListCondition<Player> condition);
 
     /**
      * This method will always set the suffix for the given player.
@@ -76,9 +76,9 @@ public interface TabListTeamBuilder {
      * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
      *
      * @param suffix The string that will be behind the given player name
-     * @return the used {@link TabListTeamBuilder}
+     * @return the used {@link QuickTabBuilder}
      */
-    default TabListTeamBuilder suffix(TabListFunction<Player, String> suffix) {
+    default QuickTabBuilder suffix(TabListFunction<Player, String> suffix) {
         return suffix(suffix, (player, target) -> true);
     }
 
@@ -89,45 +89,45 @@ public interface TabListTeamBuilder {
      * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
      *
      * @param color The color in which the name of the given player will be displayed
-     * @return the used {@link TabListTeamBuilder}
+     * @return the used {@link QuickTabBuilder}
      */
-    TabListTeamBuilder color(TabListFunction<Player, ChatColor> color);
+    QuickTabBuilder color(TabListFunction<Player, ChatColor> color);
 
     /**
      * Set if friendly fire is allowed for all entries.
      * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
      *
      * @param allowFriendlyFire Whether friendly fire is allowed or not
-     * @return the used {@link TabListTeamBuilder}
+     * @return the used {@link QuickTabBuilder}
      */
-    TabListTeamBuilder allowFriendlyFire(TabListFunction<Player, Boolean> allowFriendlyFire);
+    QuickTabBuilder allowFriendlyFire(TabListFunction<Player, Boolean> allowFriendlyFire);
 
     /**
      * Sets if invisible teammates can be seen.
      * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
      *
      * @param seeFriendlyInvisible Whether the entries of this team can see invisible friendlies or not
-     * @return the used {@link TabListTeamBuilder}
+     * @return the used {@link QuickTabBuilder}
      */
-    TabListTeamBuilder seeFriendlyInvisible(TabListFunction<Player, Boolean> seeFriendlyInvisible);
+    QuickTabBuilder seeFriendlyInvisible(TabListFunction<Player, Boolean> seeFriendlyInvisible);
 
     /**
      * Sets the {@link NameTagVisibility} of this team.
      * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
      *
      * @param nameTagVisibility The {@link NameTagVisibility} for the entries of this team.
-     * @return the used {@link TabListTeamBuilder}
+     * @return the used {@link QuickTabBuilder}
      */
-    TabListTeamBuilder nameTagVisibility(TabListFunction<Player, NameTagVisibility> nameTagVisibility);
+    QuickTabBuilder nameTagVisibility(TabListFunction<Player, NameTagVisibility> nameTagVisibility);
 
     /**
      * The collision rule is only available for version 1.9+.
      * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
      *
      * @param collisionRule The applied {@link CollisionRule} to the entry of this team.
-     * @return the used {@link TabListTeamBuilder}
+     * @return the used {@link QuickTabBuilder}
      */
-    TabListTeamBuilder collisionRule(TabListFunction<Player, CollisionRule> collisionRule);
+    QuickTabBuilder collisionRule(TabListFunction<Player, CollisionRule> collisionRule);
 
     /**
      * Build a {@link TabListTeam} to get the data structured and formatted.

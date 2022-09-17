@@ -1,9 +1,9 @@
 package me.noci.quickutilities.quicktab;
 
 import com.google.common.collect.Sets;
-import me.noci.quickutilities.quicktab.builder.DefaultTabListTeamBuilder;
+import me.noci.quickutilities.quicktab.builder.DefaultQuickTabBuilder;
 import me.noci.quickutilities.quicktab.builder.TabListTeam;
-import me.noci.quickutilities.quicktab.builder.TabListTeamBuilder;
+import me.noci.quickutilities.quicktab.builder.QuickTabBuilder;
 import me.noci.quickutilities.quicktab.packets.TabListPacketManager;
 import me.noci.quickutilities.utils.ReflectionUtils;
 import org.bukkit.Bukkit;
@@ -22,12 +22,12 @@ public class QuickTab {
     }
 
     /**
-     * This method creates a new instance of a {@link TabListTeamBuilder}.
+     * This method creates a new instance of a {@link QuickTabBuilder}.
      *
-     * @return {@link TabListTeamBuilder}
+     * @return {@link QuickTabBuilder}
      */
-    public static TabListTeamBuilder builder() {
-        return new DefaultTabListTeamBuilder();
+    public static QuickTabBuilder builder() {
+        return new DefaultQuickTabBuilder();
     }
 
     /**
@@ -37,7 +37,7 @@ public class QuickTab {
      * @param builder The specific builder that should be used
      * @throws IllegalStateException When a {@link UpdatingTabList} is set. Use {@link #update(Player)} instead or remove the {@link UpdatingTabList} via {@link #removeUpdatingTabList()}.
      */
-    public static void update(Player player, TabListTeamBuilder builder) {
+    public static void update(Player player, QuickTabBuilder builder) {
         if (updatingTabList != null) {
             throw new IllegalStateException("This is only possible if no UpdatingTabList is set.");
         }
@@ -50,18 +50,18 @@ public class QuickTab {
      * @param builder The specific builder that should be used
      * @throws IllegalStateException When a {@link UpdatingTabList} is set. Use {@link #updateAll()} instead or remove the {@link UpdatingTabList} via {@link #removeUpdatingTabList()}.
      */
-    public static void updateAll(TabListTeamBuilder builder) {
+    public static void updateAll(QuickTabBuilder builder) {
         Bukkit.getOnlinePlayers().forEach(player -> update(player, builder));
     }
 
     /**
-     * Sets the {@link UpdatingTabList} which will automatically update the current used {@link TabListTeamBuilder} when a player joins the server.
+     * Sets the {@link UpdatingTabList} which will automatically update the current used {@link QuickTabBuilder} when a player joins the server.
      *
      * @param plugin  The plugin which sets the {@link UpdatingTabList}
-     * @param builder The {@link TabListTeamBuilder} which should be used
+     * @param builder The {@link QuickTabBuilder} which should be used
      * @throws IllegalStateException When a {@link UpdatingTabList} is already set. Use {@link #removeUpdatingTabList()} to remove the current one.
      */
-    public static void setUpdatingTabList(JavaPlugin plugin, TabListTeamBuilder builder) {
+    public static void setUpdatingTabList(JavaPlugin plugin, QuickTabBuilder builder) {
         if (updatingTabList != null) {
             throw new IllegalStateException("Cannot set updating tab list while one is already set.");
         }
@@ -106,14 +106,14 @@ public class QuickTab {
     }
 
     /**
-     * This method is used internally to update the tab list of a {@link Player} using a {@link TabListTeamBuilder}.
+     * This method is used internally to update the tab list of a {@link Player} using a {@link QuickTabBuilder}.
      * <br> It does not check whether a {@link UpdatingTabList} is currently set or not.
      *
      * @param player  The player which tab list should be updated
      * @param builder The builder that is used to update the tab list
      */
     @ApiStatus.Internal
-    protected static void internalUpdate(Player player, TabListTeamBuilder builder) {
+    protected static void internalUpdate(Player player, QuickTabBuilder builder) {
         Set<Object> removePackets = Sets.newHashSet();
         Set<Object> createPackets = Sets.newHashSet();
 

@@ -1,6 +1,6 @@
 package me.noci.quickutilities.quicktab;
 
-import me.noci.quickutilities.quicktab.builder.TabListTeamBuilder;
+import me.noci.quickutilities.quicktab.builder.QuickTabBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,9 +13,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class UpdatingTabList implements Listener {
 
-    private final TabListTeamBuilder builder;
+    private final QuickTabBuilder builder;
 
-    protected UpdatingTabList(JavaPlugin plugin, TabListTeamBuilder builder) {
+    protected UpdatingTabList(JavaPlugin plugin, QuickTabBuilder builder) {
         if (builder == null) {
             throw new IllegalArgumentException("TabListTeamBuilder cannot be null.");
         }

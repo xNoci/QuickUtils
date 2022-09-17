@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class DefaultTabListTeamBuilder implements TabListTeamBuilder {
+public class DefaultQuickTabBuilder implements QuickTabBuilder {
 
     private static final ChatColor DEFAULT_COLOR = ChatColor.WHITE;
 
@@ -23,61 +23,61 @@ public class DefaultTabListTeamBuilder implements TabListTeamBuilder {
     private TabListFunction<Player, Boolean> allowFriendlyFire = (player, target) -> true;
     private TabListFunction<Player, Boolean> seeFriendlyInvisible = (player, target) -> true;
 
-    public DefaultTabListTeamBuilder() {
+    public DefaultQuickTabBuilder() {
     }
 
     @Override
-    public TabListTeamBuilder sortID(TabListFunction<Player, Integer> sortID) {
+    public QuickTabBuilder sortID(TabListFunction<Player, Integer> sortID) {
         this.sortID = sortID;
         return this;
     }
 
     @Override
-    public TabListTeamBuilder entries(TabListFunction<Player, String[]> entries) {
+    public QuickTabBuilder entries(TabListFunction<Player, String[]> entries) {
         this.entries = entries;
         return this;
     }
 
     @Override
-    public TabListTeamBuilder prefix(TabListFunction<Player, String> prefix, TabListCondition<Player> condition) {
+    public QuickTabBuilder prefix(TabListFunction<Player, String> prefix, TabListCondition<Player> condition) {
         this.prefix.setPrefixFunction(prefix);
         this.prefix.setCondition(condition);
         return this;
     }
 
     @Override
-    public TabListTeamBuilder suffix(TabListFunction<Player, String> suffix, TabListCondition<Player> condition) {
+    public QuickTabBuilder suffix(TabListFunction<Player, String> suffix, TabListCondition<Player> condition) {
         this.suffix.setSuffixFunction(suffix);
         this.suffix.setCondition(condition);
         return this;
     }
 
     @Override
-    public TabListTeamBuilder color(TabListFunction<Player, ChatColor> color) {
+    public QuickTabBuilder color(TabListFunction<Player, ChatColor> color) {
         this.color = color;
         return this;
     }
 
     @Override
-    public TabListTeamBuilder allowFriendlyFire(TabListFunction<Player, Boolean> allowFriendlyFire) {
+    public QuickTabBuilder allowFriendlyFire(TabListFunction<Player, Boolean> allowFriendlyFire) {
         this.allowFriendlyFire = allowFriendlyFire;
         return this;
     }
 
     @Override
-    public TabListTeamBuilder seeFriendlyInvisible(TabListFunction<Player, Boolean> seeFriendlyInvisible) {
+    public QuickTabBuilder seeFriendlyInvisible(TabListFunction<Player, Boolean> seeFriendlyInvisible) {
         this.seeFriendlyInvisible = seeFriendlyInvisible;
         return this;
     }
 
     @Override
-    public TabListTeamBuilder nameTagVisibility(TabListFunction<Player, NameTagVisibility> nameTagVisibility) {
+    public QuickTabBuilder nameTagVisibility(TabListFunction<Player, NameTagVisibility> nameTagVisibility) {
         this.nameTagVisibility = nameTagVisibility;
         return this;
     }
 
     @Override
-    public TabListTeamBuilder collisionRule(TabListFunction<Player, CollisionRule> collisionRule) {
+    public QuickTabBuilder collisionRule(TabListFunction<Player, CollisionRule> collisionRule) {
         this.collisionRule = collisionRule;
         return this;
     }
@@ -104,11 +104,11 @@ public class DefaultTabListTeamBuilder implements TabListTeamBuilder {
      *
      * @param player The player which tab list will be set
      * @param target The current player that will be changed
-     * @param color  The {@link TabListTeamBuilder#color(TabListFunction) ChatColor} which is used
-     * @return The default {@link TabListTeamBuilder#prefix(TabListFunction) prefix} when the
-     * current server version is grater or equals to 1.12, or {@link TabListTeamBuilder#color(TabListFunction) ChatColor}
+     * @param color  The {@link QuickTabBuilder#color(TabListFunction) ChatColor} which is used
+     * @return The default {@link QuickTabBuilder#prefix(TabListFunction) prefix} when the
+     * current server version is grater or equals to 1.12, or {@link QuickTabBuilder#color(TabListFunction) ChatColor}
      * is set to null or the prefix ends with a {@link #endsWithColorCode(String) color code}.
-     * Otherwise, returns a new prefix which ends with the given {@link TabListTeamBuilder#color(TabListFunction) ChatColor}.
+     * Otherwise, returns a new prefix which ends with the given {@link QuickTabBuilder#color(TabListFunction) ChatColor}.
      * This will limit the actual prefix length to 14 characters.
      */
     private String convertPrefix(Player player, Player target, ChatColor color) {

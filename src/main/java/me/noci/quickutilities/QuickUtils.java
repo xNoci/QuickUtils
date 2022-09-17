@@ -6,5 +6,6 @@ public class QuickUtils extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
     }
 }
