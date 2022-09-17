@@ -1,0 +1,7 @@
+name: ${name}
+main: me.noci.utils.QuickUtils
+version: ${version}
+author: nociixD
+load: STARTUP
+softdepend:
+  - ProtocolLib
