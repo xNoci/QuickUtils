@@ -1,12 +1,7 @@
 package me.noci.quickutilities.quicktab.builder;
 
 import com.google.common.collect.Lists;
-import me.noci.quickutilities.quicktab.utils.CollisionRule;
-import me.noci.quickutilities.quicktab.utils.NameTagVisibility;
-import me.noci.quickutilities.quicktab.utils.TabListCondition;
-import me.noci.quickutilities.quicktab.utils.TabListFunction;
-import me.noci.quickutilities.quicktab.utils.TeamPrefix;
-import me.noci.quickutilities.quicktab.utils.TeamSuffix;
+import me.noci.quickutilities.quicktab.utils.*;
 import me.noci.quickutilities.utils.ReflectionUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -104,6 +99,18 @@ public class DefaultTabListTeamBuilder implements TabListTeamBuilder {
         return new TabListTeam(target, sortID, entries, prefix, suffix, color == null ? DEFAULT_COLOR : color, nameTagVisibility, collisionRule, allowFriendlyFire, seeFriendlyInvisible);
     }
 
+    /**
+     * Create a Prefix with the {@link TeamPrefix} field.
+     *
+     * @param player The player which tab list will be set
+     * @param target The current player that will be changed
+     * @param color  The {@link TabListTeamBuilder#color(TabListFunction) ChatColor} which is used
+     * @return The default {@link TabListTeamBuilder#prefix(TabListFunction) prefix} when the
+     * current server version is grater or equals to 1.12, or {@link TabListTeamBuilder#color(TabListFunction) ChatColor}
+     * is set to null or the prefix ends with a {@link #endsWithColorCode(String) color code}.
+     * Otherwise, returns a new prefix which ends with the given {@link TabListTeamBuilder#color(TabListFunction) ChatColor}.
+     * This will limit the actual prefix length to 14 characters.
+     */
     private String convertPrefix(Player player, Player target, ChatColor color) {
         String prefix = this.prefix.getPrefix(player, target);
 
@@ -113,6 +120,12 @@ public class DefaultTabListTeamBuilder implements TabListTeamBuilder {
         return prefix.substring(0, 14) + color;
     }
 
+    /**
+     * Checks whether the given input string ends with a ChatColor code or not.
+     *
+     * @param input The string to check
+     * @return true if the string ends with a color code or reset code, otherwise returns false
+     */
     private boolean endsWithColorCode(String input) {
         int length = input.length();
         if (length < 2) return false;
