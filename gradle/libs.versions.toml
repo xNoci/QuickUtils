@@ -2,8 +2,11 @@
 lombok = "1.18.24"
 spigot = "1.8.8-R0.1-SNAPSHOT"
 protocollib = "4.8.0"
+jetbrains-annotations = "23.0.0"
+
 
 [libraries]
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
 spigot = { group = "org.spigotmc", name = "spigot", version.ref = "spigot" }
 protocollib = { group = "com.comphenix.protocol", name = "ProtocolLib", version.ref = "protocollib" }
+jetbrains-annotations = { group = "org.jetbrains", name = "annotations", version.ref = "jetbrains-annotations" }

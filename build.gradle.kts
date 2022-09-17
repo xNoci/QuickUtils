@@ -29,7 +29,7 @@ repositories {
 dependencies {
     compileOnly(libs.spigot)
     compileOnly(libs.protocollib)
-
+    compileOnly(libs.jetbrains.annotations)
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
 }
