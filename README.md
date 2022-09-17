@@ -4,7 +4,8 @@ QuickUtils is a handy library which adds some utilities that improves the way of
 
 Some of the current utilities are:
 
-- QuickTab (Supports: 1.8)
+- QuickItemStack (Supports: 1.8 - 1.19)
+- QuickTab (Supports: 1.8 [more versions coming soon])
 - QuickGUI [in dev] (Supports: 1.8 - 1.19)
 - QuickCommand [coming soon]
 
@@ -24,9 +25,9 @@ public class QuickTabExample extends JavaPlugin {
         //or
         builder.suffix((player, target) -> "Custom Perm-Suffix", (player, target) -> target.hasPermission("perm")); //Set the suffix under a condition. Default: "" and true
         builder.color((player, target) -> ChatColor.AQUA); //Set the color for target. Default ChatColor.WHITE
-        builder.allowFriendlyFire((player, target) -> false); //Set if friendly fire is allowed. Default: true
-        builder.seeFriendlyInvisible((player, target) -> false); //Set if see friendly invisible is allowed. Default: true
-        builder.nameTagVisibility((player, target) -> NameTagVisibility.NEVER); //Sets the name tag visibility. Default: NameTagVisibility.ALWAYS
+        builder.allowFriendlyFire((player, target) -> false); //Set if friendlyFire is allowed. Default: true
+        builder.seeFriendlyInvisible((player, target) -> false); //Set if seeFriendlyInvisible is allowed. Default: true
+        builder.nameTagVisibility((player, target) -> NameTagVisibility.NEVER); //Sets the NameTagVisibility. Default: NameTagVisibility.ALWAYS
         builder.collisionRule((player, target) -> CollisionRule.NEVER); //Sets the collision rule. Default: NameTagVisibility.ALWAYS
 
         QuickTab.setUpdatingTabList(JavaPlugin, builder); //Set a UpdatingTabList. This will auto-update on player join.
