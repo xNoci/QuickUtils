@@ -1,4 +1,4 @@
-package me.noci.utils;
+package me.noci.quickutilities;
 
 import org.bukkit.plugin.java.JavaPlugin;
 

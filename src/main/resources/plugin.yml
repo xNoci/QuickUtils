@@ -1,5 +1,5 @@
 name: ${name}
-main: me.noci.utils.QuickUtils
+main: me.noci.quickutilities.QuickUtils
 version: ${version}
 author: nociixD
 load: STARTUP
