@@ -1,13 +1,12 @@
 package me.noci.quickutilities.quickgui;
 
+import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.Objects;
 
 public class QuickGUI implements InventoryHolder {
 
@@ -52,8 +51,8 @@ public class QuickGUI implements InventoryHolder {
     }
 
     private QuickGUI(InventoryType type, String title, int size) {
-        Objects.requireNonNull(type, "type");
-        Objects.requireNonNull(title, "title");
+        Preconditions.checkNotNull(type, "type cannot be null");
+        Preconditions.checkNotNull(title, "title cannot be null");
 
         if (type == InventoryType.CHEST && size > 0) {
             this.handle = Bukkit.createInventory(this, size, title);
