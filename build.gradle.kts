@@ -2,7 +2,6 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id("java")
-    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = project.property("group")!!
@@ -35,6 +34,10 @@ dependencies {
 }
 
 tasks {
+
+    compileJava {
+        options.encoding = Charsets.UTF_8.name()
+    }
 
     java {
         toolchain.languageVersion.set(JavaLanguageVersion.of(8))
