@@ -111,4 +111,43 @@ public class QuickGUI implements InventoryHolder {
         }
     }
 
+    /**
+     * Fill the complete inventory with the given ItemStack.
+     *
+     * @param itemStack The ItemStack that will be used
+     */
+    public void fill(ItemStack itemStack) {
+        fillPattern(itemStack, InventoryPattern.FULL);
+    }
+
+    /**
+     * Fill the border of the inventory with the given ItemStack.
+     *
+     * @param itemStack The ItemStack that will be used
+     */
+    public void fillBorders(ItemStack itemStack) {
+        fillPattern(itemStack, InventoryPattern.TOP, InventoryPattern.BOTTOM, InventoryPattern.LEFT, InventoryPattern.RIGHT);
+    }
+
+    /**
+     * Fill the corner of the inventory with the given ItemStack.
+     *
+     * @param itemStack The ItemStack that will be used
+     */
+    public void fillCorners(ItemStack itemStack) {
+        fillPattern(itemStack, InventoryPattern.TOP_LEFT_CORNER, InventoryPattern.TOP_RIGHT_CORNER, InventoryPattern.BOTTOM_LEFT_CORNER, InventoryPattern.BOTTOM_RIGHT_CORNER);
+    }
+
+    /**
+     * Fill the inventory with the given patterns.
+     *
+     * @param itemStack The ItemStack that will be used
+     * @param patterns  The patterns which will be used
+     */
+    public void fillPattern(ItemStack itemStack, InventoryPattern... patterns) {
+        for (InventoryPattern pattern : patterns) {
+            setItem(itemStack, pattern.getSlots(this.handle));
+        }
+    }
+
 }
