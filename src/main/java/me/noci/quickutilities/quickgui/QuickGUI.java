@@ -79,4 +79,36 @@ public class QuickGUI implements InventoryHolder {
         player.openInventory(this.handle);
     }
 
+    /**
+     * Add the given ItemStack to the next free slot.
+     *
+     * @param itemStack The ItemStack which will be added.
+     */
+    public void addItem(ItemStack... itemStack) {
+        this.handle.addItem(itemStack);
+    }
+
+    /**
+     * Set the given ItemStack to the given slots.
+     *
+     * @param itemStack The ItemStack which will be set
+     * @param slots     The slot in which the ItemStack will be set.
+     */
+    public void setItem(ItemStack itemStack, int... slots) {
+        for (int slot : slots) {
+            this.handle.setItem(slot, itemStack);
+        }
+    }
+
+    /**
+     * Removes the items from the given slots.
+     *
+     * @param slots The slots which will be cleared
+     */
+    public void removeItem(int... slots) {
+        for (int slot : slots) {
+            this.handle.clear(slot);
+        }
+    }
+
 }
