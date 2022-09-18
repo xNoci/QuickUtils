@@ -67,14 +67,29 @@ public class QuickGUI implements InventoryHolder {
         return this.handle;
     }
 
+    /**
+     * Get the title of the inventory.
+     *
+     * @return The inventory title
+     */
     public String getTitle() {
         return this.handle.getTitle();
     }
 
+    /**
+     * Get the size of the inventory
+     *
+     * @return The inventory size
+     */
     public int getSize() {
         return this.handle.getSize();
     }
 
+    /**
+     * Open the gui for the given player.
+     *
+     * @param player The player which inventory will be opened
+     */
     public void openInventory(Player player) {
         player.openInventory(this.handle);
     }

@@ -35,8 +35,8 @@ public interface QuickTabBuilder {
     QuickTabBuilder entries(TabListFunction<Player, String[]> entries);
 
     /**
-     * This method set the prefix for the given player if the {@param condition} is true, otherwise the prefix will be empty.
-     * <br>If the version is below 1.18 the max prefix length will be limited to 16 characters.
+     * This method set the prefix for the given player if the {@link TabListCondition condition} is true, otherwise the prefix will be empty.
+     * <br>If the version is below <strong>1.18</strong> the max prefix length will be limited to 16 characters.
      * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
      *
      * @param prefix    The string that will be in front of the given player name
@@ -47,7 +47,7 @@ public interface QuickTabBuilder {
 
     /**
      * This method will always set the prefix for the given player.
-     * <br>If the version is below 1.18 the max prefix length will be limited to 16 characters.
+     * <br>If the version is below <strong>1.18</strong> the max prefix length will be limited to 16 characters.
      * <br>Equivalent to {@link #prefix(TabListFunction, TabListCondition) prefix(String, player -> true)}.
      * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
      *
@@ -59,8 +59,8 @@ public interface QuickTabBuilder {
     }
 
     /**
-     * This method set the suffix for the given player if the {@param condition} is true, otherwise the suffix will be empty.
-     * <br>If the version is below 1.18 the max suffix length will be limited to 16 characters.
+     * This method set the suffix for the given player if the {@link TabListCondition condition} is true, otherwise the suffix will be empty.
+     * <br>If the version is below <strong>1.18</strong> the max suffix length will be limited to 16 characters.
      * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
      *
      * @param suffix    The string that will be behind the given player name
@@ -71,7 +71,7 @@ public interface QuickTabBuilder {
 
     /**
      * This method will always set the suffix for the given player.
-     * <br>If the version is below 1.18 the max suffix length will be limited to 16 characters.
+     * <br>If the version is below <strong>1.18</strong> the max suffix length will be limited to 16 characters.
      * <br>Equivalent to {@link #suffix(TabListFunction, TabListCondition) suffix(String, player -> true)}.
      * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
      *
@@ -83,8 +83,8 @@ public interface QuickTabBuilder {
     }
 
     /**
-     * This is only supported for version 1.12+. In earlier versions the player name color was changed with the last color code of the {@link  #prefix(TabListFunction, TabListCondition) prefix}.
-     * <br>However, in versions below 1.12 if set, this method will set the last color code of the prefix to the given color if possible. If the prefix ends with a color code or with the reset code, the color will not be set.
+     * This is only supported for version <strong>1.12+</strong>. In earlier versions the player name color was changed with the last color code of the {@link  #prefix(TabListFunction, TabListCondition) prefix}.
+     * <br>However, in versions below <strong>1.12</strong> if set, this method will set the last color code of the prefix to the given color if possible. If the prefix ends with a color code or with the reset code, the color will not be set.
      * <br> This will limit the max length of the prefix to 14 characters.
      * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
      *
@@ -121,7 +121,7 @@ public interface QuickTabBuilder {
     QuickTabBuilder nameTagVisibility(TabListFunction<Player, NameTagVisibility> nameTagVisibility);
 
     /**
-     * The collision rule is only available for version 1.9+.
+     * The collision rule is only available for version <strong>1.9+</strong>.
      * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
      *
      * @param collisionRule The applied {@link CollisionRule} to the entry of this team.
