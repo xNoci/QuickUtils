@@ -58,6 +58,10 @@ public class QuickItemStack extends ItemStack {
         return this;
     }
 
+    public QuickItemStack removeDisplayName() {
+        return setDisplayName(ChatColor.RESET.toString());
+    }
+
     public QuickItemStack setMeta(ItemMeta itemMeta) {
         this.setItemMeta(itemMeta);
         return this;
