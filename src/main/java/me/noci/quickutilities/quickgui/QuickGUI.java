@@ -95,7 +95,7 @@ public class QuickGUI implements InventoryHolder {
      *
      * @param player The player which inventory will be opened
      */
-    public void openInventory(Player player) {
+    public void open(Player player) {
         player.openInventory(this.handle);
     }
 
