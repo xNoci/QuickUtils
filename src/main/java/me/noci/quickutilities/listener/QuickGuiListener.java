@@ -38,6 +38,14 @@ public class QuickGuiListener implements Listener {
     }
 
     @EventHandler
+    public void handleInventoryOpen(InventoryOpenEvent event) {
+        if (!(event.getInventory().getHolder() instanceof QuickGUI)) return;
+        QuickGUI quickGUI = (QuickGUI) event.getInventory().getHolder();
+        GuiOpenEvent openEvent = new GuiOpenEvent((Player) event.getPlayer(), quickGUI);
+        Bukkit.getPluginManager().callEvent(openEvent);
+    }
+
+    @EventHandler
     public void handleInventoryClose(InventoryCloseEvent event) {
         if (!(event.getInventory().getHolder() instanceof QuickGUI)) return;
         QuickGUI quickGUI = (QuickGUI) event.getInventory().getHolder();
