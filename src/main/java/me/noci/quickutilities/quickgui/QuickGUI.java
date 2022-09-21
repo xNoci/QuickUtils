@@ -1,6 +1,8 @@
 package me.noci.quickutilities.quickgui;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
+import me.noci.quickutilities.events.gui.GuiClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -8,9 +10,13 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
+import java.util.Optional;
+
 public class QuickGUI implements InventoryHolder {
 
     private final Inventory handle;
+    private final HashMap<Integer, ClickHandler> clickHandler = Maps.newHashMap();
 
     /**
      * Creates a {@link QuickGUI} with a custom size.
@@ -109,8 +115,21 @@ public class QuickGUI implements InventoryHolder {
      * @param slots     The slot in which the ItemStack will be set.
      */
     public void setItem(ItemStack itemStack, int... slots) {
+        setItem(itemStack, null, slots);
+    }
+
+    /**
+     * Set the given ItemStack to the given slots and binds the given {@link ClickHandler} to it.
+     * <br>The {@link ClickHandler} will always be called before the actual {@link GuiClickEvent}.
+     *
+     * @param itemStack    The ItemStack which will be set
+     * @param clickHandler The ClickEvent which will be called, for the given ItemStack
+     * @param slots        The slot in which the ItemStack will be set.
+     */
+    public void setItem(ItemStack itemStack, ClickHandler clickHandler, int... slots) {
         for (int slot : slots) {
             this.handle.setItem(slot, itemStack);
+            this.clickHandler.put(slot, clickHandler);
         }
     }
 
@@ -122,6 +141,7 @@ public class QuickGUI implements InventoryHolder {
     public void removeItem(int... slots) {
         for (int slot : slots) {
             this.handle.clear(slot);
+            this.clickHandler.remove(slot);
         }
     }
 
@@ -162,6 +182,11 @@ public class QuickGUI implements InventoryHolder {
         for (InventoryPattern pattern : patterns) {
             setItem(itemStack, pattern.getSlots(this.handle));
         }
+    }
+
+    public Optional<ClickHandler> getClickHandler(int slot) {
+        ClickHandler eventConsumer = this.clickHandler.get(slot);
+        return Optional.ofNullable(eventConsumer);
     }
 
 }
