@@ -167,6 +167,12 @@ public class QuickItemStack extends ItemStack {
         return this;
     }
 
+    public QuickItemStack glow() {
+        addItemFlags();
+        setUnsafeEnchantment(Enchantment.DURABILITY, 1);
+        return this;
+    }
+
     public String getRawDisplayName() {
         return ChatColor.stripColor(getDisplayName());
     }
