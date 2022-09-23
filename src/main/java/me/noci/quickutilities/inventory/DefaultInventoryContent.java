@@ -1,58 +1,59 @@
 package me.noci.quickutilities.inventory;
 
 import com.google.common.base.Preconditions;
+import me.noci.quickutilities.utils.InventoryPattern;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
 public class DefaultInventoryContent implements InventoryContent {
 
-    private final Slot[] slots;
+    private final Slot[] content;
     private final int size;
 
     protected DefaultInventoryContent(InventoryType type, int size) {
         this.size = size;
-        this.slots = new Slot[size];
+        this.content = new Slot[size];
 
         for (int i = 0; i < size; i++) {
             SlotPos slotPos = new SlotPos(type, i);
-            slots[i] = new Slot(slotPos);
+            this.content[i] = new Slot(slotPos);
         }
     }
 
     @Override
     public Slot getSlot(int slot) {
-        Preconditions.checkElementIndex(slot, slots.length, "Slot number");
-        return slots[slot];
+        Preconditions.checkElementIndex(slot, this.content.length, "Slot number");
+        return this.content[slot];
     }
 
     @Override
     public void setSlot(int slot, ItemStack itemStack, ClickHandler clickHandler) {
-        Preconditions.checkElementIndex(slot, slots.length, "Slot number");
-        Slot s = slots[slot];
-        s.setItemStack(itemStack);
-        s.setClickHandler(clickHandler);
+        Preconditions.checkElementIndex(slot, this.content.length, "Slot number");
+        Slot content = this.content[slot];
+        content.setItemStack(itemStack);
+        content.setClickHandler(clickHandler);
     }
 
     @Override
     public void addItem(ItemStack itemStack, ClickHandler clickHandler) {
-        for (Slot slot : slots) {
-            if (!slot.isEmpty()) continue;
-            slot.setItemStack(itemStack);
-            slot.setClickHandler(clickHandler);
+        for (Slot content : this.content) {
+            if (!content.isEmpty()) continue;
+            content.setItemStack(itemStack);
+            content.setClickHandler(clickHandler);
             break;
         }
     }
 
     @Override
     public void setItem(int slot, ItemStack itemStack) {
-        Preconditions.checkElementIndex(slot, slots.length, "Slot number");
-        slots[slot].setItemStack(itemStack);
+        Preconditions.checkElementIndex(slot, this.content.length, "Slot number");
+        this.content[slot].setItemStack(itemStack);
     }
 
     @Override
     public void setClickHandler(int slot, ClickHandler clickHandler) {
-        Preconditions.checkElementIndex(slot, slots.length, "Slot number");
-        slots[slot].setClickHandler(clickHandler);
+        Preconditions.checkElementIndex(slot, this.content.length, "Slot number");
+        this.content[slot].setClickHandler(clickHandler);
     }
 
     @Override

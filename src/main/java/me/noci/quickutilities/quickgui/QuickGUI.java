@@ -3,7 +3,7 @@ package me.noci.quickutilities.quickgui;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import me.noci.quickutilities.events.gui.GuiClickEvent;
-import me.noci.quickutilities.inventory.InventoryPattern;
+import me.noci.quickutilities.utils.InventoryPattern;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;

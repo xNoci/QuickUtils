@@ -37,15 +37,6 @@ public abstract class InventoryProvider {
         this.size = size;
     }
 
-    public boolean isCancelledClick() {
-        return true;
-    }
-
-    public abstract void init(Player player, InventoryContent content);
-
-    public void update(Player player, InventoryContent content) {
-    }
-
     public void provide(Player player) {
         ProvidedInventoryHolder inventoryHolder = new ProvidedInventoryHolder(this, new DefaultInventoryContent(this.type, this.size > 0 ? this.size : this.type.getDefaultSize()));
         Inventory inventory;
@@ -62,5 +53,15 @@ public abstract class InventoryProvider {
 
         player.openInventory(inventory);
     }
+
+    public boolean isCancelledClick() {
+        return true;
+    }
+
+    public void update(Player player, InventoryContent content) {
+    }
+
+    public abstract void init(Player player, InventoryContent content);
+
 
 }

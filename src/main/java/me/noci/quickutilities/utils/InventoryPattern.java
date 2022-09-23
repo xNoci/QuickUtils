@@ -1,4 +1,4 @@
-package me.noci.quickutilities.inventory;
+package me.noci.quickutilities.utils;
 
 import java.util.stream.IntStream;
 

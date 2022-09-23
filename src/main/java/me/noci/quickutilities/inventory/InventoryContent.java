@@ -1,5 +1,6 @@
 package me.noci.quickutilities.inventory;
 
+import me.noci.quickutilities.utils.InventoryPattern;
 import org.bukkit.inventory.ItemStack;
 
 public interface InventoryContent {

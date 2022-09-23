@@ -27,6 +27,6 @@ public class Slot {
     }
 
     public boolean isEmpty() {
-        return itemStack.getType() == Material.AIR;
+        return this.itemStack.getType() == Material.AIR;
     }
 }

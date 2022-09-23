@@ -2,8 +2,8 @@ package me.noci.quickutilities.quicktab;
 
 import com.google.common.collect.Sets;
 import me.noci.quickutilities.quicktab.builder.DefaultQuickTabBuilder;
-import me.noci.quickutilities.quicktab.builder.TabListTeam;
 import me.noci.quickutilities.quicktab.builder.QuickTabBuilder;
+import me.noci.quickutilities.quicktab.builder.TabListTeam;
 import me.noci.quickutilities.quicktab.packets.TabListPacketManager;
 import me.noci.quickutilities.utils.ReflectionUtils;
 import org.bukkit.Bukkit;

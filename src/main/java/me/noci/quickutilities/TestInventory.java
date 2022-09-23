@@ -10,6 +10,8 @@ import java.util.Random;
 
 public class TestInventory extends InventoryProvider {
 
+    private int step = 0;
+
     protected TestInventory() {
         super("§cGame settings", 9 * 3);
     }
@@ -30,8 +32,6 @@ public class TestInventory extends InventoryProvider {
         content.setClickHandler(13, user -> user.sendMessage("§f[§eTTT§f] §aYou successfully redeemed §eone traitor pass §aand will be traitor in this round."));
         content.setClickHandler(15, user -> user.sendMessage("§f[§eTTT§f] §cTo accelerated the start of this game there need to be at least §e6 §cparticipants."));
     }
-
-    private int step = 0;
 
     @Override
     public void update(Player player, InventoryContent content) {
