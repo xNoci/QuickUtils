@@ -18,6 +18,19 @@ public class InventoryContent {
         }
     }
 
+    public void addItem(ItemStack itemStack) {
+        addItem(itemStack, null);
+    }
+
+    public void addItem(ItemStack itemStack, ClickHandler clickHandler) {
+        for (Slot slot : slots) {
+            if (!slot.isEmpty()) continue;
+            slot.setItemStack(itemStack);
+            slot.setClickHandler(clickHandler);
+            break;
+        }
+    }
+
     public void setItem(int slot, ItemStack itemStack) {
         if (slot > slots.length) return; //TODO Throw exception
         slots[slot].setItemStack(itemStack);

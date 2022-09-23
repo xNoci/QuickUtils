@@ -16,10 +16,13 @@ public class TestInventory extends InventoryProvider {
 
     @Override
     public void init(Player player, InventoryContent content) {
+        content.fillBorders(new QuickItemStack(Material.STAINED_GLASS_PANE, 1, new Random().nextInt(15)).removeDisplayName());
+
         content.setItem(10, new QuickItemStack(Material.DIRT).glow().setDisplayName("Cooler Dirt :D"));
         content.setItem(13, new QuickItemStack(Material.SKULL_ITEM, 1, 3).setSkullOwner(player.getName()).glow().setDisplayName("Cooler Head"));
-
         content.setClickHandler(13, user -> user.sendMessage("Hey"));
+
+        content.addItem(new QuickItemStack(Material.COBBLE_WALL).removeDisplayName().addItemFlags(), user -> user.sendMessage("Clicked!"));
     }
 
     private int step = 0;
