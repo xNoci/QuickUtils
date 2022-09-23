@@ -1,5 +1,6 @@
 package me.noci.quickutilities.inventory;
 
+import com.google.common.base.Preconditions;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
@@ -32,12 +33,12 @@ public class InventoryContent {
     }
 
     public void setItem(int slot, ItemStack itemStack) {
-        if (slot > slots.length) return; //TODO Throw exception
+        Preconditions.checkElementIndex(slot, slots.length, "Slot number");
         slots[slot].setItemStack(itemStack);
     }
 
     public void setClickHandler(int slot, ClickHandler clickHandler) {
-        if (slot > slots.length) return; //TODO Throw exception
+        Preconditions.checkElementIndex(slot, slots.length, "Slot number");
         slots[slot].setClickHandler(clickHandler);
     }
 
@@ -55,8 +56,15 @@ public class InventoryContent {
     }
 
     public Slot getSlot(int slot) {
-        if (slot > slots.length) return null; //TODO Throw exception
+        Preconditions.checkElementIndex(slot, slots.length, "Slot number");
         return slots[slot];
+    }
+
+    public void setSlot(int slot, ItemStack itemStack, ClickHandler clickHandler) {
+        Preconditions.checkElementIndex(slot, slots.length, "Slot number");
+        Slot s = slots[slot];
+        s.setItemStack(itemStack);
+        s.setClickHandler(clickHandler);
     }
 
     /**
@@ -99,6 +107,5 @@ public class InventoryContent {
             }
         }
     }
-
 
 }
