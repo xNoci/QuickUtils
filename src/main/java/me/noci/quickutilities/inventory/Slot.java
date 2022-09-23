@@ -26,4 +26,7 @@ public class Slot {
         this.clickHandler = clickHandler == null ? ClickHandler.DEFAULT : clickHandler;
     }
 
+    public boolean isEmpty() {
+        return itemStack.getType() == Material.AIR;
+    }
 }
