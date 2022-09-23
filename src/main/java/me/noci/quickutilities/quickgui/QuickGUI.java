@@ -3,6 +3,7 @@ package me.noci.quickutilities.quickgui;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import me.noci.quickutilities.events.gui.GuiClickEvent;
+import me.noci.quickutilities.inventory.InventoryPattern;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -180,7 +181,7 @@ public class QuickGUI implements InventoryHolder {
      */
     public void fillPattern(ItemStack itemStack, InventoryPattern... patterns) {
         for (InventoryPattern pattern : patterns) {
-            setItem(itemStack, pattern.getSlots(this.handle));
+            setItem(itemStack, pattern.getSlots(this.handle.getSize()));
         }
     }
 
