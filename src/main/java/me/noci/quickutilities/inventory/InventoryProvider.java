@@ -47,7 +47,7 @@ public abstract class InventoryProvider {
     }
 
     public void provide(Player player) {
-        ProvidedInventoryHolder inventoryHolder = new ProvidedInventoryHolder(this, new InventoryContent(this.type, this.size > 0 ? this.size : this.type.getDefaultSize()));
+        ProvidedInventoryHolder inventoryHolder = new ProvidedInventoryHolder(this, new DefaultInventoryContent(this.type, this.size > 0 ? this.size : this.type.getDefaultSize()));
         Inventory inventory;
 
         if (this.type == InventoryType.CHEST && this.size > 0) {
