@@ -2,7 +2,7 @@ package me.noci.quickutilities.utils;
 
 public enum BukkitUnit {
 
-    MILLISEONDS {
+    MILLISECONDS {
         long toMilliseconds(long d)     { return d; }
         long toTicks(long d)            { return d/(C1 / C0); }
         long toSeconds(long d)          { return d/(C2 / C0); }
