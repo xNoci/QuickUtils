@@ -1,6 +1,4 @@
-package me.noci.quickutilities.quickgui;
-
-import org.bukkit.inventory.Inventory;
+package me.noci.quickutilities.inventory;
 
 import java.util.stream.IntStream;
 
@@ -22,8 +20,8 @@ public enum InventoryPattern {
         this.matcher = matcher;
     }
 
-    public int[] getSlots(Inventory inventory) {
-        return matcher.match(inventory.getSize());
+    public int[] getSlots(int size) {
+        return matcher.match(size);
     }
 
     @FunctionalInterface
