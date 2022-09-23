@@ -37,6 +37,7 @@ public class InventoryManager extends BukkitRunnable implements Listener {
         Player player = (Player) event.getWhoClicked();
         ProvidedInventoryHolder inventoryHolder = (ProvidedInventoryHolder) event.getInventory().getHolder();
 
+        event.setCancelled(inventoryHolder.getProvider().isCancelledClick());
 
         if (event.getClickedInventory().equals(event.getView().getBottomInventory())) return;
         inventoryHolder.getContent().getSlot(event.getSlot()).getClickHandler().handle(player);

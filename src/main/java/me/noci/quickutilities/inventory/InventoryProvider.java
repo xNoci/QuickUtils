@@ -37,6 +37,10 @@ public abstract class InventoryProvider {
         this.size = size;
     }
 
+    public boolean isCancelledClick() {
+        return true;
+    }
+
     public abstract void init(Player player, InventoryContent content);
 
     public void update(Player player, InventoryContent content) {
