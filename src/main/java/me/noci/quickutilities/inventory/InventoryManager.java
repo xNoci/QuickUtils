@@ -1,5 +1,6 @@
 package me.noci.quickutilities.inventory;
 
+import me.noci.quickutilities.utils.BukkitUnit;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class InventoryManager extends BukkitRunnable implements Listener {
 
     public InventoryManager(JavaPlugin plugin) {
-        runTaskTimer(plugin, 20, 10);
+        runTaskTimer(plugin, BukkitUnit.SECONDS.toTicks(5), BukkitUnit.SECONDS.toTicks(1) / 2);
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
