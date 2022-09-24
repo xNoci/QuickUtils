@@ -1,5 +1,6 @@
 package me.noci.quickutilities.inventory;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import me.noci.quickutilities.utils.QuickItemStack;
 import org.bukkit.Material;
@@ -11,7 +12,7 @@ public class Slot {
 
     @Getter private final SlotPos position;
     @Getter private ItemStack itemStack = DEFAULT_ITEM_STACK;
-    @Getter private ClickHandler clickHandler = ClickHandler.DEFAULT;
+    @Getter(AccessLevel.PROTECTED) private ClickHandler clickHandler = ClickHandler.DEFAULT;
 
     public Slot(SlotPos position) {
         this.position = position;
