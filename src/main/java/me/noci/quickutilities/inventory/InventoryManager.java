@@ -5,6 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,11 +40,19 @@ public class InventoryManager extends BukkitRunnable implements Listener {
 
         Player player = (Player) event.getWhoClicked();
         ProvidedInventoryHolder inventoryHolder = (ProvidedInventoryHolder) event.getInventory().getHolder();
+        InventoryProvider provider = inventoryHolder.getProvider();
+        InventoryContent content = inventoryHolder.getContent();
 
-        event.setCancelled(inventoryHolder.getProvider().isCancelledClick());
-
+        event.setCancelled(provider.isCancelledClick());
         if (event.getClickedInventory().equals(event.getView().getBottomInventory())) return;
-        inventoryHolder.getContent().getSlot(event.getSlot()).getClickHandler().handle(player);
+
+        Slot slot = content.getSlot(event.getSlot());
+        if (slot == null) return;
+
+        ClickType clickType = event.getClick();
+        InventoryAction action = event.getAction();
+        SlotClickEvent clickEvent = new SlotClickEvent(player, slot, slot.getItemStack(), clickType, action);
+        inventoryHolder.getContent().getSlot(event.getSlot()).getClickHandler().handle(clickEvent);
     }
 
 }

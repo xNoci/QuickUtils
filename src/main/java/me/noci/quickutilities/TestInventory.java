@@ -26,11 +26,10 @@ public class TestInventory extends InventoryProvider {
         content.setItem(15, new QuickItemStack(Material.FEATHER).setDisplayName("§eStart round").setLore("", "§7Sets the time to 10 seconds.", ""));
         content.setItem(4, new QuickItemStack(Material.SKULL_ITEM, 1, 3).setSkullOwner(player.getName()).glow().setDisplayName("Cooler Head"));
 
-
-        content.setClickHandler(11, user -> user.sendMessage("§f[§eTTT§f] §aYou successfully redeemed §eone detective pass §aand will be detective in this round."));
-        content.setClickHandler(12, user -> user.sendMessage("§f[§eTTT§f] §aYou successfully redeemed §eone innocent pass §aand will be innocent in this round."));
-        content.setClickHandler(13, user -> user.sendMessage("§f[§eTTT§f] §aYou successfully redeemed §eone traitor pass §aand will be traitor in this round."));
-        content.setClickHandler(15, user -> user.sendMessage("§f[§eTTT§f] §cTo accelerated the start of this game there need to be at least §e6 §cparticipants."));
+        content.setClickHandler(11, event -> event.getPlayer().sendMessage("§f[§eTTT§f] §aYou successfully redeemed §eone detective pass §aand will be detective in this round."));
+        content.setClickHandler(12, event -> event.getPlayer().sendMessage("§f[§eTTT§f] §aYou successfully redeemed §eone innocent pass §aand will be innocent in this round."));
+        content.setClickHandler(13, event -> event.getPlayer().sendMessage("§f[§eTTT§f] §aYou successfully redeemed §eone traitor pass §aand will be traitor in this round."));
+        content.setClickHandler(15, event -> event.getPlayer().sendMessage("§f[§eTTT§f] §cTo accelerated the start of this game there need to be at least §e6 §cparticipants."));
     }
 
     @Override
@@ -42,5 +41,6 @@ public class TestInventory extends InventoryProvider {
         step = 0;
 
         content.fillBorders(new QuickItemStack(Material.STAINED_GLASS_PANE, 1, new Random().nextInt(15)).removeDisplayName());
+        content.setItem(4, new QuickItemStack(Material.SKULL_ITEM, 1, 3).setSkullOwner(player.getName()).glow().setDisplayName("Cooler Head"));
     }
 }

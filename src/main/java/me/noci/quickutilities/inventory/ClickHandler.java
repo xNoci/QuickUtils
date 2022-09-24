@@ -1,12 +1,10 @@
 package me.noci.quickutilities.inventory;
 
-import org.bukkit.entity.Player;
-
 @FunctionalInterface
 public interface ClickHandler {
 
-    ClickHandler DEFAULT = player -> {};
+    ClickHandler DEFAULT = event -> {};
 
-    void handle(Player player);
+    void handle(SlotClickEvent event);
 
 }

@@ -22,7 +22,7 @@ public class DefaultInventoryContent implements InventoryContent {
 
     @Override
     public Slot getSlot(int slot) {
-        Preconditions.checkElementIndex(slot, this.content.length, "Slot number");
+        if (slot > this.content.length) return null;
         return this.content[slot];
     }
 
