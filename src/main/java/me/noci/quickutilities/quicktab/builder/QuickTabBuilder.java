@@ -83,8 +83,8 @@ public interface QuickTabBuilder {
     }
 
     /**
-     * This is only supported for version <strong>1.12+</strong>. In earlier versions the player name color was changed with the last color code of the {@link  #prefix(TabListFunction, TabListCondition) prefix}.
-     * <br>However, in versions below <strong>1.12</strong> if set, this method will set the last color code of the prefix to the given color if possible. If the prefix ends with a color code or with the reset code, the color will not be set.
+     * This is only supported for version <strong>1.13+</strong>. In earlier versions the player name color was changed with the last color code of the {@link  #prefix(TabListFunction, TabListCondition) prefix}.
+     * <br>However, in versions below <strong>1.13</strong> if set, this method will set the last color code of the prefix to the given color if possible. If the prefix ends with a color code or with the reset code, the color will not be set.
      * <br> This will limit the max length of the prefix to 14 characters.
      * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
      *

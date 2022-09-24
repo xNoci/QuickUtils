@@ -16,8 +16,8 @@ public class DefaultQuickTabBuilder implements QuickTabBuilder {
     private final TeamSuffix suffix = new TeamSuffix();
     private TabListFunction<Player, Integer> sortID = (player, target) -> Integer.MAX_VALUE; //Default sorted as last
     private TabListFunction<Player, String[]> entries = (player, target) -> new String[]{target.getName()}; //Default only at the target to the team
-    //If the server does not support 1.12 color is set to null because it will be used as the color of the end of the prefix
-    private TabListFunction<Player, ChatColor> color = (player, target) -> ReflectionUtils.supports(12) ? DEFAULT_COLOR : null;
+    //If the server does not support 1.13 color is set to null because it will be used as the color of the end of the prefix
+    private TabListFunction<Player, ChatColor> color = (player, target) -> ReflectionUtils.supports(13) ? DEFAULT_COLOR : null;
     private TabListFunction<Player, NameTagVisibility> nameTagVisibility = (player, target) -> NameTagVisibility.ALWAYS;
     private TabListFunction<Player, CollisionRule> collisionRule = (player, target) -> CollisionRule.ALWAYS;
     private TabListFunction<Player, Boolean> allowFriendlyFire = (player, target) -> true;
@@ -106,7 +106,7 @@ public class DefaultQuickTabBuilder implements QuickTabBuilder {
      * @param target The current player that will be changed
      * @param color  The {@link QuickTabBuilder#color(TabListFunction) ChatColor} which is used
      * @return The default {@link QuickTabBuilder#prefix(TabListFunction) prefix} when the
-     * current server version is grater or equals to 1.12, or {@link QuickTabBuilder#color(TabListFunction) ChatColor}
+     * current server version is grater or equals to 1.13, or {@link QuickTabBuilder#color(TabListFunction) ChatColor}
      * is set to null or the prefix ends with a {@link #endsWithColorCode(String) color code}.
      * Otherwise, returns a new prefix which ends with the given {@link QuickTabBuilder#color(TabListFunction) ChatColor}.
      * This will limit the actual prefix length to 14 characters.
@@ -114,7 +114,7 @@ public class DefaultQuickTabBuilder implements QuickTabBuilder {
     private String convertPrefix(Player player, Player target, ChatColor color) {
         String prefix = this.prefix.getPrefix(player, target);
 
-        if (ReflectionUtils.supports(12) || color == null) return prefix;
+        if (ReflectionUtils.supports(13) || color == null) return prefix;
         if (endsWithColorCode(prefix)) return prefix;
         if (prefix.length() <= 14) return prefix + color;
         return prefix.substring(0, 14) + color;
