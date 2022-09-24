@@ -42,7 +42,7 @@ public enum InventoryPattern {
     FULL {
         int[] matchInventory(int size) { return x(size, i -> true); }
         int[] matchDispenser(int size) { return x(size, i -> true); }
-        public int[] matchDefault(int size) { return x(size, i -> true);}
+        int[] matchDefault(int size) { return x(size, i -> true);}
     };
 
     private static int[] x(int size, IntPredicate predicate) {
@@ -73,7 +73,7 @@ public enum InventoryPattern {
     abstract int[] matchDispenser(int size);
 
     //all other kind of inventories
-    public int[] matchDefault(int size) {
+    int[] matchDefault(int size) {
         return new int[0];
     }
 
