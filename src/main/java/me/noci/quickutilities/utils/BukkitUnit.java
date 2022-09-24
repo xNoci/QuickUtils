@@ -43,13 +43,13 @@ public enum BukkitUnit {
         public long convert(long d, BukkitUnit u) { return u.toHours(d); }
     };
 
-    static final long C0 = 1L; //ONE MILLISECOND
-    static final long C1 = C0 * 50L; //ONE TICK
-    static final long C2 = C1 * 20L; //ONE SECOND
-    static final long C3 = C2 * 60L; //ONE MINUTE
-    static final long C4 = C3 * 60L; //ONE HOUR
+    private static final long C0 = 1L; //ONE MILLISECOND
+    private static final long C1 = C0 * 50L; //ONE TICK
+    private static final long C2 = C1 * 20L; //ONE SECOND
+    private static final long C3 = C2 * 60L; //ONE MINUTE
+    private static final long C4 = C3 * 60L; //ONE HOUR
 
-    static final long MAX = Long.MAX_VALUE;
+    private static final long MAX = Long.MAX_VALUE;
 
     static long x(long d, long m, long over) {
         if (d > over) return Long.MAX_VALUE;
