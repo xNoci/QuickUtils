@@ -15,7 +15,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class InventoryManager extends BukkitRunnable implements Listener {
 
     public InventoryManager(JavaPlugin plugin) {
-        runTaskTimer(plugin, BukkitUnit.SECONDS.toTicks(5), BukkitUnit.SECONDS.toTicks(1) / 2);
+        runTaskTimer(plugin, 0, BukkitUnit.SECONDS.toTicks(1) / 2);
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
