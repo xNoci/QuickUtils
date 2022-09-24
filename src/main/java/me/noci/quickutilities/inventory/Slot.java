@@ -30,4 +30,14 @@ public class Slot {
     public boolean isEmpty() {
         return this.itemStack.getType() == Material.AIR;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Slot{position=%s, itemStack={type=%s, displayName=%s}, clickHandler=%s}",
+                position,
+                itemStack.getType(),
+                itemStack.getItemMeta() != null ? itemStack.getItemMeta().getDisplayName() : "null",
+                clickHandler != ClickHandler.DEFAULT);
+
+    }
 }

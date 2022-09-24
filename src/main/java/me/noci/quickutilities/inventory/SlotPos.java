@@ -17,4 +17,13 @@ public class SlotPos {
 
     }
 
+    @Override
+    public String toString() {
+        return "SlotPos{" +
+                "slot=" + slot +
+                ", row=" + row +
+                ", colum=" + colum +
+                '}';
+    }
+
 }
