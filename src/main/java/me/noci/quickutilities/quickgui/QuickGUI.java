@@ -181,7 +181,7 @@ public class QuickGUI implements InventoryHolder {
      */
     public void fillPattern(ItemStack itemStack, InventoryPattern... patterns) {
         for (InventoryPattern pattern : patterns) {
-            setItem(itemStack, pattern.getSlots(this.handle.getSize()));
+            setItem(itemStack, pattern.getSlots(this.handle.getType(), this.handle.getSize()));
         }
     }
 

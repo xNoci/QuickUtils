@@ -7,10 +7,12 @@ import org.bukkit.inventory.ItemStack;
 
 public class DefaultInventoryContent implements InventoryContent {
 
-    private final Slot[] content;
+    private final InventoryType type;
     private final int size;
+    private final Slot[] content;
 
     protected DefaultInventoryContent(InventoryType type, int size) {
+        this.type = type;
         this.size = size;
         this.content = new Slot[size];
 
@@ -59,7 +61,7 @@ public class DefaultInventoryContent implements InventoryContent {
     @Override
     public void fillPattern(ItemStack itemStack, InventoryPattern... patterns) {
         for (InventoryPattern pattern : patterns) {
-            for (int slot : pattern.getSlots(this.size)) {
+            for (int slot : pattern.getSlots(this.type, this.size)) {
                 setItem(slot, itemStack);
             }
         }
