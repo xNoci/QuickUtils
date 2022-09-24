@@ -21,6 +21,14 @@ public interface InventoryContent {
         setItem(slot, null);
     }
 
+    default void addItemButton(ItemButton button) {
+        addItem(button.getItemStack(), button.getAction());
+    }
+
+    default void setItemButton(int slot, ItemButton button) {
+        setSlot(slot, button.getItemStack(), button.getAction());
+    }
+
     void setClickHandler(int slot, ClickHandler clickHandler);
 
     default void removeClickHandler(int slot) {
