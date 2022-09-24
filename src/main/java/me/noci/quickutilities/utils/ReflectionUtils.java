@@ -27,11 +27,11 @@ public class ReflectionUtils {
             Object serverObject = getMethod(bukkitClass, "getServer").invoke(null);
             String serverPackageName = serverObject.getClass().getPackage().getName();
 
-            VERSION = serverPackageName.substring(serverPackageName.lastIndexOf("."));
+            VERSION = serverPackageName.substring(serverPackageName.lastIndexOf(".")).substring(1);
 
-            MAJOR_VERSION = Integer.parseInt(VERSION.substring(1).split("_")[1]);
-            CRAFTBUKKIT = "org.bukkit.craftbukkit" + VERSION + ".";
-            NMS = supports(17) ? "net.minecraft." : "net.minecraft.server" + VERSION + ".";
+            MAJOR_VERSION = Integer.parseInt(VERSION.split("_")[1]);
+            CRAFTBUKKIT = "org.bukkit.craftbukkit." + VERSION + ".";
+            NMS = supports(17) ? "net.minecraft." : "net.minecraft.server." + VERSION + ".";
 
         } catch (Exception e) {
             throw new IllegalArgumentException("Failed to parse server version.", e);
@@ -66,6 +66,10 @@ public class ReflectionUtils {
 
     private ReflectionUtils() {
         //Seal class
+    }
+
+    public static String getVersion() {
+        return VERSION;
     }
 
     public static int getMajorVersion() {
