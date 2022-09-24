@@ -51,7 +51,7 @@ public enum BukkitUnit {
 
     private static final long MAX = Long.MAX_VALUE;
 
-    static long x(long d, long m, long over) {
+    private static long x(long d, long m, long over) {
         if (d > over) return Long.MAX_VALUE;
         if (d < -over) return Long.MIN_VALUE;
         return d * m;
