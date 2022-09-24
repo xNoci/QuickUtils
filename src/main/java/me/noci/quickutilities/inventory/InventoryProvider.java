@@ -44,7 +44,8 @@ public abstract class InventoryProvider {
         if (this.type == InventoryType.CHEST && this.size > 0) {
             inventory = Bukkit.createInventory(inventoryHolder, this.size, this.title);
         } else {
-            inventory = Bukkit.createInventory(inventoryHolder, this.type, this.title);
+            //Change dropper inventory to dispenser due to wierd IndexOutOfBoundException thrown by minecraft
+            inventory = Bukkit.createInventory(inventoryHolder, this.type == InventoryType.DROPPER ? InventoryType.DISPENSER : this.type, this.title);
         }
         inventoryHolder.setInventory(inventory);
         init(player, inventoryHolder.getContent());
