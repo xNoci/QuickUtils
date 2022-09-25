@@ -5,7 +5,7 @@ QuickUtils is a handy library which adds some utilities that improves the way of
 Some of the current utilities are:
 
 - QuickItemStack (Supports: 1.8 - 1.19)
-- QuickTab (Supports: 1.8 [more versions coming soon])
+- QuickTab (Supports: 1.8 - 1.19)
 - QuickGUI [in dev] (Supports: 1.8 - 1.19)
 - QuickCommand [coming soon]
 
