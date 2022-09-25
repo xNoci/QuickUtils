@@ -12,9 +12,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class InventoryManager extends BukkitRunnable implements Listener {
+public class GuiManager extends BukkitRunnable implements Listener {
 
-    public InventoryManager(JavaPlugin plugin) {
+    public GuiManager(JavaPlugin plugin) {
         runTaskTimer(plugin, 0, BukkitUnit.SECONDS.toTicks(1) / 2);
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
@@ -23,10 +23,10 @@ public class InventoryManager extends BukkitRunnable implements Listener {
     public void run() {
         Bukkit.getOnlinePlayers().stream()
                 .filter(player -> player.getOpenInventory().getTopInventory() != null)
-                .filter(player -> player.getOpenInventory().getTopInventory().getHolder() instanceof ProvidedInventoryHolder)
+                .filter(player -> player.getOpenInventory().getTopInventory().getHolder() instanceof GuiHolder)
                 .forEach(player -> {
                     Inventory inventory = player.getOpenInventory().getTopInventory();
-                    ProvidedInventoryHolder inventoryHolder = (ProvidedInventoryHolder) inventory.getHolder();
+                    GuiHolder inventoryHolder = (GuiHolder) inventory.getHolder();
 
                     inventoryHolder.getProvider().update(player, inventoryHolder.getContent());
                     inventoryHolder.applyContent();
@@ -35,12 +35,12 @@ public class InventoryManager extends BukkitRunnable implements Listener {
 
     @EventHandler
     public void handleInventoryClick(InventoryClickEvent event) {
-        if (!(event.getInventory().getHolder() instanceof ProvidedInventoryHolder) || event.getClickedInventory() == null)
+        if (!(event.getInventory().getHolder() instanceof GuiHolder) || event.getClickedInventory() == null)
             return;
 
         Player player = (Player) event.getWhoClicked();
-        ProvidedInventoryHolder inventoryHolder = (ProvidedInventoryHolder) event.getInventory().getHolder();
-        InventoryProvider provider = inventoryHolder.getProvider();
+        GuiHolder inventoryHolder = (GuiHolder) event.getInventory().getHolder();
+        QuickGUIProvider provider = inventoryHolder.getProvider();
         InventoryContent content = inventoryHolder.getContent();
 
         event.setCancelled(provider.isCancelledClick());

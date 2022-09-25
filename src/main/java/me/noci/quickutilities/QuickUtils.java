@@ -1,6 +1,6 @@
 package me.noci.quickutilities;
 
-import me.noci.quickutilities.inventory.InventoryManager;
+import me.noci.quickutilities.inventory.GuiManager;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,7 +14,7 @@ public class QuickUtils extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        new InventoryManager(this);
+        new GuiManager(this);
 
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(this, this);
