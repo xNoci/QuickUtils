@@ -2,7 +2,7 @@
 
 QuickUtils is a handy library which adds some utilities that improves the way of writing your Spigot plugins.
 
-Some of the current utilities are:
+Some current utilities are:
 
 - QuickItemStack (Supports: 1.8 - 1.19)
 - QuickTab (Supports: 1.8 - 1.19)
