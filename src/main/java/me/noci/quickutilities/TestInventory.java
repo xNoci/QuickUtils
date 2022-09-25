@@ -1,7 +1,7 @@
 package me.noci.quickutilities;
 
 import me.noci.quickutilities.inventory.InventoryContent;
-import me.noci.quickutilities.inventory.InventoryProvider;
+import me.noci.quickutilities.inventory.QuickGUIProvider;
 import me.noci.quickutilities.inventory.ItemButton;
 import me.noci.quickutilities.utils.QuickItemStack;
 import org.bukkit.Material;
@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Random;
 
-public class TestInventory extends InventoryProvider {
+public class TestInventory extends QuickGUIProvider {
 
     private static final ItemButton BTN_DETECTIVE_PASS = ItemButton.of(
             new QuickItemStack(Material.INK_SACK, 1, 12)

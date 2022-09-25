@@ -6,29 +6,29 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 
-public abstract class InventoryProvider {
+public abstract class QuickGUIProvider {
 
     private final InventoryType type;
     private final String title;
     private final int size;
 
-    protected InventoryProvider(int size) {
+    protected QuickGUIProvider(int size) {
         this(InventoryType.CHEST.getDefaultTitle(), size);
     }
 
-    protected InventoryProvider(String title, int size) {
+    protected QuickGUIProvider(String title, int size) {
         this(InventoryType.CHEST, title, size);
     }
 
-    protected InventoryProvider(InventoryType type) {
+    protected QuickGUIProvider(InventoryType type) {
         this(type, type.getDefaultTitle());
     }
 
-    protected InventoryProvider(InventoryType type, String title) {
+    protected QuickGUIProvider(InventoryType type, String title) {
         this(type, title, type.getDefaultSize());
     }
 
-    private InventoryProvider(InventoryType type, String title, int size) {
+    private QuickGUIProvider(InventoryType type, String title, int size) {
         Preconditions.checkNotNull(type, "InventoryType cannot be null");
         Preconditions.checkNotNull(title, "Title cannot be null");
 
@@ -38,7 +38,7 @@ public abstract class InventoryProvider {
     }
 
     public void provide(Player player) {
-        ProvidedInventoryHolder inventoryHolder = new ProvidedInventoryHolder(this, new DefaultInventoryContent(this.type, this.size > 0 ? this.size : this.type.getDefaultSize()));
+        GuiHolder inventoryHolder = new GuiHolder(this, new DefaultInventoryContent(this.type, this.size > 0 ? this.size : this.type.getDefaultSize()));
         Inventory inventory;
 
         if (this.type == InventoryType.CHEST && this.size > 0) {
