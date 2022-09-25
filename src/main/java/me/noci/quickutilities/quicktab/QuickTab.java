@@ -4,7 +4,7 @@ import com.google.common.collect.Sets;
 import me.noci.quickutilities.quicktab.builder.DefaultQuickTabBuilder;
 import me.noci.quickutilities.quicktab.builder.QuickTabBuilder;
 import me.noci.quickutilities.quicktab.builder.TabListTeam;
-import me.noci.quickutilities.quicktab.packets.TabListPacketManager;
+import me.noci.quickutilities.quicktab.packets.VersionedPacketManager;
 import me.noci.quickutilities.utils.ReflectionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -120,8 +120,8 @@ public class QuickTab {
         for (Player target : Bukkit.getOnlinePlayers()) {
             TabListTeam team = builder.build(player, target);
 
-            removePackets.add(TabListPacketManager.removePacket(team));
-            createPackets.add(TabListPacketManager.createPacket(team));
+            removePackets.add(VersionedPacketManager.removePacket(team));
+            createPackets.add(VersionedPacketManager.createPacket(team));
         }
 
         ReflectionUtils.sendPacketSync(player, removePackets.toArray());

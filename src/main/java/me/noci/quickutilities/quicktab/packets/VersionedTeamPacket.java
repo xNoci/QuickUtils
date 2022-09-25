@@ -3,11 +3,17 @@ package me.noci.quickutilities.quicktab.packets;
 import lombok.Getter;
 import me.noci.quickutilities.quicktab.builder.TabListTeam;
 
-public interface TabListTeamPacket {
+public interface VersionedTeamPacket {
 
     Object removeTeamPacket(TabListTeam team);
 
     Object createTeamPacket(TabListTeam team);
+
+    String protocolVersion();
+
+    default String protocolInfo() {
+        return protocolVersion() + " (" + getClass().getSimpleName() + ")";
+    }
 
     enum TeamMode {
         CREATE(0),
