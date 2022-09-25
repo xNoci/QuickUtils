@@ -4,17 +4,16 @@ import lombok.Getter;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
-public class ProvidedInventoryHolder implements InventoryHolder {
+public class GuiHolder implements InventoryHolder {
 
-    @Getter private final InventoryProvider provider;
+    @Getter private final QuickGUIProvider provider;
     @Getter private final InventoryContent content;
     private Inventory handle;
 
-    public ProvidedInventoryHolder(InventoryProvider provider, InventoryContent content) {
+    public GuiHolder(QuickGUIProvider provider, InventoryContent content) {
         this.provider = provider;
         this.content = content;
     }
-
 
     @Override
     public Inventory getInventory() {
