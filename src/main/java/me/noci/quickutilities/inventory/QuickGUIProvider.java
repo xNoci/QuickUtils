@@ -34,7 +34,7 @@ public abstract class QuickGUIProvider {
         Preconditions.checkNotNull(title, "Title cannot be null");
 
         if (type == InventoryType.CHEST) {
-            Preconditions.checkArgument(size % 9 == 0 && size >= 9 && size <= 54, String.format("Size for custom inventory must be a multiple of 9 between 9 and 54 slots (got %s)", size));
+            Preconditions.checkArgument(size % 9 == 0 && size >= 9 && size <= 54, "Size for custom inventory must be a multiple of 9 between 9 and 54 slots (got %s)".formatted(size));
         }
 
         this.type = type;

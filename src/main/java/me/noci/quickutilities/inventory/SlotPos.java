@@ -14,24 +14,22 @@ public class SlotPos {
         this.slot = slot;
 
         switch (type) {
-            case CHEST:
-            case ENDER_CHEST:
+            case CHEST, ENDER_CHEST -> {
                 row = slot / 9;
                 colum = slot % 9;
-                break;
-            case DISPENSER:
-            case DROPPER:
+            }
+            case DISPENSER, DROPPER -> {
                 row = slot / 3;
                 colum = slot % 3;
-                break;
-            case HOPPER:
+            }
+            case HOPPER -> {
                 row = 0;
                 colum = slot % 5;
-                break;
-            default:
+            }
+            default -> {
                 row = -1;
                 colum = -1;
-                break;
+            }
         }
 
     }

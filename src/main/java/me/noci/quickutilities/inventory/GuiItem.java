@@ -18,6 +18,7 @@ public class GuiItem {
     public GuiItem(ItemStack itemStack) {
         this(itemStack, null);
     }
+
     private GuiItem(ItemStack itemStack, ClickHandler action) {
         setItem(itemStack);
         setAction(action);

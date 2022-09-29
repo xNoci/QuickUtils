@@ -31,11 +31,12 @@ public class Slot {
 
     @Override
     public String toString() {
-        return String.format("Slot{position=%s, itemStack={type=%s, displayName=%s}, clickHandler=%s}",
-                position,
-                getItemStack().getType(),
-                getItemStack().getItemMeta() != null ? getItemStack().getItemMeta().getDisplayName() : "null",
-                getAction() != ClickHandler.DEFAULT);
-
+        return "Slot{position=%s, itemStack={type=%s, displayName=%s}, clickHandler=%s}".
+                formatted(
+                        position,
+                        getItemStack().getType(),
+                        getItemStack().getItemMeta() != null ? getItemStack().getItemMeta().getDisplayName() : "null",
+                        getAction() != ClickHandler.DEFAULT
+                );
     }
 }

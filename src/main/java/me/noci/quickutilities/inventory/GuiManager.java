@@ -40,11 +40,10 @@ public class GuiManager extends BukkitRunnable implements Listener {
 
     @EventHandler
     public void handleInventoryClick(InventoryClickEvent event) {
-        if (!(event.getInventory().getHolder() instanceof GuiHolder) || event.getClickedInventory() == null)
+        if (!(event.getWhoClicked() instanceof Player player)) return;
+        if (!(event.getInventory().getHolder() instanceof GuiHolder inventoryHolder) || event.getClickedInventory() == null)
             return;
 
-        Player player = (Player) event.getWhoClicked();
-        GuiHolder inventoryHolder = (GuiHolder) event.getInventory().getHolder();
         QuickGUIProvider provider = inventoryHolder.getProvider();
         InventoryContent content = inventoryHolder.getContent();
 

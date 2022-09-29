@@ -28,10 +28,12 @@ public class VersionedTeamPacketManager {
         int currentVersion = ReflectionUtils.getMajorVersion();
         SUPPORTED_PACKET = packetInfos.stream().filter(packetInfo -> packetInfo.isVersionSupported(currentVersion)).findFirst().orElse(unknownVersion);
 
-        String info = String.format("Using TabListPacket Mapping %s. Current server version: %s (%s)",
-                SUPPORTED_PACKET.handle.protocolInfo(),
-                ReflectionUtils.getVersion(),
-                ReflectionUtils.getMajorVersion());
+        String info = "Using TabListPacket Mapping %s. Current server version: %s (%s)"
+                .formatted(
+                        SUPPORTED_PACKET.handle.protocolInfo(),
+                        ReflectionUtils.getVersion(),
+                        ReflectionUtils.getMajorVersion()
+                );
 
         QuickUtils.instance().getLogger().info(info);
     }

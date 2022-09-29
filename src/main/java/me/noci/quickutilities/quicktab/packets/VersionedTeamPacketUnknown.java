@@ -8,12 +8,12 @@ public class VersionedTeamPacketUnknown implements VersionedTeamPacket {
 
     @Override
     public Object removeTeamPacket(TabListTeam team) {
-        throw new UnsupportedOperationException(String.format("Your server version is currently not supported. Your are on version %s.", ReflectionUtils.getMajorVersion()));
+        throw new UnsupportedOperationException("Your server version is currently not supported. Your are on version %s.".formatted(ReflectionUtils.getMajorVersion()));
     }
 
     @Override
     public Object createTeamPacket(TabListTeam team) {
-        throw new UnsupportedOperationException(String.format("Your server version is currently not supported. Your are on version %s.", ReflectionUtils.getMajorVersion()));
+        throw new UnsupportedOperationException("Your server version is currently not supported. Your are on version %s.".formatted(ReflectionUtils.getMajorVersion()));
     }
 
     @Override

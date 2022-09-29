@@ -36,7 +36,6 @@ public class PageTestInventory extends PagedQuickGUIProvider {
         }
 
         pageContent.setPageContent(content);
-
     }
 
     @Override
