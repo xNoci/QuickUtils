@@ -35,6 +35,8 @@ public class GuiItem {
         return new GuiItem();
     }
 
+    public boolean isEmpty() {
+        return this.itemStack == DEFAULT_ITEM_STACK || this.itemStack.getType() == Material.AIR;
     }
 
     public void setItem(ItemStack item) {
