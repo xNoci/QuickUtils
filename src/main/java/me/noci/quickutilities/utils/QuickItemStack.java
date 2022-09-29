@@ -58,6 +58,11 @@ public class QuickItemStack extends ItemStack {
         return this;
     }
 
+    public QuickItemStack setStackSize(int amount) {
+        this.setAmount(amount);
+        return this;
+    }
+
     public QuickItemStack removeDisplayName() {
         return setDisplayName(ChatColor.RESET.toString());
     }
