@@ -5,6 +5,7 @@ import com.google.common.primitives.Ints;
 import lombok.Getter;
 import me.noci.quickutilities.QuickUtils;
 import me.noci.quickutilities.quicktab.builder.TabListTeam;
+import me.noci.quickutilities.utils.ProtocolLibHook;
 import me.noci.quickutilities.utils.ReflectionUtils;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -39,11 +40,19 @@ public class VersionedTeamPacketManager {
     }
 
     public static Object getTeamRemovePacket(TabListTeam team) {
+        checkProtocolLib();
         return SUPPORTED_PACKET.getHandle().removeTeamPacket(team);
     }
 
     public static Object getTeamCreatePacket(TabListTeam team) {
+        checkProtocolLib();
         return SUPPORTED_PACKET.getHandle().createTeamPacket(team);
+    }
+
+    private static void checkProtocolLib() {
+        if (!ProtocolLibHook.isEnabled()) {
+            throw new UnsupportedOperationException("This currently only works with ProtocolLib.");
+        }
     }
 
     private static class PacketInfo {
