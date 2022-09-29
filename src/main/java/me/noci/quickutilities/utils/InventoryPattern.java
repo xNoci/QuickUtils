@@ -43,6 +43,10 @@ public enum InventoryPattern {
         int[] matchInventory(int size) { return x(size, i -> true); }
         int[] matchDispenser(int size) { return x(size, i -> true); }
         int[] matchDefault(int size) { return x(size, i -> true);}
+    },
+    CENTER {
+        int[] matchInventory(int size) { return x(size, i -> (size <= 18 ||  i > 9 && i < size - 10) && i % 9 != 0 && (i + 1) % 9 != 0); }
+        int[] matchDispenser(int size) { return x(size, i -> i == 4); }
     };
 
     private static int[] x(int size, IntPredicate predicate) {
