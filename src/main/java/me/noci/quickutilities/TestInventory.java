@@ -39,6 +39,10 @@ public class TestInventory extends QuickGUIProvider {
     private int step = 0;
 
     protected TestInventory() {
+        super("§cGame settings", 9 * 7);
+    }
+
+    protected TestInventory(Player player) {
         super("§cGame settings", 9 * 3);
     }
 

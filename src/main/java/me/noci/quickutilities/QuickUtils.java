@@ -7,6 +7,7 @@ import me.noci.quickutilities.quicktab.utils.CollisionRule;
 import me.noci.quickutilities.quicktab.utils.NameTagVisibility;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -21,7 +22,13 @@ public class QuickUtils extends JavaPlugin implements Listener {
         return instance;
     }
 
+    //NON-Player specific
     TestInventory inventory = new TestInventory();
+
+    //Player specific
+    public TestInventory getInventory(Player player) {
+        return new TestInventory(player);
+    }
 
     @Override
     public void onEnable() {
