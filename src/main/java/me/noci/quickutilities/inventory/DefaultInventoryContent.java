@@ -22,6 +22,7 @@ public class DefaultInventoryContent implements InventoryContent {
         }
     }
 
+
     @Override
     public Slot getSlot(int slot) {
         if (slot > this.content.length) return null;
@@ -29,40 +30,33 @@ public class DefaultInventoryContent implements InventoryContent {
     }
 
     @Override
-    public void setSlot(int slot, ItemStack itemStack, ClickHandler clickHandler) {
+    public void setItem(int slot, GuiItem item) {
         Preconditions.checkElementIndex(slot, this.content.length, "Slot number");
         Slot content = this.content[slot];
-        content.setItemStack(itemStack);
-        content.setClickHandler(clickHandler);
+        content.setItem(item);
     }
 
     @Override
-    public void addItem(ItemStack itemStack, ClickHandler clickHandler) {
+    public void addItem(GuiItem item) {
         for (Slot content : this.content) {
             if (!content.isEmpty()) continue;
-            content.setItemStack(itemStack);
-            content.setClickHandler(clickHandler);
+            content.setItem(item);
             break;
         }
     }
 
     @Override
-    public void setItem(int slot, ItemStack itemStack) {
+    public void clearItem(int slot) {
         Preconditions.checkElementIndex(slot, this.content.length, "Slot number");
-        this.content[slot].setItemStack(itemStack);
+        Slot content = this.content[slot];
+        content.setItem(GuiItem.empty());
     }
 
     @Override
-    public void setClickHandler(int slot, ClickHandler clickHandler) {
-        Preconditions.checkElementIndex(slot, this.content.length, "Slot number");
-        this.content[slot].setClickHandler(clickHandler);
-    }
-
-    @Override
-    public void fillPattern(ItemStack itemStack, InventoryPattern... patterns) {
+    public void fillPattern(GuiItem item, InventoryPattern... patterns) {
         for (InventoryPattern pattern : patterns) {
             for (int slot : pattern.getSlots(this.type, this.size)) {
-                setItem(slot, itemStack);
+                setItem(slot, item);
             }
         }
     }

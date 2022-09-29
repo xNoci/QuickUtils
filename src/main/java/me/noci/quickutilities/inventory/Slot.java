@@ -1,43 +1,43 @@
 package me.noci.quickutilities.inventory;
 
-import lombok.AccessLevel;
+import com.google.common.base.Preconditions;
 import lombok.Getter;
-import me.noci.quickutilities.utils.QuickItemStack;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class Slot {
 
-    private static final ItemStack DEFAULT_ITEM_STACK = new QuickItemStack(Material.AIR);
-
     @Getter private final SlotPos position;
-    @Getter private ItemStack itemStack = DEFAULT_ITEM_STACK;
-    @Getter(AccessLevel.PROTECTED) private ClickHandler clickHandler = ClickHandler.DEFAULT;
+    private GuiItem item = GuiItem.empty();
 
     public Slot(SlotPos position) {
         this.position = position;
     }
 
-    public void setItemStack(ItemStack itemStack) {
-        this.itemStack = itemStack == null ? DEFAULT_ITEM_STACK : itemStack;
-    }
-
-
-    public void setClickHandler(ClickHandler clickHandler) {
-        this.clickHandler = clickHandler == null ? ClickHandler.DEFAULT : clickHandler;
+    public void setItem(GuiItem item) {
+        Preconditions.checkNotNull(item, "Gui Item cannot be null");
+        this.item = item;
     }
 
     public boolean isEmpty() {
-        return this.itemStack.getType() == Material.AIR;
+        return this.item.getItemStack().getType() == Material.AIR;
+    }
+
+    public ItemStack getItemStack() {
+        return this.item.getItemStack();
+    }
+
+    public ClickHandler getAction() {
+        return this.item.getAction();
     }
 
     @Override
     public String toString() {
         return String.format("Slot{position=%s, itemStack={type=%s, displayName=%s}, clickHandler=%s}",
                 position,
-                itemStack.getType(),
-                itemStack.getItemMeta() != null ? itemStack.getItemMeta().getDisplayName() : "null",
-                clickHandler != ClickHandler.DEFAULT);
+                getItemStack().getType(),
+                getItemStack().getItemMeta() != null ? getItemStack().getItemMeta().getDisplayName() : "null",
+                getAction() != ClickHandler.DEFAULT);
 
     }
 }

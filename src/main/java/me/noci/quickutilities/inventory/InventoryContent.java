@@ -1,78 +1,50 @@
 package me.noci.quickutilities.inventory;
 
 import me.noci.quickutilities.utils.InventoryPattern;
-import org.bukkit.inventory.ItemStack;
 
 public interface InventoryContent {
 
     Slot getSlot(int slot);
 
-    void setSlot(int slot, ItemStack itemStack, ClickHandler clickHandler);
+    void setItem(int slot, GuiItem item);
 
-    default void addItem(ItemStack itemStack) {
-        addItem(itemStack, null);
-    }
+    void addItem(GuiItem item);
 
-    void addItem(ItemStack itemStack, ClickHandler clickHandler);
-
-    void setItem(int slot, ItemStack itemStack);
-
-    default void removeItem(int slot) {
-        setItem(slot, null);
-    }
-
-    default void addItemButton(ItemButton button) {
-        addItem(button.getItemStack(), button.getAction());
-    }
-
-    default void setItemButton(int slot, ItemButton button) {
-        setSlot(slot, button.getItemStack(), button.getAction());
-    }
-
-    void setClickHandler(int slot, ClickHandler clickHandler);
-
-    default void removeClickHandler(int slot) {
-        setClickHandler(slot, null);
-    }
-
-    default void clear(int slot) {
-        removeClickHandler(slot);
-        removeItem(slot);
-    }
+    void clearItem(int slot);
 
     /**
      * Fill the complete inventory with the given ItemStack.
      *
-     * @param itemStack The ItemStack that will be used
+     * @param item The ItemStack that will be used
      */
-    default void fill(ItemStack itemStack) {
-        fillPattern(itemStack, InventoryPattern.FULL);
+    default void fill(GuiItem item) {
+        fillPattern(item, InventoryPattern.FULL);
     }
 
     /**
      * Fill the border of the inventory with the given ItemStack.
      *
-     * @param itemStack The ItemStack that will be used
+     * @param item The ItemStack that will be used
      */
-    default void fillBorders(ItemStack itemStack) {
-        fillPattern(itemStack, InventoryPattern.TOP, InventoryPattern.BOTTOM, InventoryPattern.LEFT, InventoryPattern.RIGHT);
+    default void fillBorders(GuiItem item) {
+        fillPattern(item, InventoryPattern.TOP, InventoryPattern.BOTTOM, InventoryPattern.LEFT, InventoryPattern.RIGHT);
     }
 
     /**
      * Fill the corner of the inventory with the given ItemStack.
      *
-     * @param itemStack The ItemStack that will be used
+     * @param item The ItemStack that will be used
      */
-    default void fillCorners(ItemStack itemStack) {
-        fillPattern(itemStack, InventoryPattern.TOP_LEFT_CORNER, InventoryPattern.TOP_RIGHT_CORNER, InventoryPattern.BOTTOM_LEFT_CORNER, InventoryPattern.BOTTOM_RIGHT_CORNER);
+    default void fillCorners(GuiItem item) {
+        fillPattern(item, InventoryPattern.TOP_LEFT_CORNER, InventoryPattern.TOP_RIGHT_CORNER, InventoryPattern.BOTTOM_LEFT_CORNER, InventoryPattern.BOTTOM_RIGHT_CORNER);
     }
 
     /**
      * Fill the inventory with the given patterns.
      *
-     * @param itemStack The ItemStack that will be used
+     * @param item The ItemStack that will be used
      * @param patterns  The patterns which will be used
      */
-    void fillPattern(ItemStack itemStack, InventoryPattern... patterns);
+    void fillPattern(GuiItem item, InventoryPattern... patterns);
 
 }

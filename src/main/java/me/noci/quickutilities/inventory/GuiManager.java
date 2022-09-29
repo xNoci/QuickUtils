@@ -52,7 +52,8 @@ public class GuiManager extends BukkitRunnable implements Listener {
         ClickType clickType = event.getClick();
         InventoryAction action = event.getAction();
         SlotClickEvent clickEvent = new SlotClickEvent(player, slot, slot.getItemStack(), clickType, action);
-        inventoryHolder.getContent().getSlot(event.getSlot()).getClickHandler().handle(clickEvent);
+        Slot clickedSlot = inventoryHolder.getContent().getSlot(event.getSlot());
+        clickedSlot.getAction().handle(clickEvent);
     }
 
 }
