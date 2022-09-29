@@ -53,6 +53,14 @@ public enum InventoryPattern {
         return IntStream.range(0, size).filter(predicate).toArray();
     }
 
+    public int[] getDispenserSlots(int size) {
+        return getSlots(InventoryType.DISPENSER, size);
+    }
+
+    public int[] getSlots(int size) {
+        return getSlots(InventoryType.CHEST, size);
+    }
+
     public int[] getSlots(InventoryType type, int size) {
         return match(type, size);
     }
