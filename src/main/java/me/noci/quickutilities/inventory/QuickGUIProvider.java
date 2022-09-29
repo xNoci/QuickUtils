@@ -8,9 +8,9 @@ import org.bukkit.inventory.Inventory;
 
 public abstract class QuickGUIProvider {
 
-    private final InventoryType type;
-    private final String title;
-    private final int size;
+    final InventoryType type;
+    final String title;
+    final int size;
 
     protected QuickGUIProvider(int size) {
         this(InventoryType.CHEST.getDefaultTitle(), size);
@@ -28,9 +28,13 @@ public abstract class QuickGUIProvider {
         this(type, title, type.getDefaultSize());
     }
 
-    private QuickGUIProvider(InventoryType type, String title, int size) {
+    QuickGUIProvider(InventoryType type, String title, int size) {
         Preconditions.checkNotNull(type, "InventoryType cannot be null");
         Preconditions.checkNotNull(title, "Title cannot be null");
+
+        if (type == InventoryType.CHEST) {
+            Preconditions.checkArgument(size % 9 == 0 && size >= 9 && size <= 54, String.format("Size for custom inventory must be a multiple of 9 between 9 and 54 slots (got %s)", size));
+        }
 
         this.type = type;
         this.title = title;
