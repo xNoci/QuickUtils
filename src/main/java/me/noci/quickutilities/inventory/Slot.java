@@ -1,6 +1,5 @@
 package me.noci.quickutilities.inventory;
 
-import com.google.common.base.Preconditions;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -15,8 +14,7 @@ public class Slot {
     }
 
     public void setItem(GuiItem item) {
-        Preconditions.checkNotNull(item, "Gui Item cannot be null");
-        this.item = item;
+        this.item = item == null ? GuiItem.empty() : item;
     }
 
     public boolean isEmpty() {
