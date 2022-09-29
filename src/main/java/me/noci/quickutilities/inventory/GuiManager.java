@@ -29,6 +29,11 @@ public class GuiManager extends BukkitRunnable implements Listener {
                     GuiHolder inventoryHolder = (GuiHolder) inventory.getHolder();
 
                     inventoryHolder.getProvider().update(player, inventoryHolder.getContent());
+
+                    if (inventoryHolder.hasPageContent()) {
+                        inventoryHolder.getPageContent().updatePage();
+                    }
+
                     inventoryHolder.applyContent();
                 });
     }

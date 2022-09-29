@@ -8,6 +8,7 @@ public class GuiHolder implements InventoryHolder {
 
     @Getter private final QuickGUIProvider provider;
     @Getter private final InventoryContent content;
+    @Getter private PageContent pageContent = null;
     private Inventory handle;
 
     public GuiHolder(QuickGUIProvider provider, InventoryContent content) {
@@ -25,10 +26,20 @@ public class GuiHolder implements InventoryHolder {
         this.handle = inventory;
     }
 
+    protected void setPageContent(PageContent pageContent) {
+        if (this.pageContent != null) return;
+        this.pageContent = pageContent;
+        this.pageContent.setHandle(this);
+    }
+
     public void applyContent() {
         this.handle.clear();
         for (int i = 0; i < this.handle.getSize(); i++) {
             this.handle.setItem(i, content.getSlot(i).getItemStack());
         }
+    }
+
+    public boolean hasPageContent() {
+        return pageContent != null;
     }
 }
