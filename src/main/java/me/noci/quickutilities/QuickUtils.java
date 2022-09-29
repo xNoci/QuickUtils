@@ -17,13 +17,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class QuickUtils extends JavaPlugin implements Listener {
 
     private static QuickUtils instance;
+    PageTestInventory pageTestInventory = new PageTestInventory();
+    //NON-Player specific
+    TestInventory inventory = new TestInventory();
 
     public static QuickUtils instance() {
         return instance;
     }
-
-    //NON-Player specific
-    TestInventory inventory = new TestInventory();
 
     //Player specific
     public TestInventory getInventory(Player player) {
@@ -53,7 +53,7 @@ public class QuickUtils extends JavaPlugin implements Listener {
     @EventHandler
     public void handleJoin(PlayerJoinEvent event) {
         Bukkit.getScheduler().runTaskLater(this, () -> {
-            inventory.provide(event.getPlayer());
+            pageTestInventory.provide(event.getPlayer());
         }, 20);
     }
 
