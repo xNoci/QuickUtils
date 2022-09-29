@@ -1,6 +1,7 @@
 package me.noci.quickutilities.inventory;
 
 import com.google.common.base.Preconditions;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -8,9 +9,9 @@ import org.bukkit.inventory.Inventory;
 
 public abstract class QuickGUIProvider {
 
-    final InventoryType type;
-    final String title;
-    final int size;
+    @Getter final InventoryType type;
+    @Getter final String title;
+    @Getter final int size;
 
     protected QuickGUIProvider(int size) {
         this(InventoryType.CHEST.getDefaultTitle(), size);
