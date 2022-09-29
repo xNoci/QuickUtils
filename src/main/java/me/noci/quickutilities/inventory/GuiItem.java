@@ -8,6 +8,20 @@ import org.bukkit.inventory.ItemStack;
 public class GuiItem {
 
     private static final ItemStack DEFAULT_ITEM_STACK = new QuickItemStack(Material.AIR);
+    @Getter private ItemStack itemStack;
+    @Getter private ClickHandler action;
+
+    public GuiItem() {
+        this(null, null);
+    }
+
+    public GuiItem(ItemStack itemStack) {
+        this(itemStack, null);
+    }
+    private GuiItem(ItemStack itemStack, ClickHandler action) {
+        setItem(itemStack);
+        setAction(action);
+    }
 
     public static GuiItem of(ItemStack item, ClickHandler action) {
         return new GuiItem(item, action);
@@ -21,20 +35,6 @@ public class GuiItem {
         return new GuiItem();
     }
 
-    @Getter private ItemStack itemStack;
-    @Getter private ClickHandler action;
-
-    public GuiItem() {
-        this(null, null);
-    }
-
-    public GuiItem(ItemStack itemStack) {
-        this(itemStack, null);
-    }
-
-    private GuiItem(ItemStack itemStack, ClickHandler action) {
-       setItem(itemStack);
-       setAction(action);
     }
 
     public void setItem(ItemStack item) {

@@ -42,8 +42,8 @@ public interface InventoryContent {
     /**
      * Fill the inventory with the given patterns.
      *
-     * @param item The ItemStack that will be used
-     * @param patterns  The patterns which will be used
+     * @param item     The ItemStack that will be used
+     * @param patterns The patterns which will be used
      */
     void fillPattern(GuiItem item, InventoryPattern... patterns);
 

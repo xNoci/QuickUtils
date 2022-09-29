@@ -3,7 +3,6 @@ package me.noci.quickutilities.inventory;
 import com.google.common.base.Preconditions;
 import me.noci.quickutilities.utils.InventoryPattern;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.ItemStack;
 
 public class DefaultInventoryContent implements InventoryContent {
 

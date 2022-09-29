@@ -31,7 +31,7 @@ public class VersionedTeamPacketV1_17 implements VersionedTeamPacket {
         packet.getStrings().write(0, team.getTeamName());
 
         packet.getSpecificModifier(Collection.class).write(0, team.getEntries());
-        
+
         //https://www.spigotmc.org/threads/help-with-protocollib-packet-formating.528259/
         Optional<InternalStructure> structureOptional = packet.getOptionalStructures().read(0);
         if (structureOptional.isPresent()) {
