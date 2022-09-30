@@ -10,18 +10,10 @@ var pluginName = project.property("pluginName")!!
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven {
         name = "ProtocolLib"
         url = uri("https://repo.dmulloy2.net/repository/public/")
-    }
-    maven {
-        ***REMOVED***
-        isAllowInsecureProtocol = true
-        url = ***REMOVED***
-        credentials {
-            ***REMOVED***
-            ***REMOVED***
-        }
     }
 }
 
