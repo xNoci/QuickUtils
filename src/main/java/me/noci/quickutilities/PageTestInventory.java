@@ -32,7 +32,8 @@ public class PageTestInventory extends PagedQuickGUIProvider {
                 int pick = new Random().nextInt(Material.values().length);
                 mat = Material.values()[pick];
             } while (mat.isBlock());
-            content[i] = GuiItem.of(new QuickItemStack(mat).setStackSize(n + 1).setDisplayName("Dirt " + n), event -> event.getPlayer().sendMessage("Clicked dirt " + n));
+            final Material material = mat;
+            content[i] = GuiItem.of(new QuickItemStack(material).setStackSize(n + 1).setDisplayName(material.name() + " " + n), event -> event.getPlayer().sendMessage("Clicked " + material.name() + " " + n));
         }
 
         pageContent.setPageContent(content);
