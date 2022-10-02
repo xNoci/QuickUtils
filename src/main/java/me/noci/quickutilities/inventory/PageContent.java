@@ -26,7 +26,10 @@ public class PageContent {
     private int getPageCount() {
         int itemsPerPage = getItemsPerPage();
         int itemCount = pageContent.length;
-        return (int) Math.ceil((double) itemCount / (double) itemsPerPage) - 1;
+        int pageCount = (int) Math.ceil((double) itemCount / (double) itemsPerPage);
+
+        if (pageCount > 0) pageCount -= 1;
+        return pageCount;
     }
 
     private GuiItem[] getPageItems() {
