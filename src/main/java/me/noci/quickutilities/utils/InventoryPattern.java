@@ -66,16 +66,11 @@ public enum InventoryPattern {
     }
 
     private int[] match(InventoryType type, int size) {
-        switch (type) {
-            case CHEST:
-            case ENDER_CHEST:
-                return matchInventory(size);
-            case DROPPER:
-            case DISPENSER:
-                return matchDispenser(size);
-        }
-
-        return matchDefault(size);
+        return switch (type) {
+            case CHEST, ENDER_CHEST -> matchInventory(size);
+            case DROPPER, DISPENSER -> matchDispenser(size);
+            default -> matchDefault(size);
+        };
     }
 
     //9*x inventories
