@@ -3,5 +3,6 @@ main: me.noci.quickutilities.QuickUtils
 version: ${version}
 author: nociixD
 load: STARTUP
+api-version: 1.13
 softdepend:
   - ProtocolLib
