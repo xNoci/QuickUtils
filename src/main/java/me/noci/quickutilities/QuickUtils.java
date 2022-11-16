@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class QuickUtils extends JavaPlugin implements Listener {
+public class QuickUtils extends JavaPlugin {
 
     private static QuickUtils instance;
 
