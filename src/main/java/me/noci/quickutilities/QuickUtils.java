@@ -3,7 +3,6 @@ package me.noci.quickutilities;
 import me.noci.quickutilities.commands.QuickUtilsCommand;
 import me.noci.quickutilities.inventory.GuiManager;
 import me.noci.quickutilities.listener.EntityDamageByEntityListener;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
