@@ -2,6 +2,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id("java")
+    id("com.github.johnrengelman.shadow") version ("7.1.2")
 }
 
 group = project.property("group")!!
@@ -18,6 +19,8 @@ repositories {
 }
 
 dependencies {
+    implementation(libs.xseries) { isTransitive = false }
+
     compileOnly(libs.spigot)
     compileOnly(libs.protocollib)
     compileOnly(libs.jetbrains.annotations)
@@ -25,7 +28,15 @@ dependencies {
     annotationProcessor(libs.lombok)
 }
 
+
 tasks {
+
+    shadowJar {
+        archiveFileName.set("${project.property("pluginName")}-${project.property("version")}.jar")
+        relocate("com.cryptomorin.xseries", "${project.group}.dep")
+
+        minimize()
+    }
 
     compileJava {
         options.encoding = Charsets.UTF_8.name()
