@@ -8,9 +8,7 @@ public interface FormatKey {
     FormatKey PLAYER_NAME = new DefaultKey("%player_name%") {
         @Override
         public String replace(String message, Object o) {
-            if (o instanceof Player player) {
-                return replace(message, player.getName());
-            }
+            if (o instanceof Player player) return replace(message, player.getName());
             return super.replace(message, o);
         }
     };
