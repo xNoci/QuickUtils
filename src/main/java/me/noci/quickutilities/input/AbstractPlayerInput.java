@@ -25,14 +25,13 @@ public abstract class AbstractPlayerInput implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-
-    @EventHandler
-    public void handlePlayerQuit(PlayerQuitEvent event) {
-        cancel(true);
-    }
-
     public void onCancel(BiConsumer<Player, Boolean> task) {
         this.onCancel = task;
+    }
+
+    @EventHandler
+    protected void handlePlayerQuit(PlayerQuitEvent event) {
+        cancel(true);
     }
 
     protected void cancel(boolean forced) {

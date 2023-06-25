@@ -22,9 +22,8 @@ public class PlayerChatInput extends AbstractPlayerInput {
         this.cancelString = cancelString;
     }
 
-
     @EventHandler
-    public void handlePlayerChat(AsyncPlayerChatEvent event) {
+    protected void handlePlayerChat(AsyncPlayerChatEvent event) {
         if (!event.getPlayer().getUniqueId().equals(player.getUniqueId())) return;
         event.setCancelled(true);
 
