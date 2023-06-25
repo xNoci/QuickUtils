@@ -29,7 +29,7 @@ public interface FormatKey {
 
         private final String key;
 
-        private DefaultKey(String key) {
+        public DefaultKey(String key) {
             this.key = key;
         }
 
