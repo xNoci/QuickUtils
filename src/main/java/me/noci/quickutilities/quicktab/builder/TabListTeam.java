@@ -1,9 +1,9 @@
 package me.noci.quickutilities.quicktab.builder;
 
+import com.cryptomorin.xseries.ReflectionUtils;
 import lombok.Getter;
 import me.noci.quickutilities.quicktab.utils.CollisionRule;
 import me.noci.quickutilities.quicktab.utils.NameTagVisibility;
-import me.noci.quickutilities.utils.ReflectionUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 

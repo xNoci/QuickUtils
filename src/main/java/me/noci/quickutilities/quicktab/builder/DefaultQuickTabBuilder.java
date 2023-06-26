@@ -1,8 +1,8 @@
 package me.noci.quickutilities.quicktab.builder;
 
+import com.cryptomorin.xseries.ReflectionUtils;
 import com.google.common.collect.Lists;
 import me.noci.quickutilities.quicktab.utils.*;
-import me.noci.quickutilities.utils.ReflectionUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -17,7 +17,7 @@ public class DefaultQuickTabBuilder implements QuickTabBuilder {
     private TabListFunction<Player, Integer> sortID = (player, target) -> Integer.MAX_VALUE; //Default sorted as last
     private TabListFunction<Player, String[]> entries = (player, target) -> new String[]{target.getName()}; //Default only at the target to the team
     //If the server does not support 1.13 color is set to null because it will be used as the color of the end of the prefix
-    private TabListFunction<Player, ChatColor> color = (player, target) -> ReflectionUtils.supports(13) ? DEFAULT_COLOR : null;
+    private TabListFunction<Player, ChatColor> color = (player, target) -> ReflectionUtils.v(13, DEFAULT_COLOR).orElse(null);
     private TabListFunction<Player, NameTagVisibility> nameTagVisibility = (player, target) -> NameTagVisibility.ALWAYS;
     private TabListFunction<Player, CollisionRule> collisionRule = (player, target) -> CollisionRule.ALWAYS;
     private TabListFunction<Player, Boolean> allowFriendlyFire = (player, target) -> true;

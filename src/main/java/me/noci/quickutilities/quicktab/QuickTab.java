@@ -1,11 +1,11 @@
 package me.noci.quickutilities.quicktab;
 
+import com.cryptomorin.xseries.ReflectionUtils;
 import com.google.common.collect.Sets;
 import me.noci.quickutilities.quicktab.builder.DefaultQuickTabBuilder;
 import me.noci.quickutilities.quicktab.builder.QuickTabBuilder;
 import me.noci.quickutilities.quicktab.builder.TabListTeam;
 import me.noci.quickutilities.quicktab.packets.VersionedTeamPacketManager;
-import me.noci.quickutilities.utils.ReflectionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;

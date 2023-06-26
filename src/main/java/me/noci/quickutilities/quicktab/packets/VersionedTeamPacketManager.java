@@ -1,12 +1,12 @@
 package me.noci.quickutilities.quicktab.packets;
 
+import com.cryptomorin.xseries.ReflectionUtils;
 import com.google.common.collect.Sets;
 import com.google.common.primitives.Ints;
 import lombok.Getter;
 import me.noci.quickutilities.QuickUtils;
 import me.noci.quickutilities.quicktab.builder.TabListTeam;
 import me.noci.quickutilities.utils.ProtocolLibHook;
-import me.noci.quickutilities.utils.ReflectionUtils;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
@@ -26,14 +26,14 @@ public class VersionedTeamPacketManager {
         packetInfos.add(new PacketInfo(new VersionedTeamPacketV1_13(), 13, 14, 15, 16));
         packetInfos.add(new PacketInfo(new VersionedTeamPacketV1_17(), 17, 18, 19));
 
-        int currentVersion = ReflectionUtils.getMajorVersion();
+        int currentVersion = ReflectionUtils.MINOR_NUMBER;
         SUPPORTED_PACKET = packetInfos.stream().filter(packetInfo -> packetInfo.isVersionSupported(currentVersion)).findFirst().orElse(unknownVersion);
 
         String info = "Using TabListPacket Mapping %s. Current server version: %s (%s)"
                 .formatted(
                         SUPPORTED_PACKET.handle.protocolInfo(),
-                        ReflectionUtils.getVersion(),
-                        ReflectionUtils.getMajorVersion()
+                        ReflectionUtils.NMS_VERSION,
+                        ReflectionUtils.MINOR_NUMBER
                 );
 
         QuickUtils.instance().getLogger().info(info);
