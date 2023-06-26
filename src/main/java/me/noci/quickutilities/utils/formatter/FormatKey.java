@@ -4,14 +4,8 @@ import org.bukkit.entity.Player;
 
 public interface FormatKey {
 
-    FormatKey MESSAGE = new DefaultKey("%message%");
-    FormatKey PLAYER_NAME = new DefaultKey("%player_name%") {
-        @Override
-        public String replace(String message, Object o) {
-            if (o instanceof Player player) return replace(message, player.getName());
-            return super.replace(message, o);
-        }
-    };
+    FormatKey MESSAGE = FormatKey.of(String.class, "%message%", s -> s);
+    FormatKey PLAYER_NAME = FormatKey.of(Player.class, "%player_name%", Player::getName);
 
     String getKey();
 
@@ -23,12 +17,28 @@ public interface FormatKey {
         return message.replace(getKey(), value);
     }
 
-    class DefaultKey implements FormatKey {
+    static <T> FormatKey of(Class<T> type, String key, FormatKeyConverter<T> converter) {
+        return new FormatKeyImpl<>(type, key, converter);
+    }
 
+    class FormatKeyImpl<T> implements FormatKey {
+
+        private final Class<T> type;
         private final String key;
+        private final FormatKeyConverter<T> converter;
 
-        public DefaultKey(String key) {
+        private FormatKeyImpl(Class<T> type, String key, FormatKeyConverter<T> converter) {
+            this.type = type;
             this.key = key;
+            this.converter = converter;
+        }
+
+        @Override
+        public String replace(String message, Object o) {
+            if (type.isInstance(o)) {
+                return converter.convert(cast(o));
+            }
+            return FormatKey.super.replace(message, o);
         }
 
         @Override
@@ -40,6 +50,11 @@ public interface FormatKey {
         public String toString() {
             return this.key;
         }
+
+        private T cast(Object o) {
+            return (T) o;
+        }
+
     }
 
 }
