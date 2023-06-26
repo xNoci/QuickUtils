@@ -3,12 +3,20 @@ package me.noci.quickutilities.input;
 import com.cryptomorin.xseries.messages.Titles;
 import me.noci.quickutilities.utils.BukkitUnit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.function.Consumer;
 
-public class TitledPlayerChatInput extends PlayerChatInput {
+public class TitledPlayerChatInput extends BasePlayerInput implements Listener {
+
+    protected static final String CANCEL_STRING = "!cancel";
+    private final String cancelString;
 
     //TODO Add constructor parameter
     private final boolean fadeOut = false;
@@ -23,8 +31,10 @@ public class TitledPlayerChatInput extends PlayerChatInput {
     }
 
     public TitledPlayerChatInput(JavaPlugin plugin, Player player, String cancelString, Consumer<String> playerInput, String title, String subtitle) {
-        super(plugin, player, cancelString, playerInput);
+        super(player, playerInput);
+        this.cancelString = cancelString;
 
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -39,9 +49,35 @@ public class TitledPlayerChatInput extends PlayerChatInput {
                     return;
                 }
 
-                Titles.sendTitle(player, title, subtitle);
+                Titles.sendTitle(player, 0, 20, 0, title, subtitle);
             }
         }.runTaskTimerAsynchronously(plugin, 0, 10);
 
     }
+
+    @Override
+    public void cleanUp() {
+        HandlerList.unregisterAll(this);
+    }
+
+    @EventHandler
+    protected void handlePlayerQuit(PlayerQuitEvent event) {
+        cancel(true);
+    }
+
+    @EventHandler
+    protected void handlePlayerChat(AsyncPlayerChatEvent event) {
+        if (!event.getPlayer().getUniqueId().equals(player.getUniqueId())) return;
+        event.setCancelled(true);
+
+        String message = event.getMessage();
+        if (message.equals(cancelString)) {
+            cancel(true);
+            return;
+        }
+
+        playerInput.accept(message);
+        cancel(false);
+    }
+
 }
