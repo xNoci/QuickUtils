@@ -11,8 +11,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.function.Consumer;
-
 public class TitledPlayerChatInput extends BasePlayerInput implements Listener {
 
     protected static final String CANCEL_STRING = "!cancel";
@@ -22,16 +20,16 @@ public class TitledPlayerChatInput extends BasePlayerInput implements Listener {
     private final boolean fadeOut = false;
     private final int fadeOutTime = (int) (BukkitUnit.SECONDS.toTicks(1) / 2);
 
-    public TitledPlayerChatInput(JavaPlugin plugin, Player player, Consumer<String> playerInput, String title) {
-        this(plugin, player, playerInput, title, "§7Type '§c§o%s§r§7' to abort.".formatted(CANCEL_STRING));
+    public TitledPlayerChatInput(JavaPlugin plugin, Player player, InputExecutor inputExecutor, String title) {
+        this(plugin, player, inputExecutor, title, "§7Type '§c§o%s§r§7' to abort.".formatted(CANCEL_STRING));
     }
 
-    public TitledPlayerChatInput(JavaPlugin plugin, Player player, Consumer<String> playerInput, String title, String subtitle) {
-        this(plugin, player, CANCEL_STRING, playerInput, title, subtitle);
+    public TitledPlayerChatInput(JavaPlugin plugin, Player player, InputExecutor inputExecutor, String title, String subtitle) {
+        this(plugin, player, CANCEL_STRING, inputExecutor, title, subtitle);
     }
 
-    public TitledPlayerChatInput(JavaPlugin plugin, Player player, String cancelString, Consumer<String> playerInput, String title, String subtitle) {
-        super(player, playerInput);
+    public TitledPlayerChatInput(JavaPlugin plugin, Player player, String cancelString, InputExecutor inputExecutor, String title, String subtitle) {
+        super(player, inputExecutor);
         this.cancelString = cancelString;
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -76,7 +74,7 @@ public class TitledPlayerChatInput extends BasePlayerInput implements Listener {
             return;
         }
 
-        playerInput.accept(message);
+        inputExecutor.execute(message);
         stopInput(false);
     }
 
