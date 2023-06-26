@@ -12,21 +12,21 @@ public abstract class BasePlayerInput {
     protected Player player;
     protected Consumer<String> playerInput;
     @Getter protected boolean inputMode = true;
-    private BiConsumer<Player, Boolean> onCancel;
+    private Consumer<Player> onCancel;
 
     public BasePlayerInput(Player player, Consumer<String> playerInput) {
         this.player = player;
         this.playerInput = playerInput;
     }
 
-    public void onCancel(BiConsumer<Player, Boolean> task) {
+    public void onCancel(Consumer<Player> task) {
         this.onCancel = task;
     }
 
-    protected void cancel(boolean forced) {
+    protected void stopInput(boolean canceled) {
         cleanUp();
-        if (onCancel != null && player.isOnline()) {
-            onCancel.accept(player, forced);
+        if (onCancel != null && player.isOnline() && canceled) {
+            onCancel.accept(player);
         }
 
         this.inputMode = false;

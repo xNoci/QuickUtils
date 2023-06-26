@@ -28,7 +28,7 @@ public class PlayerChatInput extends BasePlayerInput implements Listener {
 
     @EventHandler
     protected void handlePlayerQuit(PlayerQuitEvent event) {
-        cancel(true);
+        stopInput(true);
     }
 
     @EventHandler
@@ -38,12 +38,12 @@ public class PlayerChatInput extends BasePlayerInput implements Listener {
 
         String message = event.getMessage();
         if (message.equals(cancelString)) {
-            cancel(true);
+            stopInput(true);
             return;
         }
 
         playerInput.accept(message);
-        cancel(false);
+        stopInput(false);
     }
 
     @Override
