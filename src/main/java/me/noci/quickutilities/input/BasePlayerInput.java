@@ -3,28 +3,26 @@ package me.noci.quickutilities.input;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
-import java.util.function.Consumer;
-
 public abstract class BasePlayerInput {
 
     protected Player player;
     protected InputExecutor inputExecutor;
+    private CanceledInput canceledInput;
     @Getter protected boolean inputMode = true;
-    private Consumer<Player> onCancel;
 
     public BasePlayerInput(Player player, InputExecutor inputExecutor) {
         this.player = player;
         this.inputExecutor = inputExecutor;
     }
 
-    public void onCancel(Consumer<Player> task) {
-        this.onCancel = task;
+    public void onCancel(CanceledInput task) {
+        this.canceledInput = task;
     }
 
     protected void stopInput(boolean canceled) {
         cleanUp();
-        if (onCancel != null && player.isOnline() && canceled) {
-            onCancel.accept(player);
+        if (canceledInput != null && player.isOnline() && canceled) {
+            canceledInput.execute(player);
         }
 
         this.inputMode = false;
@@ -37,6 +35,11 @@ public abstract class BasePlayerInput {
     @FunctionalInterface
     public interface InputExecutor {
         void execute(String input);
+    }
+
+    @FunctionalInterface
+    public interface CanceledInput {
+        void execute(Player player);
     }
 
 }
