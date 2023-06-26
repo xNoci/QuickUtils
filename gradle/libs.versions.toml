@@ -1,9 +1,9 @@
 [versions]
 lombok = "1.18.24"
 spigot = "1.8.8-R0.1-SNAPSHOT"
-protocollib = "4.8.0"
+protocollib = "5.0.0"
 jetbrains-annotations = "23.0.0"
-xseries = "9.1.0"
+xseries = "9.4.0"
 
 [libraries]
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
