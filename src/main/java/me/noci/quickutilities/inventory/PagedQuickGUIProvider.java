@@ -43,8 +43,8 @@ public abstract class PagedQuickGUIProvider extends QuickGUIProvider {
         init(player, inventoryHolder.getContent());
 
         PageContent pageContent = new PageContent();
-        initPage(player, pageContent);
         inventoryHolder.setPageContent(pageContent);
+        initPage(player, pageContent);
 
         inventoryHolder.applyContent();
         player.openInventory(inventory);
