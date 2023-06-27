@@ -36,7 +36,7 @@ public interface FormatKey {
         @Override
         public String replace(String message, Object o) {
             if (type.isInstance(o)) {
-                return converter.convert(cast(o));
+                return FormatKey.super.replace(message, converter.convert(cast(o)));
             }
             return FormatKey.super.replace(message, o);
         }
