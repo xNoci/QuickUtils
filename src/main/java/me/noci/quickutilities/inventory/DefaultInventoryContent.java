@@ -1,6 +1,8 @@
 package me.noci.quickutilities.inventory;
 
 import com.google.common.base.Preconditions;
+import lombok.AccessLevel;
+import lombok.Setter;
 import me.noci.quickutilities.utils.InventoryPattern;
 import org.bukkit.event.inventory.InventoryType;
 
@@ -9,6 +11,7 @@ public class DefaultInventoryContent implements InventoryContent {
     private final InventoryType type;
     private final int size;
     private final Slot[] content;
+    @Setter(AccessLevel.PROTECTED) private GuiHolder guiHolder = null;
 
     protected DefaultInventoryContent(InventoryType type, int size) {
         this.type = type;
@@ -21,6 +24,11 @@ public class DefaultInventoryContent implements InventoryContent {
         }
     }
 
+
+    @Override
+    public void applyContent() {
+        if(guiHolder != null) guiHolder.applyContent();
+    }
 
     @Override
     public Slot getSlot(int slot) {

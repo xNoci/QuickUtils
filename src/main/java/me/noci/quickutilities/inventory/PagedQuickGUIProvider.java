@@ -30,7 +30,9 @@ public abstract class PagedQuickGUIProvider extends QuickGUIProvider {
 
     @Override
     public void provide(Player player) {
-        GuiHolder inventoryHolder = new GuiHolder(this, new DefaultInventoryContent(this.type, this.size > 0 ? this.size : this.type.getDefaultSize()));
+        DefaultInventoryContent inventoryContent = new DefaultInventoryContent(this.type, this.size > 0 ? this.size : this.type.getDefaultSize());
+        GuiHolder inventoryHolder = new GuiHolder(this, inventoryContent);
+        inventoryContent.setGuiHolder(inventoryHolder);
         Inventory inventory;
 
         if (this.type == InventoryType.CHEST && this.size > 0) {

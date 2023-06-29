@@ -4,6 +4,8 @@ import me.noci.quickutilities.utils.InventoryPattern;
 
 public interface InventoryContent {
 
+    void applyContent();
+
     Slot getSlot(int slot);
 
     void setItem(int slot, GuiItem item);
