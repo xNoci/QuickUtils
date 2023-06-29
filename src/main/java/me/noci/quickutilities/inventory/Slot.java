@@ -9,6 +9,12 @@ public class Slot {
     @Getter private final SlotPos position;
     private GuiItem item = GuiItem.empty();
 
+    public static int getSlot(int row, int column) {
+        row = Math.max(1, Math.min(6, row));
+        column = Math.max(1, Math.min(9, column));
+        return 9 * (row - 1) + (column - 1);
+    }
+
     public Slot(SlotPos position) {
         this.position = position;
     }
