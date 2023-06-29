@@ -53,6 +53,16 @@ public enum InventoryPattern {
         return IntStream.range(0, size).filter(predicate).toArray();
     }
 
+    public static int[] box(int firstRow, int lastRow) {
+        int minSlot = 9 * (firstRow - 1);
+        int maxSlot = 9 * (lastRow - 1) + 8;
+        return IntStream.range(0, 54)
+                .filter(i -> i % 9 != 0)
+                .filter(i -> (i + 1) % 9 != 0)
+                .filter(i -> i >= minSlot && i <= maxSlot)
+                .toArray();
+    }
+
     public int[] getDispenserSlots(int size) {
         return getSlots(InventoryType.DISPENSER, size);
     }
