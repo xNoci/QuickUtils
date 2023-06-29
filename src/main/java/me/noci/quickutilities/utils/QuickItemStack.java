@@ -1,5 +1,7 @@
 package me.noci.quickutilities.utils;
 
+import me.noci.quickutilities.inventory.ClickHandler;
+import me.noci.quickutilities.inventory.GuiItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -176,6 +178,14 @@ public class QuickItemStack extends ItemStack {
         addItemFlags();
         setUnsafeEnchantment(Enchantment.DURABILITY, 1);
         return this;
+    }
+
+    public GuiItem asGuiItem() {
+        return GuiItem.of(this);
+    }
+
+    public GuiItem asGuiItem(ClickHandler action) {
+        return GuiItem.of(this, action);
     }
 
     public String getRawDisplayName() {
