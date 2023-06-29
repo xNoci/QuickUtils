@@ -68,4 +68,11 @@ public class DefaultInventoryContent implements InventoryContent {
         }
     }
 
+    @Override
+    public void fillSlots(GuiItem item, int[] slots) {
+        for (int slot : slots) {
+            setItem(slot, item);
+        }
+    }
+
 }

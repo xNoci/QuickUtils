@@ -49,4 +49,12 @@ public interface InventoryContent {
      */
     void fillPattern(GuiItem item, InventoryPattern... patterns);
 
+    /**
+     * Fill the inventory at the given slots with the given item.
+     *
+     * @param item     The ItemStack that will be used
+     * @param slots    The Slots that will be filled
+     */
+    void fillSlots(GuiItem item, int[] slots);
+
 }
