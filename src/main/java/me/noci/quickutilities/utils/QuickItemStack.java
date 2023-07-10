@@ -50,6 +50,7 @@ public class QuickItemStack extends ItemStack {
     }
 
     public String getDisplayName() {
+        if (this.getItemMeta() == null) return getType().name();
         return this.getItemMeta().getDisplayName();
     }
 
