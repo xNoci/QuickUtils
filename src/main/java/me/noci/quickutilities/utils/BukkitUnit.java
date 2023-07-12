@@ -8,6 +8,7 @@ public enum BukkitUnit {
         public long toSeconds(long d)          { return d/(C2 / C0); }
         public long toMinutes(long d)          { return d/(C3 / C0); }
         public long toHours(long d)            { return d/(C4 / C0); }
+        public long toDays(long d)             { return d/(C5 / C0); }
         public long convert(long d, BukkitUnit u) { return u.toMilliseconds(d); }
     },
     TICKS {
@@ -16,6 +17,7 @@ public enum BukkitUnit {
         public long toSeconds(long d)          { return d/(C2 / C1); }
         public long toMinutes(long d)          { return d/(C3 / C1); }
         public long toHours(long d)            { return d/(C4 / C1); }
+        public long toDays(long d)             { return d/(C5 / C1); }
         public long convert(long d, BukkitUnit u) { return u.toTicks(d); }
     },
     SECONDS {
@@ -24,6 +26,7 @@ public enum BukkitUnit {
         public long toSeconds(long d)          { return d; }
         public long toMinutes(long d)          { return d/(C3 / C2); }
         public long toHours(long d)            { return d/(C4 / C2); }
+        public long toDays(long d)             { return d/(C5 / C2); }
         public long convert(long d, BukkitUnit u) { return u.toSeconds(d); }
     },
     MINUTES {
@@ -32,6 +35,7 @@ public enum BukkitUnit {
         public long toSeconds(long d)          { return x(d, C3 / C2, MAX/(C3 / C2)); }
         public long toMinutes(long d)          { return d; }
         public long toHours(long d)            { return d/(C4 / C3); }
+        public long toDays(long d)             { return d/(C5 / C3); }
         public long convert(long d, BukkitUnit u) { return u.toMinutes(d); }
     },
     HOURS {
@@ -40,7 +44,17 @@ public enum BukkitUnit {
         public long toSeconds(long d)          { return x(d, C4 / C2, MAX/(C4 / C2)); }
         public long toMinutes(long d)          { return x(d, C4 / C3, MAX/(C4 / C3)); }
         public long toHours(long d)            { return d; }
+        public long toDays(long d)             { return d/(C5 / C4); }
         public long convert(long d, BukkitUnit u) { return u.toHours(d); }
+    },
+    DAYS {
+        public long toMilliseconds(long d)     { return x(d, C5 / C0, MAX/(C5 / C0)); }
+        public long toTicks(long d)            { return x(d, C5 / C1, MAX/(C5 / C1)); }
+        public long toSeconds(long d)          { return x(d, C5 / C2, MAX/(C5 / C2)); }
+        public long toMinutes(long d)          { return x(d, C5 / C3, MAX/(C5 / C3)); }
+        public long toHours(long d)            { return x(d, C5 / C4, MAX/(C5 / C4)); }
+        public long toDays(long d)             { return d; }
+        public long convert(long d, BukkitUnit u) { return u.toDays(d); }
     };
 
     private static final long C0 = 1L; //ONE MILLISECOND
@@ -48,6 +62,7 @@ public enum BukkitUnit {
     private static final long C2 = C1 * 20L; //ONE SECOND
     private static final long C3 = C2 * 60L; //ONE MINUTE
     private static final long C4 = C3 * 60L; //ONE HOUR
+    private static final long C5 = C4 * 24L; //ONE DAY
 
     private static final long MAX = Long.MAX_VALUE;
 
@@ -64,5 +79,6 @@ public enum BukkitUnit {
     public abstract long toSeconds(long duration);
     public abstract long toMinutes(long duration);
     public abstract long toHours(long duration);
+    public abstract long toDays(long duration);
 
 }
