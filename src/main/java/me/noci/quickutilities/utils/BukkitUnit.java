@@ -35,7 +35,7 @@ public enum BukkitUnit {
         public long convert(long d, BukkitUnit u) { return u.toMinutes(d); }
     },
     HOURS {
-        public long toMilliseconds(long d)     { return x(d, C4 / C1, MAX/(C4 / C0)); }
+        public long toMilliseconds(long d)     { return x(d, C4 / C0, MAX/(C4 / C0)); }
         public long toTicks(long d)            { return x(d, C4 / C1, MAX/(C4 / C1)); }
         public long toSeconds(long d)          { return x(d, C4 / C2, MAX/(C4 / C2)); }
         public long toMinutes(long d)          { return x(d, C4 / C3, MAX/(C4 / C3)); }
