@@ -3,6 +3,7 @@ package me.noci.quickutilities.utils;
 import org.bukkit.ChatColor;
 
 import java.util.Arrays;
+import java.util.SplittableRandom;
 import java.util.random.RandomGenerator;
 
 public class RandomUtils {
@@ -29,8 +30,12 @@ public class RandomUtils {
         return newColor;
     }
 
+    public static RandomGenerator random() {
+        return RandomHolder.RANDOM;
+    }
+
     private static class RandomHolder {
-        private static final RandomGenerator RANDOM = RandomGenerator.getDefault();
+        private static final RandomGenerator RANDOM = new SplittableRandom();
     }
 
 
