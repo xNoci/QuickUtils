@@ -3,6 +3,7 @@ package me.noci.quickutilities.events.subscriber.builder;
 import com.google.common.collect.Lists;
 import me.noci.quickutilities.QuickUtils;
 import me.noci.quickutilities.events.subscriber.EventHandler;
+import me.noci.quickutilities.events.subscriber.Expiry;
 import me.noci.quickutilities.events.subscriber.SubscribedEvent;
 import me.noci.quickutilities.events.subscriber.SubscribedEventImpl;
 import me.noci.quickutilities.events.subscriber.eventattribute.AttributeFilter;
@@ -14,7 +15,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
-import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -22,8 +22,7 @@ public class DefaultEventBuilder<T extends Event> implements EventBuilder<T> {
 
     private final AttributeRegistryImpl<T> attributeRegistry = new AttributeRegistryImpl<>();
     private final List<Predicate<T>> filters = Lists.newArrayList();
-    private final List<BiPredicate<SubscribedEventImpl<T>, T>> expirePre = Lists.newArrayList();
-    private final List<BiPredicate<SubscribedEventImpl<T>, T>> expirePost = Lists.newArrayList();
+    private final List<Expiry<T>> expiries = Lists.newArrayList();
     private final Class<T> eventType;
     private final EventPriority priority;
     private JavaPlugin plugin;
@@ -37,29 +36,22 @@ public class DefaultEventBuilder<T extends Event> implements EventBuilder<T> {
     @Override
     public EventBuilder<T> expireAfter(int value, BukkitUnit timeUnit) {
         long expiredTime = Math.addExact(System.currentTimeMillis(), timeUnit.toMilliseconds(value));
-        expirePre((handler, e) -> System.currentTimeMillis() >= expiredTime);
+        expiries.add(Expiry.pre((handler, e) -> System.currentTimeMillis() >= expiredTime));
         return this;
     }
 
     @Override
     public EventBuilder<T> expireAfter(int uses) {
-        expirePre((handler, e) -> handler.getCalls() >= uses);
+        expiries.add(Expiry.pre((handler, event) -> handler.getCalls() >= uses));
         return this;
     }
 
     @Override
     public EventBuilder<T> expireWhen(Predicate<T> expire) {
-        expirePost((handler, e) -> expire.test(e));
+        expiries.add(Expiry.post((handler, e) -> expire.test(e)));
         return this;
     }
 
-    private void expirePre(BiPredicate<SubscribedEventImpl<T>, T> expire) {
-        this.expirePre.add(expire);
-    }
-
-    private void expirePost(BiPredicate<SubscribedEventImpl<T>, T> expire) {
-        this.expirePost.add(expire);
-    }
 
     @Override
     public EventBuilder<T> filter(Predicate<T> filter) {
@@ -87,7 +79,7 @@ public class DefaultEventBuilder<T extends Event> implements EventBuilder<T> {
 
     @Override
     public SubscribedEvent<T> handle(EventHandler<T> eventHandler) {
-        return new SubscribedEventImpl<>(eventType, eventHandler, priority, plugin, attributeRegistry, filters, expirePre, expirePost);
+        return new SubscribedEventImpl<>(eventType, eventHandler, priority, plugin, attributeRegistry, filters, expiries);
     }
 
 }

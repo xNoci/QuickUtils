@@ -11,7 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 public class SubscribedEventImpl<T extends Event> implements SubscribedEvent<T>, EventExecutor, Listener {
@@ -23,8 +22,7 @@ public class SubscribedEventImpl<T extends Event> implements SubscribedEvent<T>,
     private final AttributeRegistryImpl<T> attributeRegistry;
     private final List<Predicate<T>> filters;
     private final EventHandler<T> eventHandler;
-    private final List<BiPredicate<SubscribedEventImpl<T>, T>> expirePre;
-    private final List<BiPredicate<SubscribedEventImpl<T>, T>> expirePost;
+    private final List<Expiry<T>> expiries;
 
     private final Method getHandlerList;
     private boolean active = false;
@@ -32,14 +30,13 @@ public class SubscribedEventImpl<T extends Event> implements SubscribedEvent<T>,
     private boolean expired = false;
 
     @SneakyThrows
-    public SubscribedEventImpl(Class<T> eventType, EventHandler<T> eventHandler, EventPriority priority, JavaPlugin plugin, AttributeRegistryImpl<T> attributeRegistry, List<Predicate<T>> filters, List<BiPredicate<SubscribedEventImpl<T>, T>> expirePre, List<BiPredicate<SubscribedEventImpl<T>, T>> expirePost) {
+    public SubscribedEventImpl(Class<T> eventType, EventHandler<T> eventHandler, EventPriority priority, JavaPlugin plugin, AttributeRegistryImpl<T> attributeRegistry, List<Predicate<T>> filters, List<Expiry<T>> expiries) {
         this.eventClass = eventType;
         this.priority = priority;
         this.plugin = plugin;
         this.eventHandler = eventHandler;
         this.filters = filters;
-        this.expirePre = expirePre;
-        this.expirePost = expirePost;
+        this.expiries = expiries;
         this.attributeRegistry = attributeRegistry;
 
         this.getHandlerList = eventClass.getMethod("getHandlerList");
@@ -52,12 +49,14 @@ public class SubscribedEventImpl<T extends Event> implements SubscribedEvent<T>,
         if (eventClass != event.getClass()) return;
         T typedEvent = eventClass.cast(event);
 
-        for (BiPredicate<SubscribedEventImpl<T>, T> expireTest : expirePre) {
-            if (expireTest.test(this, typedEvent)) {
-                expired = true;
-                unsubscribe();
-                return;
-            }
+        boolean expirePre = expiries.stream()
+                .filter(expiry -> expiry.stage() == Expiry.ExpiryStage.PRE)
+                .anyMatch(expiry -> expiry.expire(this, typedEvent));
+
+        if (expirePre) {
+            expired = true;
+            unsubscribe();
+            return;
         }
 
         if (!active) {
@@ -77,12 +76,14 @@ public class SubscribedEventImpl<T extends Event> implements SubscribedEvent<T>,
         eventHandler.handle(typedEvent, attributeRegistry);
         calls++;
 
-        for (BiPredicate<SubscribedEventImpl<T>, T> expireTest : expirePost) {
-            if (expireTest.test(this, typedEvent)) {
-                expired = true;
-                unsubscribe();
-                return;
-            }
+        boolean expirePost = expiries.stream()
+                .filter(expiry -> expiry.stage() == Expiry.ExpiryStage.POST)
+                .anyMatch(expiry -> expiry.expire(this, typedEvent));
+
+        if (expirePost) {
+            expired = true;
+            unsubscribe();
+            return;
         }
     }
 
