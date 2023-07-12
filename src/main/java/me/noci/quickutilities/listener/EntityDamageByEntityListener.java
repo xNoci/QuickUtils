@@ -1,29 +1,31 @@
 package me.noci.quickutilities.listener;
 
 import lombok.Getter;
+import me.noci.quickutilities.events.Events;
 import me.noci.quickutilities.events.PlayerDamagedPlayerEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-public class EntityDamageByEntityListener implements Listener {
+public class EntityDamageByEntityListener {
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void handleEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof Player player)) return;
-        EventAttacker eventAttacker = getEventAttacker(event);
-        if (eventAttacker.getAttacker() == null) return;
+    public EntityDamageByEntityListener() {
+        Events.subscribe(EntityDamageByEntityEvent.class, EventPriority.HIGHEST)
+                .attribute(EventAttacker.class, this::getEventAttacker)
+                .filter(e -> !(e.getEntity() instanceof Player))
+                .filterAttribute(EventAttacker.class, (e, a) -> a.get().getAttacker() != null)
+                .handle((e, attribute) -> {
+                    EventAttacker eventAttacker = attribute.get(EventAttacker.class).get();
+                    Player player = (Player) e.getEntity();
+                    PlayerDamagedPlayerEvent playerDamageByPlayerEvent = new PlayerDamagedPlayerEvent(player, eventAttacker.getAttacker(), e.getCause(), eventAttacker.getProjectile(), e.getDamage(), e.isCancelled());
+                    Bukkit.getPluginManager().callEvent(playerDamageByPlayerEvent);
 
-        PlayerDamagedPlayerEvent playerDamageByPlayerEvent = new PlayerDamagedPlayerEvent(player, eventAttacker.getAttacker(), event.getCause(), eventAttacker.getProjectile(), event.getDamage(), event.isCancelled());
-        Bukkit.getPluginManager().callEvent(playerDamageByPlayerEvent);
-
-        event.setDamage(playerDamageByPlayerEvent.getDamage());
-        event.setCancelled(playerDamageByPlayerEvent.isCancelled());
+                    e.setDamage(playerDamageByPlayerEvent.getDamage());
+                    e.setCancelled(playerDamageByPlayerEvent.isCancelled());
+                });
     }
 
     private EventAttacker getEventAttacker(EntityDamageByEntityEvent event) {

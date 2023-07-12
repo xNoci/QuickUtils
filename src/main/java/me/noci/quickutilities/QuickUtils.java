@@ -3,7 +3,6 @@ package me.noci.quickutilities;
 import me.noci.quickutilities.commands.QuickUtilsCommand;
 import me.noci.quickutilities.inventory.GuiManager;
 import me.noci.quickutilities.listener.EntityDamageByEntityListener;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class QuickUtils extends JavaPlugin {
@@ -24,8 +23,7 @@ public class QuickUtils extends JavaPlugin {
     }
 
     private void registerListener() {
-        PluginManager pluginManager = getServer().getPluginManager();
-        pluginManager.registerEvents(new EntityDamageByEntityListener(), this);
+        new EntityDamageByEntityListener();
     }
 
     private void registerCommands() {
