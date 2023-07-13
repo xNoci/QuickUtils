@@ -109,7 +109,7 @@ public class SubscribedEventImpl<T extends Event> implements SubscribedEvent<T>,
 
     @Override
     public boolean isActive() {
-        return active;
+        return active && !expired;
     }
 
     @Override
