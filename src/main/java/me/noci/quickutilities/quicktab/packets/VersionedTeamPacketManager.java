@@ -24,7 +24,7 @@ public class VersionedTeamPacketManager {
         packetInfos.add(new PacketInfo(new VersionedTeamPacketV1_8(), 8));
         packetInfos.add(new PacketInfo(new VersionedTeamPacketV1_9(), 9, 10, 11, 12));
         packetInfos.add(new PacketInfo(new VersionedTeamPacketV1_13(), 13, 14, 15, 16));
-        packetInfos.add(new PacketInfo(new VersionedTeamPacketV1_17(), 17, 18, 19));
+        packetInfos.add(new PacketInfo(new VersionedTeamPacketV1_17(), 17, 18, 19, 20));
 
         int currentVersion = ReflectionUtils.MINOR_NUMBER;
         SUPPORTED_PACKET = packetInfos.stream().filter(packetInfo -> packetInfo.isVersionSupported(currentVersion)).findFirst().orElse(unknownVersion);
