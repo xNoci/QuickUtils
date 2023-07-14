@@ -1,8 +1,10 @@
 package me.noci.quickutilities.input;
 
 import com.cryptomorin.xseries.messages.Titles;
+import me.noci.quickutilities.QuickUtils;
 import me.noci.quickutilities.input.functions.InputExecutor;
 import me.noci.quickutilities.utils.BukkitUnit;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -21,19 +23,19 @@ public class TitledPlayerChatInput extends BasePlayerInput implements Listener {
     private final boolean fadeOut = false;
     private final int fadeOutTime = (int) (BukkitUnit.SECONDS.toTicks(1) / 2);
 
-    protected TitledPlayerChatInput(JavaPlugin plugin, Player player, InputExecutor inputExecutor, String title) {
-        this(plugin, player, inputExecutor, title, "§7Type '§c§o%s§r§7' to abort.".formatted(CANCEL_STRING));
+    protected TitledPlayerChatInput(Player player, InputExecutor inputExecutor, String title) {
+        this(player, inputExecutor, title, "§7Type '§c§o%s§r§7' to abort.".formatted(CANCEL_STRING));
     }
 
-    protected TitledPlayerChatInput(JavaPlugin plugin, Player player, InputExecutor inputExecutor, String title, String subtitle) {
-        this(plugin, player, CANCEL_STRING, inputExecutor, title, subtitle);
+    protected TitledPlayerChatInput(Player player, InputExecutor inputExecutor, String title, String subtitle) {
+        this(player, CANCEL_STRING, inputExecutor, title, subtitle);
     }
 
-    protected TitledPlayerChatInput(JavaPlugin plugin, Player player, String cancelString, InputExecutor inputExecutor, String title, String subtitle) {
+    protected TitledPlayerChatInput(Player player, String cancelString, InputExecutor inputExecutor, String title, String subtitle) {
         super(player, inputExecutor);
         this.cancelString = cancelString;
 
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        Bukkit.getServer().getPluginManager().registerEvents(this, QuickUtils.instance());
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -50,7 +52,7 @@ public class TitledPlayerChatInput extends BasePlayerInput implements Listener {
 
                 Titles.sendTitle(player, 0, 20, 0, title, subtitle);
             }
-        }.runTaskTimerAsynchronously(plugin, 0, 10);
+        }.runTaskTimerAsynchronously(QuickUtils.instance(), 0, 10);
 
     }
 
