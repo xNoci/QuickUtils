@@ -1,20 +1,23 @@
 package me.noci.quickutilities.input;
 
 import lombok.Getter;
+import me.noci.quickutilities.input.functions.CanceledInput;
+import me.noci.quickutilities.input.functions.InputExecutor;
 import org.bukkit.entity.Player;
 
-public abstract class BasePlayerInput {
+public abstract class BasePlayerInput implements Input {
 
     protected Player player;
     protected InputExecutor inputExecutor;
     private CanceledInput canceledInput;
     @Getter protected boolean inputMode = true;
 
-    public BasePlayerInput(Player player, InputExecutor inputExecutor) {
+    protected BasePlayerInput(Player player, InputExecutor inputExecutor) {
         this.player = player;
         this.inputExecutor = inputExecutor;
     }
 
+    @Override
     public void onCancel(CanceledInput task) {
         this.canceledInput = task;
     }
@@ -31,15 +34,4 @@ public abstract class BasePlayerInput {
     }
 
     public abstract void cleanUp();
-
-    @FunctionalInterface
-    public interface InputExecutor {
-        void execute(String input);
-    }
-
-    @FunctionalInterface
-    public interface CanceledInput {
-        void execute(Player player);
-    }
-
 }

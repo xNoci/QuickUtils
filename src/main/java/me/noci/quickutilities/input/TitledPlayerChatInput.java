@@ -1,6 +1,7 @@
 package me.noci.quickutilities.input;
 
 import com.cryptomorin.xseries.messages.Titles;
+import me.noci.quickutilities.input.functions.InputExecutor;
 import me.noci.quickutilities.utils.BukkitUnit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,15 +21,15 @@ public class TitledPlayerChatInput extends BasePlayerInput implements Listener {
     private final boolean fadeOut = false;
     private final int fadeOutTime = (int) (BukkitUnit.SECONDS.toTicks(1) / 2);
 
-    public TitledPlayerChatInput(JavaPlugin plugin, Player player, InputExecutor inputExecutor, String title) {
+    protected TitledPlayerChatInput(JavaPlugin plugin, Player player, InputExecutor inputExecutor, String title) {
         this(plugin, player, inputExecutor, title, "§7Type '§c§o%s§r§7' to abort.".formatted(CANCEL_STRING));
     }
 
-    public TitledPlayerChatInput(JavaPlugin plugin, Player player, InputExecutor inputExecutor, String title, String subtitle) {
+    protected TitledPlayerChatInput(JavaPlugin plugin, Player player, InputExecutor inputExecutor, String title, String subtitle) {
         this(plugin, player, CANCEL_STRING, inputExecutor, title, subtitle);
     }
 
-    public TitledPlayerChatInput(JavaPlugin plugin, Player player, String cancelString, InputExecutor inputExecutor, String title, String subtitle) {
+    protected TitledPlayerChatInput(JavaPlugin plugin, Player player, String cancelString, InputExecutor inputExecutor, String title, String subtitle) {
         super(player, inputExecutor);
         this.cancelString = cancelString;
 

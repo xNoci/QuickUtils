@@ -1,5 +1,6 @@
 package me.noci.quickutilities.input;
 
+import me.noci.quickutilities.input.functions.InputExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -13,11 +14,11 @@ public class PlayerChatInput extends BasePlayerInput implements Listener {
     protected static final String CANCEL_STRING = "!cancel";
     private final String cancelString;
 
-    public PlayerChatInput(JavaPlugin plugin, Player player, String notifyMessage, InputExecutor inputExecutor) {
+    protected PlayerChatInput(JavaPlugin plugin, Player player, String notifyMessage, InputExecutor inputExecutor) {
         this(plugin, player, notifyMessage, CANCEL_STRING, inputExecutor);
     }
 
-    public PlayerChatInput(JavaPlugin plugin, Player player, String notifyMessage, String cancelString, InputExecutor inputExecutor) {
+    protected PlayerChatInput(JavaPlugin plugin, Player player, String notifyMessage, String cancelString, InputExecutor inputExecutor) {
         super(player, inputExecutor);
         this.cancelString = cancelString;
         player.sendMessage(notifyMessage);
