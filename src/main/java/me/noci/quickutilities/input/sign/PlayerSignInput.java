@@ -1,4 +1,4 @@
-package me.noci.quickutilities.input;
+package me.noci.quickutilities.input.sign;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
@@ -15,8 +15,10 @@ import com.comphenix.protocol.wrappers.nbt.NbtFactory;
 import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.Lists;
 import me.noci.quickutilities.QuickUtils;
+import me.noci.quickutilities.input.BasePlayerInput;
 import me.noci.quickutilities.input.functions.InputExecutor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,18 +30,22 @@ import java.util.List;
 public class PlayerSignInput extends BasePlayerInput implements Listener {
 
     private static final String LINE_FORMAT = "{\"text\": \"%s\"}";
-    private static final String TEXT_COLOR = "black";
-    private static final boolean HAS_GLOWING_TEXT = false;
 
     private final BlockPosition position;
     private final WrappedBlockData oldData;
     private final List<String> signLines;
+    private final Material signType;
+    private final String textColor;
     private final int inputLine;
+    private final byte glowingText;
 
-    protected PlayerSignInput(Player player, int inputLine, List<String> signLines, InputExecutor inputExecutor) {
+    protected PlayerSignInput(Player player, Material signType, String textColor, byte glowingText, int inputLine, List<String> signLines, InputExecutor inputExecutor) {
         super(player, inputExecutor);
         this.signLines = signLines;
-        this.inputLine = Math.max(1, Math.min(inputLine, 4)) - 1;
+        this.inputLine = inputLine;
+        this.signType = signType;
+        this.textColor = textColor;
+        this.glowingText = glowingText;
 
         Location location = player.getLocation();
         position = new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ());
@@ -60,7 +66,7 @@ public class PlayerSignInput extends BasePlayerInput implements Listener {
 
         PacketContainer blockChange = protocol.createPacket(PacketType.Play.Server.BLOCK_CHANGE);
         blockChange.getBlockPositionModifier().write(0, position);
-        blockChange.getBlockData().write(0, WrappedBlockData.createData(XMaterial.OAK_WALL_SIGN.parseMaterial()));
+        blockChange.getBlockData().write(0, WrappedBlockData.createData(signType));
 
         PacketContainer blockData = protocol.createPacket(PacketType.Play.Server.TILE_ENTITY_DATA);
         blockData.getBlockPositionModifier().write(0, position);
@@ -133,8 +139,8 @@ public class PlayerSignInput extends BasePlayerInput implements Listener {
             text.add(String.format(LINE_FORMAT, lines.get(i)));
             i++;
         }
-        tags.add(NbtFactory.of("has_glowing_text", (byte) (HAS_GLOWING_TEXT ? 1 : 0)));
-        tags.add(NbtFactory.of("color", TEXT_COLOR));
+        tags.add(NbtFactory.of("has_glowing_text", glowingText));
+        tags.add(NbtFactory.of("color", textColor));
         tags.add(NbtFactory.ofList("messages", text));
         return NbtFactory.ofCompound(compoundName, tags);
     }
