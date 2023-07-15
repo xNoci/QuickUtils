@@ -9,7 +9,7 @@ import org.bukkit.ChatColor;
 
 import java.util.Collection;
 
-public class VersionedTeamPacketV1_13 implements VersionedTeamPacket {
+public class TeamPacketHandlerV1_13 implements TeamPacketHandler {
 
     @Override
     public Object removeTeamPacket(TabListTeam team) {

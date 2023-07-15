@@ -6,7 +6,7 @@ import me.noci.quickutilities.quicktab.builder.TabListTeam;
 
 import java.util.Collection;
 
-public class VersionedTeamPacketV1_9 implements VersionedTeamPacket {
+public class TeamPacketHandlerV1_9 implements TeamPacketHandler {
 
     @Override
     public Object removeTeamPacket(TabListTeam team) {

@@ -11,7 +11,7 @@ import org.bukkit.ChatColor;
 import java.util.Collection;
 import java.util.Optional;
 
-public class VersionedTeamPacketV1_17 implements VersionedTeamPacket {
+public class TeamPacketHandlerV1_17 implements TeamPacketHandler {
 
     @Override
     public Object removeTeamPacket(TabListTeam team) {

@@ -4,7 +4,7 @@ package me.noci.quickutilities.quicktab.packets;
 import com.cryptomorin.xseries.ReflectionUtils;
 import me.noci.quickutilities.quicktab.builder.TabListTeam;
 
-public class VersionedTeamPacketUnknown implements VersionedTeamPacket {
+public class TeamPacketHandlerUnknown implements TeamPacketHandler {
 
     @Override
     public Object removeTeamPacket(TabListTeam team) {
