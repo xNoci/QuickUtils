@@ -1,7 +1,11 @@
 package me.noci.quickutilities.input;
 
+import com.cryptomorin.xseries.ReflectionUtils;
 import me.noci.quickutilities.input.functions.InputExecutor;
+import me.noci.quickutilities.utils.ProtocolLibHook;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class Inputs {
 
@@ -25,6 +29,19 @@ public class Inputs {
         return new TitledPlayerChatInput(player, cancelString, inputExecutor, title, subtitle);
     }
 
+    public static Input sign(Player player, int inputLine, InputExecutor inputExecutor) {
+        return sign(player, inputLine, List.of(), inputExecutor);
+    }
+
+    public static Input sign(Player player, int inputLine, List<String> signLines, InputExecutor inputExecutor) {
+        if (!ProtocolLibHook.isEnabled()) {
+            throw new UnsupportedOperationException("Only available while using ProtocolLib.");
+        }
+
+        if (!ReflectionUtils.supports(20)) {
+            throw new UnsupportedOperationException("Currently only available for Version >= 1.20.");
+        }
+        return new PlayerSignInput(player, inputLine, signLines, inputExecutor);
     }
 
 }
