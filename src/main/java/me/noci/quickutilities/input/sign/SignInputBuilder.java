@@ -1,14 +1,14 @@
 package me.noci.quickutilities.input.sign;
 
-import com.cryptomorin.xseries.ReflectionUtils;
 import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XTag;
 import com.google.common.collect.Lists;
 import me.noci.quickutilities.input.Input;
 import me.noci.quickutilities.input.functions.CanceledInput;
 import me.noci.quickutilities.input.functions.InputExecutor;
+import me.noci.quickutilities.input.sign.packets.SignPacketHandler;
+import me.noci.quickutilities.quicktab.utils.packets.PacketHandlerFactory;
 import me.noci.quickutilities.utils.MathUtils;
-import me.noci.quickutilities.utils.ProtocolLibHook;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -38,6 +38,10 @@ public class SignInputBuilder {
         return this;
     }
 
+    public SignInputBuilder signLines(String... signLines) {
+        return signLines(List.of(signLines));
+    }
+
     public SignInputBuilder signLines(List<String> signLines) {
         this.signLines = signLines;
         return this;
@@ -63,7 +67,7 @@ public class SignInputBuilder {
     }
 
     public SignInputBuilder material(XMaterial signType) {
-        if(!XTag.SIGNS.isTagged(signType) && !XTag.HANGING_SIGNS.isTagged(signType))
+        if (!XTag.SIGNS.isTagged(signType) && !XTag.HANGING_SIGNS.isTagged(signType))
             throw new IllegalArgumentException(String.format("%s is not a sign.", signType.name()));
         this.signType = signType.parseMaterial();
         return this;
