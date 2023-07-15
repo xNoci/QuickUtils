@@ -26,13 +26,6 @@ public class SignInputBuilder {
     private int inputLine = 1;
 
     public SignInputBuilder() {
-        if (!ProtocolLibHook.isEnabled()) {
-            throw new UnsupportedOperationException("Only available while using ProtocolLib.");
-        }
-
-        if (!ReflectionUtils.supports(20)) {
-            throw new UnsupportedOperationException("Currently only available for Version >= 1.20.");
-        }
     }
 
     public SignInputBuilder input(InputExecutor input) {
@@ -87,7 +80,7 @@ public class SignInputBuilder {
     }
 
     public Input build(Player player) {
-        var input = new PlayerSignInput(player, signType, signColor.getColor(), glowingText, inputLine, signLines, inputExecutor);
+        var input = new PlayerSignInput(PacketHandlerFactory.getPacketHandler(SignPacketHandler.class), player, signType, signColor.getColor(), glowingText, inputLine, signLines, inputExecutor);
         input.onCancel(canceledInput);
         return input;
     }
