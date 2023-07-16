@@ -39,7 +39,7 @@ public class PlayerSignInput extends BasePlayerInput implements Listener {
 
         handler.openEditor(player, position, signData);
         handler.packetListener(position, signData, input -> {
-            if (inputExecutor == null || input.isEmpty()) {
+            if (inputExecutor == null || input.isEmpty() || input.isBlank()) {
                 stopInput(true);
                 return;
             }
