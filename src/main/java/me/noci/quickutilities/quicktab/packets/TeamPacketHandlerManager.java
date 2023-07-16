@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class TeamPacketHandlerManager implements PacketHandlerManager<TeamPacketHandler> {
 
-    private final TeamPacketHandler handler;
+    private final PacketHandlerInfo<TeamPacketHandler> handlerInfo;
 
     public TeamPacketHandlerManager() {
         PacketHandlerInfo<TeamPacketHandler> unknownVersion = PacketHandlerInfo.version(new TeamPacketHandlerUnknown(), -1);
@@ -19,7 +19,7 @@ public class TeamPacketHandlerManager implements PacketHandlerManager<TeamPacket
         handlerInfos.add(PacketHandlerInfo.version(new TeamPacketHandlerV1_13(), 13, 14, 15, 16));
         handlerInfos.add(PacketHandlerInfo.version(new TeamPacketHandlerV1_17(), 17, 18, 19, 20));
 
-        handler = findSupportedHandler(handlerInfos, unknownVersion);
+        handlerInfo = findSupportedHandler(handlerInfos, unknownVersion);
     }
 
     @Override
@@ -28,12 +28,13 @@ public class TeamPacketHandlerManager implements PacketHandlerManager<TeamPacket
     }
 
     @Override
-    public TeamPacketHandler handler() {
-        return handler;
+    public PacketHandlerInfo<TeamPacketHandler> getHandlerInfo() {
+        return handlerInfo;
     }
 
     @Override
     public Class<TeamPacketHandler> getHandlerType() {
         return TeamPacketHandler.class;
     }
+
 }

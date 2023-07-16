@@ -11,8 +11,13 @@ public class PacketHandlerFactory {
     private static final SignPacketHandlerManager SIGN_PACKET_MANAGER = new SignPacketHandlerManager();
 
     public static <T extends PacketHandler<T>> T getPacketHandler(Class<T> type) {
-        PacketHandlerManager<T> packetManager = getPacketManager(type);
-        return packetManager.getHandler();
+        try {
+            PacketHandlerManager<T> packetManager = getPacketManager(type);
+            return packetManager.getHandler();
+        } catch (Exception e) {
+            e.fillInStackTrace();
+            throw e;
+        }
     }
 
     private static <T extends PacketHandler<T>> PacketHandlerManager<T> getPacketManager(Class<T> type) {

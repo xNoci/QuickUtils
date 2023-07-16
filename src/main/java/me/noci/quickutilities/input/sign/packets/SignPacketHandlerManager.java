@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class SignPacketHandlerManager implements PacketHandlerManager<SignPacketHandler> {
 
-    private final SignPacketHandler handler;
+    private final PacketHandlerInfo<SignPacketHandler> handlerInfo;
 
     public SignPacketHandlerManager() {
         PacketHandlerInfo<SignPacketHandler> unknownVersion = PacketHandlerInfo.unknown(new SignPacketHandlerUnknown());
@@ -19,7 +19,7 @@ public class SignPacketHandlerManager implements PacketHandlerManager<SignPacket
         } catch (NoClassDefFoundError ignore) {
         }
 
-        handler = findSupportedHandler(handlerInfos, unknownVersion);
+        handlerInfo = findSupportedHandler(handlerInfos, unknownVersion);
     }
 
     @Override
@@ -28,12 +28,13 @@ public class SignPacketHandlerManager implements PacketHandlerManager<SignPacket
     }
 
     @Override
-    public SignPacketHandler handler() {
-        return handler;
+    public PacketHandlerInfo<SignPacketHandler> getHandlerInfo() {
+        return handlerInfo;
     }
 
     @Override
     public Class<SignPacketHandler> getHandlerType() {
         return SignPacketHandler.class;
     }
+
 }

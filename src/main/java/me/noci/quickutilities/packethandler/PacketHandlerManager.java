@@ -10,16 +10,17 @@ public interface PacketHandlerManager<T extends PacketHandler<T>> {
 
     boolean requiresProtocolLib();
 
-    T handler();
-
     default T getHandler() {
+        checkSupportedVersion(this);
         checkProtocolLib(this);
-        return handler();
+        return getHandlerInfo().getHandler();
     }
+
+    PacketHandlerInfo<T> getHandlerInfo();
 
     Class<T> getHandlerType();
 
-    default T findSupportedHandler(Set<PacketHandlerInfo<T>> handlers, PacketHandlerInfo<T> unknownVersion) {
+    default PacketHandlerInfo<T> findSupportedHandler(Set<PacketHandlerInfo<T>> handlers, PacketHandlerInfo<T> unknownVersion) {
         int currentVersion = ReflectionUtils.MINOR_NUMBER;
         PacketHandlerInfo<T> supportedPacket = handlers.stream().filter(packetInfo -> packetInfo.isSupported(currentVersion)).findFirst().orElse(unknownVersion);
 
@@ -33,7 +34,12 @@ public interface PacketHandlerManager<T extends PacketHandler<T>> {
 
         QuickUtils.instance().getLogger().info(info);
 
-        return supportedPacket.getHandler();
+        return supportedPacket;
+    }
+
+    private static <T extends PacketHandler<T>> void checkSupportedVersion(PacketHandlerManager<T> handlerManager) {
+        if (!handlerManager.getHandlerInfo().isUnknownVersion()) return;
+        throw new UnsupportedOperationException("%s of type '%s' currently does not support your version (%s).".formatted(PacketHandler.class.getSimpleName(), handlerManager.getHandlerType().getName(), ReflectionUtils.NMS_VERSION));
     }
 
     private static <T extends PacketHandler<T>> void checkProtocolLib(PacketHandlerManager<T> handlerManager) {
