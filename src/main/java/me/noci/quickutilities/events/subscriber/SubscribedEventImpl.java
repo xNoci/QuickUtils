@@ -25,12 +25,13 @@ public class SubscribedEventImpl<T extends Event> implements SubscribedEvent<T>,
     private final List<Expiry<T>> expiries;
 
     private final Method getHandlerList;
+    private final long delayTicks;
     private boolean active = false;
     @Getter private int calls = 0;
     private boolean expired = false;
 
     @SneakyThrows
-    public SubscribedEventImpl(Class<T> eventType, EventHandler<T> eventHandler, EventPriority priority, JavaPlugin plugin, AttributeRegistryImpl<T> attributeRegistry, List<Predicate<T>> filters, List<Expiry<T>> expiries) {
+    public SubscribedEventImpl(Class<T> eventType, EventHandler<T> eventHandler, long delayTicks, EventPriority priority, JavaPlugin plugin, AttributeRegistryImpl<T> attributeRegistry, List<Predicate<T>> filters, List<Expiry<T>> expiries) {
         this.eventClass = eventType;
         this.priority = priority;
         this.plugin = plugin;
@@ -38,6 +39,7 @@ public class SubscribedEventImpl<T extends Event> implements SubscribedEvent<T>,
         this.filters = filters;
         this.expiries = expiries;
         this.attributeRegistry = attributeRegistry;
+        this.delayTicks = delayTicks;
 
         this.getHandlerList = eventClass.getMethod("getHandlerList");
         register();
@@ -73,7 +75,12 @@ public class SubscribedEventImpl<T extends Event> implements SubscribedEvent<T>,
             if (attribute.test(typedEvent)) return;
         }
 
-        eventHandler.handle(typedEvent, attributeRegistry);
+        if(delayTicks <= 0) {
+            eventHandler.handle(typedEvent, attributeRegistry);
+        } else {
+            Bukkit.getScheduler().runTaskLater(plugin, () -> eventHandler.handle(typedEvent, attributeRegistry), delayTicks);
+        }
+
         calls++;
 
         boolean expirePost = expiries.stream()

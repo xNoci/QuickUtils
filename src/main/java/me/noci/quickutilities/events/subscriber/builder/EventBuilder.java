@@ -97,6 +97,15 @@ public interface EventBuilder<T extends Event> {
     }
 
     /**
+     * Delay the execution of the handle function.
+     * The event will not have any influence anymore. Things like cancel will not work
+     * @param value
+     * @param timeUnit
+     * @return
+     */
+    EventBuilder<T> delay(int value, BukkitUnit timeUnit);
+
+    /**
      * Handle the event with access to all attributes
      * @param event
      * @return

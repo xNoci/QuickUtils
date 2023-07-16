@@ -25,6 +25,7 @@ public class DefaultEventBuilder<T extends Event> implements EventBuilder<T> {
     private final List<Expiry<T>> expiries = Lists.newArrayList();
     private final Class<T> eventType;
     private final EventPriority priority;
+    private long delayTicks = 0;
     private JavaPlugin plugin;
 
     public DefaultEventBuilder(Class<T> event, EventPriority priority) {
@@ -72,6 +73,12 @@ public class DefaultEventBuilder<T extends Event> implements EventBuilder<T> {
     }
 
     @Override
+    public EventBuilder<T> delay(int value, BukkitUnit timeUnit) {
+        this.delayTicks = timeUnit.toTicks(value);
+        return this;
+    }
+
+    @Override
     public EventBuilder<T> plugin(JavaPlugin plugin) {
         this.plugin = plugin;
         return this;
@@ -79,7 +86,7 @@ public class DefaultEventBuilder<T extends Event> implements EventBuilder<T> {
 
     @Override
     public SubscribedEvent<T> handle(EventHandler<T> eventHandler) {
-        return new SubscribedEventImpl<>(eventType, eventHandler, priority, plugin, attributeRegistry, filters, expiries);
+        return new SubscribedEventImpl<>(eventType, eventHandler, delayTicks, priority, plugin, attributeRegistry, filters, expiries);
     }
 
 }
