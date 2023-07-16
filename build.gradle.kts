@@ -20,6 +20,7 @@ repositories {
 
 dependencies {
     implementation(libs.xseries) { isTransitive = false }
+    implementation(libs.fastboard)
 
     compileOnly(libs.spigot)
     compileOnly(libs.protocollib)
@@ -33,7 +34,8 @@ tasks {
 
     shadowJar {
         archiveFileName.set("${project.property("pluginName")}-${project.property("version")}.jar")
-        relocate("com.cryptomorin.xseries", "${project.group}.dep")
+        relocate("com.cryptomorin.xseries", "${project.group}.dep.xseries")
+        relocate("fr.mrmicky.fastboard", "${project.group}.dep.fastboard")
 
         minimize()
     }
