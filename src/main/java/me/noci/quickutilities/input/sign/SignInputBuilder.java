@@ -66,7 +66,7 @@ public class SignInputBuilder {
         return material(XMaterial.matchXMaterial(signType));
     }
 
-    public SignInputBuilder material(XMaterial signType) {
+    private SignInputBuilder material(XMaterial signType) {
         if (!XTag.SIGNS.isTagged(signType) && !XTag.HANGING_SIGNS.isTagged(signType))
             throw new IllegalArgumentException(String.format("%s is not a sign.", signType.name()));
         this.signType = signType.parseMaterial();
