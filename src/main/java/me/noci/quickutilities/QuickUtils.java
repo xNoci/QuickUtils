@@ -30,7 +30,7 @@ public class QuickUtils extends JavaPlugin {
     }
 
     private void registerListener() {
-        new EntityDamageByEntityListener();
+        EntityDamageByEntityListener.initialise();
     }
 
     private void registerCommands() {

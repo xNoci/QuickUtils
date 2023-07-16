@@ -12,9 +12,13 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class EntityDamageByEntityListener {
 
-    public EntityDamageByEntityListener() {
+    private static boolean initialised = false;
+
+    public static void initialise() {
+        if (initialised) return;
+        initialised = true;
         Events.subscribe(EntityDamageByEntityEvent.class, EventPriority.HIGHEST)
-                .attribute(EventAttacker.class, this::getEventAttacker)
+                .attribute(EventAttacker.class, EntityDamageByEntityListener::getEventAttacker)
                 .filter(e -> !(e.getEntity() instanceof Player))
                 .filterAttribute(EventAttacker.class, (e, a) -> a.get().getAttacker() != null)
                 .handle((e, attribute) -> {
@@ -28,7 +32,7 @@ public class EntityDamageByEntityListener {
                 });
     }
 
-    private EventAttacker getEventAttacker(EntityDamageByEntityEvent event) {
+    private static EventAttacker getEventAttacker(EntityDamageByEntityEvent event) {
         Entity entity = event.getDamager();
         if (entity instanceof Player player) {
             return new EventAttacker(player, null);
