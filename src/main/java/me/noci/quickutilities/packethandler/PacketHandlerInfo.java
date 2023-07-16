@@ -7,8 +7,9 @@ import java.util.List;
 
 public class PacketHandlerInfo<T extends PacketHandler<T>> {
 
-    public static <T extends PacketHandler<T>> PacketHandlerInfo<T> unknown(T handle) {
-        return new PacketHandlerInfo<>(handle, true, -1);
+    @SuppressWarnings("unchecked")
+    public static <T extends PacketHandler<T>> PacketHandlerInfo<T> unknown() {
+        return new PacketHandlerInfo<>((T) new UnknownVersionPacketHandler<>(), true, -1);
     }
 
     public static <T extends PacketHandler<T>> PacketHandlerInfo<T> version(T handle, int... supportedVersions) {

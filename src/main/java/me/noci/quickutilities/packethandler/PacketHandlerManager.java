@@ -20,9 +20,9 @@ public interface PacketHandlerManager<T extends PacketHandler<T>> {
 
     Class<T> getHandlerType();
 
-    default PacketHandlerInfo<T> findSupportedHandler(Set<PacketHandlerInfo<T>> handlers, PacketHandlerInfo<T> unknownVersion) {
+    default PacketHandlerInfo<T> findSupportedHandler(Set<PacketHandlerInfo<T>> handlers) {
         int currentVersion = ReflectionUtils.MINOR_NUMBER;
-        PacketHandlerInfo<T> supportedPacket = handlers.stream().filter(packetInfo -> packetInfo.isSupported(currentVersion)).findFirst().orElse(unknownVersion);
+        PacketHandlerInfo<T> supportedPacket = handlers.stream().filter(packetInfo -> packetInfo.isSupported(currentVersion)).findFirst().orElse(PacketHandlerInfo.unknown());
 
         String info = "Using %s version mapping '%s'. Current server version: %s (%s)"
                 .formatted(

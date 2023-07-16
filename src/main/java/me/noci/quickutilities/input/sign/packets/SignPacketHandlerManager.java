@@ -11,15 +11,13 @@ public class SignPacketHandlerManager implements PacketHandlerManager<SignPacket
     private final PacketHandlerInfo<SignPacketHandler> handlerInfo;
 
     public SignPacketHandlerManager() {
-        PacketHandlerInfo<SignPacketHandler> unknownVersion = PacketHandlerInfo.unknown(new SignPacketHandlerUnknown());
-
         Set<PacketHandlerInfo<SignPacketHandler>> handlerInfos = Sets.newHashSet();
         try {
             handlerInfos.add(PacketHandlerInfo.version(new SignPacketHandlerV1_20(), 20));
         } catch (NoClassDefFoundError ignore) {
         }
 
-        handlerInfo = findSupportedHandler(handlerInfos, unknownVersion);
+        handlerInfo = findSupportedHandler(handlerInfos);
     }
 
     @Override
