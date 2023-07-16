@@ -13,6 +13,9 @@ public class SignPacketHandlerManager implements PacketHandlerManager<SignPacket
     public SignPacketHandlerManager() {
         Set<PacketHandlerInfo<SignPacketHandler>> handlerInfos = Sets.newHashSet();
         try {
+            handlerInfos.add(PacketHandlerInfo.version(new SignPacketHandlerV1_8(), 8));
+            handlerInfos.add(PacketHandlerInfo.version(new SignPacketHandlerV1_9(), 9, 10, 11, 12, 13, 14, 15, 16, 17));
+            handlerInfos.add(PacketHandlerInfo.version(new SignPacketHandlerV1_18(), 18, 19));
             handlerInfos.add(PacketHandlerInfo.version(new SignPacketHandlerV1_20(), 20));
         } catch (NoClassDefFoundError ignore) {
         }
