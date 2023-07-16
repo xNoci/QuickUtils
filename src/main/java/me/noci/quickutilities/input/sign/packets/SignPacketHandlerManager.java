@@ -1,25 +1,25 @@
 package me.noci.quickutilities.input.sign.packets;
 
 import com.google.common.collect.Sets;
-import me.noci.quickutilities.quicktab.utils.packets.PacketHandleInfo;
-import me.noci.quickutilities.quicktab.utils.packets.PacketHandlerManager;
+import me.noci.quickutilities.packethandler.PacketHandlerInfo;
+import me.noci.quickutilities.packethandler.PacketHandlerManager;
 
 import java.util.Set;
 
 public class SignPacketHandlerManager implements PacketHandlerManager<SignPacketHandler> {
 
-    private final SignPacketHandler handle;
+    private final SignPacketHandler handler;
 
     public SignPacketHandlerManager() {
-        PacketHandleInfo<SignPacketHandler> unknownVersion = PacketHandleInfo.unknown(new SignPacketHandlerUnknown());
+        PacketHandlerInfo<SignPacketHandler> unknownVersion = PacketHandlerInfo.unknown(new SignPacketHandlerUnknown());
 
-        Set<PacketHandleInfo<SignPacketHandler>> handleInfos = Sets.newHashSet();
+        Set<PacketHandlerInfo<SignPacketHandler>> handlerInfos = Sets.newHashSet();
         try {
-            handleInfos.add(PacketHandleInfo.version(new SignPacketHandlerV1_20(), 20));
+            handlerInfos.add(PacketHandlerInfo.version(new SignPacketHandlerV1_20(), 20));
         } catch (NoClassDefFoundError ignore) {
         }
 
-        handle = findSupportedHandle(handleInfos, unknownVersion);
+        handler = findSupportedHandler(handlerInfos, unknownVersion);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class SignPacketHandlerManager implements PacketHandlerManager<SignPacket
 
     @Override
     public SignPacketHandler handler() {
-        return handle;
+        return handler;
     }
 
     @Override

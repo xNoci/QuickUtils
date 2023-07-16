@@ -7,7 +7,7 @@ import me.noci.quickutilities.input.Input;
 import me.noci.quickutilities.input.functions.CanceledInput;
 import me.noci.quickutilities.input.functions.InputExecutor;
 import me.noci.quickutilities.input.sign.packets.SignPacketHandler;
-import me.noci.quickutilities.quicktab.utils.packets.PacketHandlerFactory;
+import me.noci.quickutilities.packethandler.PacketHandlerFactory;
 import me.noci.quickutilities.utils.MathUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

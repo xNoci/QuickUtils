@@ -1,4 +1,4 @@
-package me.noci.quickutilities.quicktab.utils.packets;
+package me.noci.quickutilities.packethandler;
 
 public interface PacketHandler<T extends PacketHandler<?>> {
 

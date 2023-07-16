@@ -1,25 +1,25 @@
 package me.noci.quickutilities.quicktab.packets;
 
 import com.google.common.collect.Sets;
-import me.noci.quickutilities.quicktab.utils.packets.PacketHandleInfo;
-import me.noci.quickutilities.quicktab.utils.packets.PacketHandlerManager;
+import me.noci.quickutilities.packethandler.PacketHandlerInfo;
+import me.noci.quickutilities.packethandler.PacketHandlerManager;
 
 import java.util.Set;
 
 public class TeamPacketHandlerManager implements PacketHandlerManager<TeamPacketHandler> {
 
-    private final TeamPacketHandler handle;
+    private final TeamPacketHandler handler;
 
     public TeamPacketHandlerManager() {
-        PacketHandleInfo<TeamPacketHandler> unknownVersion = PacketHandleInfo.version(new TeamPacketHandlerUnknown(), -1);
+        PacketHandlerInfo<TeamPacketHandler> unknownVersion = PacketHandlerInfo.version(new TeamPacketHandlerUnknown(), -1);
 
-        Set<PacketHandleInfo<TeamPacketHandler>> handleInfos = Sets.newHashSet();
-        handleInfos.add(PacketHandleInfo.version(new TeamPacketHandlerV1_8(), 8));
-        handleInfos.add(PacketHandleInfo.version(new TeamPacketHandlerV1_9(), 9, 10, 11, 12));
-        handleInfos.add(PacketHandleInfo.version(new TeamPacketHandlerV1_13(), 13, 14, 15, 16));
-        handleInfos.add(PacketHandleInfo.version(new TeamPacketHandlerV1_17(), 17, 18, 19, 20));
+        Set<PacketHandlerInfo<TeamPacketHandler>> handlerInfos = Sets.newHashSet();
+        handlerInfos.add(PacketHandlerInfo.version(new TeamPacketHandlerV1_8(), 8));
+        handlerInfos.add(PacketHandlerInfo.version(new TeamPacketHandlerV1_9(), 9, 10, 11, 12));
+        handlerInfos.add(PacketHandlerInfo.version(new TeamPacketHandlerV1_13(), 13, 14, 15, 16));
+        handlerInfos.add(PacketHandlerInfo.version(new TeamPacketHandlerV1_17(), 17, 18, 19, 20));
 
-        handle = findSupportedHandle(handleInfos, unknownVersion);
+        handler = findSupportedHandler(handlerInfos, unknownVersion);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class TeamPacketHandlerManager implements PacketHandlerManager<TeamPacket
 
     @Override
     public TeamPacketHandler handler() {
-        return handle;
+        return handler;
     }
 
     @Override

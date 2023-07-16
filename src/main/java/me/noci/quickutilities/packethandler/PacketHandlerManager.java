@@ -1,4 +1,4 @@
-package me.noci.quickutilities.quicktab.utils.packets;
+package me.noci.quickutilities.packethandler;
 
 import com.cryptomorin.xseries.ReflectionUtils;
 import me.noci.quickutilities.QuickUtils;
@@ -19,21 +19,21 @@ public interface PacketHandlerManager<T extends PacketHandler<T>> {
 
     Class<T> getHandlerType();
 
-    default T findSupportedHandle(Set<PacketHandleInfo<T>> handles, PacketHandleInfo<T> unknownVersion) {
+    default T findSupportedHandler(Set<PacketHandlerInfo<T>> handlers, PacketHandlerInfo<T> unknownVersion) {
         int currentVersion = ReflectionUtils.MINOR_NUMBER;
-        PacketHandleInfo<T> supportedPacket = handles.stream().filter(packetInfo -> packetInfo.isSupported(currentVersion)).findFirst().orElse(unknownVersion);
+        PacketHandlerInfo<T> supportedPacket = handlers.stream().filter(packetInfo -> packetInfo.isSupported(currentVersion)).findFirst().orElse(unknownVersion);
 
         String info = "Using %s version mapping '%s'. Current server version: %s (%s)"
                 .formatted(
                         getHandlerType().getSimpleName(),
-                        supportedPacket.getHandle().protocolInfo(),
+                        supportedPacket.getHandler().protocolInfo(),
                         ReflectionUtils.NMS_VERSION,
                         ReflectionUtils.MINOR_NUMBER
                 );
 
         QuickUtils.instance().getLogger().info(info);
 
-        return supportedPacket.getHandle();
+        return supportedPacket.getHandler();
     }
 
     private static <T extends PacketHandler<T>> void checkProtocolLib(PacketHandlerManager<T> handlerManager) {

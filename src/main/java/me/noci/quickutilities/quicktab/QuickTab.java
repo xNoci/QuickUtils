@@ -6,7 +6,7 @@ import me.noci.quickutilities.quicktab.builder.DefaultQuickTabBuilder;
 import me.noci.quickutilities.quicktab.builder.QuickTabBuilder;
 import me.noci.quickutilities.quicktab.builder.TabListTeam;
 import me.noci.quickutilities.quicktab.packets.TeamPacketHandler;
-import me.noci.quickutilities.quicktab.utils.packets.PacketHandlerFactory;
+import me.noci.quickutilities.packethandler.PacketHandlerFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;

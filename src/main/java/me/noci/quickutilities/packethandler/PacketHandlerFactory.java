@@ -1,4 +1,4 @@
-package me.noci.quickutilities.quicktab.utils.packets;
+package me.noci.quickutilities.packethandler;
 
 import me.noci.quickutilities.input.sign.packets.SignPacketHandler;
 import me.noci.quickutilities.input.sign.packets.SignPacketHandlerManager;

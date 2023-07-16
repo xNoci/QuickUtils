@@ -3,7 +3,7 @@ package me.noci.quickutilities.input.sign.packets;
 import com.comphenix.protocol.wrappers.BlockPosition;
 import com.comphenix.protocol.wrappers.WrappedBlockData;
 import me.noci.quickutilities.input.sign.SignData;
-import me.noci.quickutilities.quicktab.utils.packets.PacketHandler;
+import me.noci.quickutilities.packethandler.PacketHandler;
 import org.bukkit.entity.Player;
 
 import java.util.function.Consumer;
