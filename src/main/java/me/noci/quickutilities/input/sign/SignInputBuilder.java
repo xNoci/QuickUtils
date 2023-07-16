@@ -17,6 +17,8 @@ import java.util.List;
 
 public class SignInputBuilder {
 
+    private final SignPacketHandler packetHandler;
+
     private InputExecutor inputExecutor = null;
     private CanceledInput canceledInput = null;
     private List<String> signLines = Lists.newArrayList();
@@ -26,6 +28,7 @@ public class SignInputBuilder {
     private int inputLine = 1;
 
     public SignInputBuilder() {
+        packetHandler = PacketHandlerFactory.getPacketHandler(SignPacketHandler.class);
     }
 
     public SignInputBuilder input(InputExecutor input) {
@@ -84,7 +87,7 @@ public class SignInputBuilder {
     }
 
     public Input build(Player player) {
-        var input = new PlayerSignInput(PacketHandlerFactory.getPacketHandler(SignPacketHandler.class), player, signType, signColor.getColor(), glowingText, inputLine, signLines, inputExecutor);
+        var input = new PlayerSignInput(packetHandler, player, signType, signColor.getColor(), glowingText, inputLine, signLines, inputExecutor);
         input.onCancel(canceledInput);
         return input;
     }
