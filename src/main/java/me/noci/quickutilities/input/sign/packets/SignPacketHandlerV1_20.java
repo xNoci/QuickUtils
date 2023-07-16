@@ -67,11 +67,18 @@ public class SignPacketHandlerV1_20 implements SignPacketHandler {
                     event.setCancelled(true);
                     String input = container.getStringArrays().read(0)[signData.inputLine()];
                     signInput.accept(input);
+
+                    protocol.removePacketListener(this);
                 } catch (Exception e) {
                     //NO NEED TO HANDLE
                 }
             }
         });
+    }
+
+    @Override
+    public String protocolVersion() {
+        return "v1.20";
     }
 
     private NbtCompound signCompound(SignData signData) {
@@ -103,8 +110,4 @@ public class SignPacketHandlerV1_20 implements SignPacketHandler {
         return NbtFactory.ofCompound(compoundName, tags);
     }
 
-    @Override
-    public String protocolVersion() {
-        return "v1.20";
-    }
 }
