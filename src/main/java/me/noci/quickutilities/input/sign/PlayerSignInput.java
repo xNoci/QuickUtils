@@ -2,10 +2,10 @@ package me.noci.quickutilities.input.sign;
 
 import com.comphenix.protocol.wrappers.BlockPosition;
 import com.comphenix.protocol.wrappers.WrappedBlockData;
+import com.cryptomorin.xseries.ReflectionUtils;
 import me.noci.quickutilities.input.BasePlayerInput;
 import me.noci.quickutilities.input.functions.InputExecutor;
 import me.noci.quickutilities.input.sign.packets.SignPacketHandler;
-import me.noci.quickutilities.utils.MathUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -18,10 +18,14 @@ import java.util.List;
 
 public class PlayerSignInput extends BasePlayerInput implements Listener {
 
-    private final SignPacketHandler handler;
+    private static final int MIN_SIGN_HEIGHT_NETHER = 5;
+    private static final int MIN_SIGN_HEIGHT_END = 1;
+    private static final int MIN_SIGN_HEIGHT_WORLD = ReflectionUtils.v(18, -59).orElse(6);
+    private static final int SIGN_Y_DISTANCE = 5;
 
-    private final BlockPosition position;
+    private final SignPacketHandler handler;
     private final WrappedBlockData oldData;
+    private final BlockPosition position;
 
     protected PlayerSignInput(SignPacketHandler handler, Player player, Material signType, String textColor, byte glowingText, int inputLine, List<String> signLines, InputExecutor inputExecutor) {
         super(player, inputExecutor);
@@ -29,9 +33,7 @@ public class PlayerSignInput extends BasePlayerInput implements Listener {
         SignData signData = new SignData(textColor, signType, signLines, inputLine, glowingText);
 
         Location location = player.getLocation();
-        int y = (location.getBlockY() + 100) % location.getWorld().getMaxHeight(); //TODO TEST
-        y = MathUtils.clamp(20, location.getWorld().getMaxHeight(), y);
-        position = new BlockPosition(location.getBlockX(), y, location.getBlockZ());
+        position = new BlockPosition(location.getBlockX(), getSignY(location), location.getBlockZ());
         Block oldBlock = location.getBlock();
         oldData = WrappedBlockData.createData(oldBlock.getType(), oldBlock.getData());
 
@@ -51,10 +53,23 @@ public class PlayerSignInput extends BasePlayerInput implements Listener {
         handler.revertBlock(player, position, oldData);
     }
 
-
     @EventHandler
     private void handlePlayerQuit(PlayerQuitEvent event) {
         stopInput(true);
+    }
+
+    private static int getSignY(Location location) {
+        int minHeight = switch (location.getWorld().getEnvironment()) {
+            case NORMAL -> MIN_SIGN_HEIGHT_WORLD;
+            case NETHER -> MIN_SIGN_HEIGHT_NETHER;
+            case THE_END -> MIN_SIGN_HEIGHT_END;
+        };
+
+        int y = location.getBlockY();
+        if ((y - SIGN_Y_DISTANCE) < minHeight) y += SIGN_Y_DISTANCE;
+        else y -= SIGN_Y_DISTANCE;
+
+        return y;
     }
 
 }
