@@ -39,7 +39,7 @@ public interface PacketHandlerManager<T extends PacketHandler<T>> {
 
     private static <T extends PacketHandler<T>> void checkSupportedVersion(PacketHandlerManager<T> handlerManager) {
         if (!handlerManager.getHandlerInfo().isUnknownVersion()) return;
-        throw new UnsupportedOperationException("%s of type '%s' currently does not support your version (%s).".formatted(PacketHandler.class.getSimpleName(), handlerManager.getHandlerType().getName(), ReflectionUtils.NMS_VERSION));
+        throw new UnsupportedOperationException("%s of type '%s' currently does not support your version: %s (%s).".formatted(PacketHandler.class.getSimpleName(), handlerManager.getHandlerType().getName(), ReflectionUtils.NMS_VERSION, ReflectionUtils.MINOR_NUMBER));
     }
 
     private static <T extends PacketHandler<T>> void checkProtocolLib(PacketHandlerManager<T> handlerManager) {
