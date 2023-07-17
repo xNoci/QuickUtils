@@ -4,20 +4,10 @@ import com.cryptomorin.xseries.messages.Titles;
 import me.noci.quickutilities.QuickUtils;
 import me.noci.quickutilities.input.functions.InputExecutor;
 import me.noci.quickutilities.utils.BukkitUnit;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class TitledPlayerChatInput extends BasePlayerInput implements Listener {
-
-    protected static final String CANCEL_STRING = "!cancel";
-    private final String cancelString;
+public class TitledPlayerChatInput extends BaseChatInput {
 
     //TODO Add constructor parameter
     private final boolean fadeOut = false;
@@ -32,15 +22,12 @@ public class TitledPlayerChatInput extends BasePlayerInput implements Listener {
     }
 
     protected TitledPlayerChatInput(Player player, String cancelString, InputExecutor inputExecutor, String title, String subtitle) {
-        super(player, inputExecutor);
-        this.cancelString = cancelString;
+        super(player, cancelString, inputExecutor);
 
-        Bukkit.getServer().getPluginManager().registerEvents(this, QuickUtils.instance());
         new BukkitRunnable() {
             @Override
             public void run() {
                 if (!isInputMode()) {
-                    //TODO TEST
                     if (fadeOut) {
                         Titles.sendTitle(player, 0, 10, fadeOutTime, title, subtitle);
                     } else {
@@ -54,31 +41,6 @@ public class TitledPlayerChatInput extends BasePlayerInput implements Listener {
             }
         }.runTaskTimerAsynchronously(QuickUtils.instance(), 0, 10);
 
-    }
-
-    @Override
-    public void cleanUp() {
-        HandlerList.unregisterAll(this);
-    }
-
-    @EventHandler
-    protected void handlePlayerQuit(PlayerQuitEvent event) {
-        stopInput(true);
-    }
-
-    @EventHandler
-    protected void handlePlayerChat(AsyncPlayerChatEvent event) {
-        if (!event.getPlayer().getUniqueId().equals(player.getUniqueId())) return;
-        event.setCancelled(true);
-
-        String message = event.getMessage();
-        if (message.equals(cancelString)) {
-            stopInput(true);
-            return;
-        }
-
-        inputExecutor.execute(message);
-        stopInput(false);
     }
 
 }

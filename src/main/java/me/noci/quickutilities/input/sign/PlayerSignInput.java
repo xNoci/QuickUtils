@@ -10,9 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.List;
 
@@ -51,11 +49,6 @@ public class PlayerSignInput extends BasePlayerInput implements Listener {
     @Override
     public void cleanUp() {
         handler.revertBlock(player, position, oldData);
-    }
-
-    @EventHandler
-    private void handlePlayerQuit(PlayerQuitEvent event) {
-        stopInput(true);
     }
 
     private static int getSignY(Location location) {
