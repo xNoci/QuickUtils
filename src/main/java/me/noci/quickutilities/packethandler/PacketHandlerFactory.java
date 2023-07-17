@@ -30,9 +30,4 @@ public class PacketHandlerFactory<T extends PacketHandler<T>> {
         throw new IllegalStateException("Could not find '%s' for %s of type '%s'.".formatted(PacketHandlerManager.class.getSimpleName(), PacketHandler.class.getSimpleName(), type.getName()));
     }
 
-
-    private static <T extends PacketHandler<T>> HashMap<Class<T>, PacketHandlerManager<T>> createHashMap() {
-        return Maps.newHashMap();
-    }
-
 }
