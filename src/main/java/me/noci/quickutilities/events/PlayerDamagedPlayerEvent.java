@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import java.util.Optional;
+
 public class PlayerDamagedPlayerEvent extends CorePlayerCancellableEvent {
 
     @Getter private final Player attacker;
@@ -24,6 +26,10 @@ public class PlayerDamagedPlayerEvent extends CorePlayerCancellableEvent {
 
     public boolean isProjectileUsed() {
         return this.projectile != null;
+    }
+
+    public Optional<Projectile> projectile() {
+        return Optional.ofNullable(projectile);
     }
 
 }
