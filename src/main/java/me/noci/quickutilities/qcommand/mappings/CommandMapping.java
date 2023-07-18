@@ -94,16 +94,15 @@ public class CommandMapping {
 
     @Nullable
     private static <T> T mapSender(CommandSender sender, Class<T> mappingType) throws MappingException {
-        if (mappingType.equals(CommandSender.class)) return (T) sender;
-        if (mappingType.equals(ConsoleCommandSender.class) && sender instanceof ConsoleCommandSender) return (T) sender;
         if (mappingType.equals(Player.class) && sender instanceof Player) return (T) sender;
-
         if (sender instanceof Player player) {
             Require.check(() -> PLAYER_MAPPING.containsKey(mappingType), new MappingException("Could not find player mapping for type '%s'".formatted(mappingType.getName())));
             PlayerMapping<T> mapping = (PlayerMapping<T>) PLAYER_MAPPING.get(mappingType);
             return mapOrThrow(mapping, player, mappingType, Player.class);
         }
 
+        if (mappingType.equals(CommandSender.class)) return (T) sender;
+        if (mappingType.equals(ConsoleCommandSender.class) && sender instanceof ConsoleCommandSender) return (T) sender;
         throw new MappingException("Failed to map %s to '%s'".formatted(sender.getName(), mappingType.getName()));
     }
 
