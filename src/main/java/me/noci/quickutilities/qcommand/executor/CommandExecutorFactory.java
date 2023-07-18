@@ -57,8 +57,8 @@ public class CommandExecutorFactory {
         SubCommand subCommandNode = method.getDeclaredAnnotation(SubCommand.class);
 
         if (executorType.equals(FallbackCommandExecutor.class)) return new FallbackCommandExecutor(method);
-        if (executorType.equals(SubCommandCommandExecutor.class))
-            return new SubCommandCommandExecutor(method, permissionNode, subCommandNode);
+        if (executorType.equals(SubCommandExecutor.class))
+            return new SubCommandExecutor(method, permissionNode, subCommandNode);
         if (executorType.equals(DefaultCommandExecutor.class))
             return new DefaultCommandExecutor(method, permissionNode);
         return null;

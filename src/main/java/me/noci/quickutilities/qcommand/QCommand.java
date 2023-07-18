@@ -18,7 +18,7 @@ import java.util.Optional;
 public abstract class QCommand {
 
     private final List<FallbackCommandExecutor> fallbackCommandList;
-    private final List<SubCommandCommandExecutor> subCommandList;
+    private final List<SubCommandExecutor> subCommandList;
     private final List<DefaultCommandExecutor> defaultCommandList;
 
     @Getter private final JavaPlugin plugin;
@@ -49,7 +49,7 @@ public abstract class QCommand {
         this.usage = usage;
 
         fallbackCommandList = CommandExecutorFactory.loadExecutors(getClass(), FallbackCommand.class, FallbackCommandExecutor.class);
-        subCommandList = CommandExecutorFactory.loadExecutors(getClass(), SubCommand.class, SubCommandCommandExecutor.class);
+        subCommandList = CommandExecutorFactory.loadExecutors(getClass(), SubCommand.class, SubCommandExecutor.class);
         defaultCommandList = CommandExecutorFactory.loadExecutors(getClass(), Command.class, DefaultCommandExecutor.class);
 
         if (defaultCommandList.size() == 0) {
@@ -77,7 +77,7 @@ public abstract class QCommand {
     }
 
     private CommandExecutor<?> findCommand(CommandSender sender, String[] args) {
-        Optional<SubCommandCommandExecutor> subCommands = CommandExecutor.bestMatch(subCommandList, sender, args);
+        Optional<SubCommandExecutor> subCommands = CommandExecutor.bestMatch(subCommandList, sender, args);
         if(subCommands.isPresent()) return subCommands.get();
 
         Optional<DefaultCommandExecutor> commands = CommandExecutor.bestMatch(defaultCommandList, sender, args);

@@ -1,6 +1,5 @@
 package me.noci.quickutilities.qcommand.executor;
 
-import lombok.SneakyThrows;
 import me.noci.quickutilities.qcommand.QCommand;
 import me.noci.quickutilities.qcommand.annotation.CommandPermission;
 import me.noci.quickutilities.qcommand.annotation.SubCommand;
@@ -12,13 +11,12 @@ import org.bukkit.command.CommandSender;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
-public class SubCommandCommandExecutor extends BaseCommandExecutor<SubCommandCommandExecutor> {
+public class SubCommandExecutor extends BaseCommandExecutor<SubCommandExecutor> {
 
     private String[] subCommandPath;
 
-    public SubCommandCommandExecutor(Method method, CommandPermission permission, SubCommand subCommand) {
+    public SubCommandExecutor(Method method, CommandPermission permission, SubCommand subCommand) {
         super(method, permission);
 
         if (subCommand != null && subCommand.path() != null) {
@@ -54,7 +52,8 @@ public class SubCommandCommandExecutor extends BaseCommandExecutor<SubCommandCom
     }
 
     @Override
-    public MatchPriority compareMatch(SubCommandCommandExecutor toCompare, CommandSender sender, String[] args) {
+    public MatchPriority compareMatch(SubCommandExecutor toCompare, CommandSender sender, String[] args) {
+
         return MatchPriority.THIS;
     }
 
