@@ -1,7 +1,9 @@
 package me.noci.quickutilities.qcommand.mappings;
 
 import com.google.common.collect.Maps;
+import com.google.common.primitives.Primitives;
 import me.noci.quickutilities.utils.Require;
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;
@@ -31,15 +33,16 @@ public class CommandMapping {
             default -> null;
         });
         registerArgumentMapping(String.class, argument -> argument);
-        registerArgumentMapping(char.class, argument -> argument.charAt(0));
         registerArgumentMapping(char[].class, String::toCharArray);
-        registerArgumentMapping(byte.class, Byte::parseByte);
-        registerArgumentMapping(short.class, Short::parseShort);
-        registerArgumentMapping(int.class, Integer::parseInt);
-        registerArgumentMapping(long.class, Long::parseLong);
-        registerArgumentMapping(boolean.class, Boolean::parseBoolean);
-        registerArgumentMapping(float.class, Float::parseFloat);
-        registerArgumentMapping(double.class, Double::parseDouble);
+        registerArgumentMapping(Character[].class, argument -> ArrayUtils.toObject(argument.toCharArray()));
+        registerPrimitiveArgumentMapping(char.class, argument -> argument.charAt(0));
+        registerPrimitiveArgumentMapping(byte.class, Byte::parseByte);
+        registerPrimitiveArgumentMapping(short.class, Short::parseShort);
+        registerPrimitiveArgumentMapping(int.class, Integer::parseInt);
+        registerPrimitiveArgumentMapping(long.class, Long::parseLong);
+        registerPrimitiveArgumentMapping(boolean.class, Boolean::parseBoolean);
+        registerPrimitiveArgumentMapping(float.class, Float::parseFloat);
+        registerPrimitiveArgumentMapping(double.class, Double::parseDouble);
     }
 
     public static <T> void registerPlayerMapping(Class<T> mappingType, PlayerMapping<T> mapping) {
@@ -52,6 +55,12 @@ public class CommandMapping {
     public static <T> void registerArgumentMapping(Class<T> argumentType, ArgumentMapping<T> mapping) {
         Require.checkState(() -> !ARGUMENT_MAPPING.containsKey(argumentType), "Cannot register argument mapping for type '%s' twice".formatted(argumentType.getName()));
         ARGUMENT_MAPPING.put(argumentType, mapping);
+    }
+
+    private static <T> void registerPrimitiveArgumentMapping(Class<T> argumentType, ArgumentMapping<T> mapping) {
+        Require.checkArgument(argumentType::isPrimitive, "This method only supports registering primitives");
+        registerArgumentMapping(Primitives.unwrap(argumentType), mapping);
+        registerArgumentMapping(Primitives.wrap(argumentType), mapping);
     }
 
     public static boolean isSenderType(Class<?> type) {
@@ -85,7 +94,7 @@ public class CommandMapping {
     }
 
     public static boolean matchesSenderType(Method method, CommandSender sender) {
-        if(method.getParameterCount() == 0) return false;
+        if (method.getParameterCount() == 0) return false;
         try {
             Object senderType = mapSender(sender, method.getParameters()[0].getType(), false);
             return senderType != null;
@@ -98,7 +107,7 @@ public class CommandMapping {
     private static <T> T mapSender(CommandSender sender, Class<T> mappingType, boolean playerFallback) throws MappingException {
         if (mappingType.equals(Player.class) && sender instanceof Player) return (T) sender;
         if (sender instanceof Player player) {
-            if(playerFallback && mappingType.equals(CommandSender.class)) {
+            if (playerFallback && mappingType.equals(CommandSender.class)) {
                 return (T) player;
             }
 
