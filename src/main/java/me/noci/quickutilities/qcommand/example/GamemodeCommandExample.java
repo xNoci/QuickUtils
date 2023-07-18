@@ -26,7 +26,7 @@ public class GamemodeCommandExample extends QCommand {
     }
 
     @Command // Should be /gamemode <gamemode>
-    private void changeGamemode(SamplePlayer player, GameMode gameMode) { //SUPPORT Optional<GameMode> - With every argument type
+    private void changeGamemode(SamplePlayer player, GameMode gameMode) {
         System.out.println("First method");
         if(gameMode == null) {
             playerFallback(player.player);
