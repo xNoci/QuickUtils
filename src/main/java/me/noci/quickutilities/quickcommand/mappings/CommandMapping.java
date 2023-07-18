@@ -70,7 +70,7 @@ public class CommandMapping {
     }
 
     public static boolean isArgumentType(Class<?> type) {
-        return ARGUMENT_MAPPING.containsKey(type);
+        return ARGUMENT_MAPPING.containsKey(type) || type.isEnum();
     }
 
     public static Object[] mapParameters(Method method, CommandSender sender, String[] args) {
