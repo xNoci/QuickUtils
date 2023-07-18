@@ -82,6 +82,16 @@ public class CommandMapping {
         return mappedParameters;
     }
 
+    public static boolean matchesSenderType(Method method, CommandSender sender) {
+        if(method.getParameterCount() == 0) return false;
+        try {
+            Object senderType = mapSender(sender, method.getParameters()[0].getType());
+            return senderType != null;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     @Nullable
     private static <T> T mapSender(CommandSender sender, Class<T> mappingType) throws MappingException {
         if (mappingType.equals(CommandSender.class)) return (T) sender;
