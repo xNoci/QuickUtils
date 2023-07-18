@@ -58,8 +58,29 @@ public class CommandMapping {
     public static boolean isArgumentType(Class<?> type) {
         return ARGUMENT_MAPPING.containsKey(type);
     }
+
+    public static Object[] mapParameters(Method method, CommandSender sender, String[] args) {
+        Parameter[] methodParameter = method.getParameters();
+        Object[] mappedParameters = new Object[method.getParameterCount()];
+
+        mappedParameters[0] = mapSender(sender, methodParameter[0].getType());
+
+        for (int i = 1; i < mappedParameters.length; i++) {
+            boolean lastParameter = i == mappedParameters.length - 1;
+            boolean isString = methodParameter[i].getType().equals(String.class);
+            if (lastParameter && isString) {
+                mappedParameters[i] = String.join(" ", Arrays.asList(args).subList(i - 1, args.length));
+                break;
+            }
+
+            mappedParameters[i] = mapArgument(args[i - 1], methodParameter[i].getType());
+        }
+
+        return mappedParameters;
+    }
+
     @Nullable
-    public static <T> T mapSender(CommandSender sender, Class<T> mappingType) throws MappingException {
+    private static <T> T mapSender(CommandSender sender, Class<T> mappingType) throws MappingException {
         if (mappingType.equals(CommandSender.class)) return (T) sender;
         if (mappingType.equals(ConsoleCommandSender.class) && sender instanceof ConsoleCommandSender) return (T) sender;
         if (mappingType.equals(Player.class) && sender instanceof Player) return (T) sender;
@@ -74,7 +95,7 @@ public class CommandMapping {
     }
 
     @Nullable
-    public static <T> T mapArgument(String argument, Class<T> mappingType) throws MappingException {
+    private static <T> T mapArgument(String argument, Class<T> mappingType) throws MappingException {
         if (mappingType.isEnum() && !ARGUMENT_MAPPING.containsKey(mappingType)) {
             for (T enumConstant : mappingType.getEnumConstants()) {
                 if (enumConstant.toString().equalsIgnoreCase(argument)) return enumConstant;
@@ -91,7 +112,7 @@ public class CommandMapping {
         try {
             return mapper.map(toMap);
         } catch (Exception e) {
-            throw new MappingException( "Failed to map %s from '%s' to '%s'.".formatted(toMap.toString(), mapType.getName(), returnType.getName()), e);
+            throw new MappingException("Failed to map %s from '%s' to '%s'.".formatted(toMap.toString(), mapType.getName(), returnType.getName()), e);
         }
     }
 
