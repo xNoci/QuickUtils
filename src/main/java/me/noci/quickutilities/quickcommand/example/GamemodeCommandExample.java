@@ -1,12 +1,12 @@
-package me.noci.quickutilities.qcommand.example;
+package me.noci.quickutilities.quickcommand.example;
 
 import me.noci.quickutilities.QuickUtils;
-import me.noci.quickutilities.qcommand.QCommand;
-import me.noci.quickutilities.qcommand.annotation.Command;
-import me.noci.quickutilities.qcommand.annotation.CommandPermission;
-import me.noci.quickutilities.qcommand.annotation.FallbackCommand;
-import me.noci.quickutilities.qcommand.annotation.SubCommand;
-import me.noci.quickutilities.qcommand.mappings.CommandMapping;
+import me.noci.quickutilities.quickcommand.QuickCommand;
+import me.noci.quickutilities.quickcommand.annotation.Command;
+import me.noci.quickutilities.quickcommand.annotation.CommandPermission;
+import me.noci.quickutilities.quickcommand.annotation.FallbackCommand;
+import me.noci.quickutilities.quickcommand.annotation.SubCommand;
+import me.noci.quickutilities.quickcommand.mappings.CommandMapping;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
@@ -14,14 +14,14 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class GamemodeCommandExample extends QCommand {
+public final class GamemodeCommandExample extends QuickCommand {
 
     static {
         CommandMapping.registerPlayerMapping(SamplePlayer.class, SamplePlayer::new);
         CommandMapping.registerArgumentMapping(SamplePlayer.class, argument -> new SamplePlayer(Bukkit.getPlayer(argument)));
     }
 
-    public GamemodeCommandExample() {
+    private GamemodeCommandExample() {
         super(QuickUtils.instance(), "gamemode", List.of("gm"), "Change the gamemode", "/gamemode <type> [player]");
     }
 

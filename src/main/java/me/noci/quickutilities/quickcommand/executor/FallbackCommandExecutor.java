@@ -1,8 +1,8 @@
-package me.noci.quickutilities.qcommand.executor;
+package me.noci.quickutilities.quickcommand.executor;
 
 import lombok.SneakyThrows;
-import me.noci.quickutilities.qcommand.QCommand;
-import me.noci.quickutilities.qcommand.mappings.CommandMapping;
+import me.noci.quickutilities.quickcommand.QuickCommand;
+import me.noci.quickutilities.quickcommand.mappings.CommandMapping;
 import org.bukkit.command.CommandSender;
 
 import java.lang.reflect.Method;
@@ -18,7 +18,7 @@ public class FallbackCommandExecutor implements CommandExecutor {
 
     @Override
     @SneakyThrows
-    public void execute(QCommand command, CommandSender sender, String[] args) {
+    public void execute(QuickCommand command, CommandSender sender, String[] args) {
         Object[] params = CommandMapping.mapParameters(method, sender, args);
         method.invoke(command, params);
     }

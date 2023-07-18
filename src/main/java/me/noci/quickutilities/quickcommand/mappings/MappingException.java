@@ -1,4 +1,4 @@
-package me.noci.quickutilities.qcommand.mappings;
+package me.noci.quickutilities.quickcommand.mappings;
 
 public class MappingException extends RuntimeException {
 

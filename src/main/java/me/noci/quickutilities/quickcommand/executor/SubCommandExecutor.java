@@ -1,9 +1,9 @@
-package me.noci.quickutilities.qcommand.executor;
+package me.noci.quickutilities.quickcommand.executor;
 
-import me.noci.quickutilities.qcommand.QCommand;
-import me.noci.quickutilities.qcommand.annotation.CommandPermission;
-import me.noci.quickutilities.qcommand.annotation.SubCommand;
-import me.noci.quickutilities.qcommand.mappings.CommandMapping;
+import me.noci.quickutilities.quickcommand.QuickCommand;
+import me.noci.quickutilities.quickcommand.annotation.CommandPermission;
+import me.noci.quickutilities.quickcommand.annotation.SubCommand;
+import me.noci.quickutilities.quickcommand.mappings.CommandMapping;
 import me.noci.quickutilities.utils.Require;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
@@ -30,7 +30,7 @@ public class SubCommandExecutor extends BaseCommandExecutor {
     }
 
     @Override
-    public void execute(QCommand command, CommandSender sender, String[] args) {
+    public void execute(QuickCommand command, CommandSender sender, String[] args) {
         super.execute(command, sender, Arrays.copyOfRange(args, subCommandPath.length, args.length));
     }
 

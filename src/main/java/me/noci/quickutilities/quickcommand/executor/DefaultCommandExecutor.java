@@ -1,7 +1,7 @@
-package me.noci.quickutilities.qcommand.executor;
+package me.noci.quickutilities.quickcommand.executor;
 
-import me.noci.quickutilities.qcommand.annotation.CommandPermission;
-import me.noci.quickutilities.qcommand.mappings.CommandMapping;
+import me.noci.quickutilities.quickcommand.annotation.CommandPermission;
+import me.noci.quickutilities.quickcommand.mappings.CommandMapping;
 import org.bukkit.command.CommandSender;
 
 import java.lang.reflect.Method;

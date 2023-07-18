@@ -1,7 +1,7 @@
-package me.noci.quickutilities.qcommand.executor;
+package me.noci.quickutilities.quickcommand.executor;
 
-import me.noci.quickutilities.qcommand.QCommand;
-import me.noci.quickutilities.qcommand.mappings.CommandMapping;
+import me.noci.quickutilities.quickcommand.QuickCommand;
+import me.noci.quickutilities.quickcommand.mappings.CommandMapping;
 import org.bukkit.command.CommandSender;
 
 import java.lang.reflect.Method;
@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface CommandExecutor {
 
-    void execute(QCommand command, CommandSender sender, String[] args);
+    void execute(QuickCommand command, CommandSender sender, String[] args);
 
     boolean hasPermission(CommandSender sender);
 

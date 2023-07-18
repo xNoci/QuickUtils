@@ -1,4 +1,4 @@
-package me.noci.quickutilities.qcommand.annotation;
+package me.noci.quickutilities.quickcommand.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

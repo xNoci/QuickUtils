@@ -1,4 +1,4 @@
-package me.noci.quickutilities.qcommand;
+package me.noci.quickutilities.quickcommand;
 
 import lombok.SneakyThrows;
 import me.noci.quickutilities.utils.Require;
@@ -32,7 +32,7 @@ public class CommandRegister {
     }
 
     @SneakyThrows
-    public static void register(QCommand command) {
+    public static void register(QuickCommand command) {
         Require.checkArgument(() -> command.getPlugin() != null, "Plugin cannot be null");
         Require.checkArgument(() -> command.getName() != null && !StringUtils.isBlank(command.getName()), "Command name cannot be null or empty");
 
@@ -42,9 +42,9 @@ public class CommandRegister {
 
 
     private static class CommandContainer extends org.bukkit.command.Command implements PluginIdentifiableCommand {
-        private final QCommand command;
+        private final QuickCommand command;
 
-        public CommandContainer(QCommand command) {
+        public CommandContainer(QuickCommand command) {
             super(command.getName(), command.getDescription(), command.getUsage(), command.getAliases());
             this.command = command;
         }

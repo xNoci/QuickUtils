@@ -1,10 +1,10 @@
-package me.noci.quickutilities.qcommand.executor;
+package me.noci.quickutilities.quickcommand.executor;
 
 import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
-import me.noci.quickutilities.qcommand.QCommand;
-import me.noci.quickutilities.qcommand.annotation.CommandPermission;
-import me.noci.quickutilities.qcommand.mappings.CommandMapping;
+import me.noci.quickutilities.quickcommand.QuickCommand;
+import me.noci.quickutilities.quickcommand.annotation.CommandPermission;
+import me.noci.quickutilities.quickcommand.mappings.CommandMapping;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
 
@@ -50,7 +50,7 @@ public abstract class BaseCommandExecutor implements CommandExecutor {
 
     @Override
     @SneakyThrows
-    public void execute(QCommand command, CommandSender sender, String[] args) {
+    public void execute(QuickCommand command, CommandSender sender, String[] args) {
         Object[] params = CommandMapping.mapParameters(method, sender, args);
         method.invoke(command, params);
     }
