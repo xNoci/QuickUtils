@@ -57,6 +57,16 @@ public class GamemodeCommandExample extends QCommand {
         System.out.println("test2 method");
     }
 
+    @SubCommand(path = "test2") // Should be /gamemode test2
+    private void test2Gamemode(CommandSender player) {
+        System.out.println("test2 method console");
+    }
+
+    @SubCommand(path = "test3") // Should be /gamemode test2
+    private void test3Gamemode(CommandSender player) {
+        System.out.println("test3 method console");
+    }
+
     @SubCommand(path = {"test", "12"}) // Should be /gamemode test 12 <gamemode>
     private void test12Gamemode(Player player, GameMode gameMode) {
         System.out.println("Third method");
