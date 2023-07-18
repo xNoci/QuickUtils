@@ -33,8 +33,8 @@ public class CommandMapping {
             default -> null;
         });
         registerArgumentMapping(String.class, argument -> argument);
-        registerArgumentMapping(char[].class, String::toCharArray);
         registerArgumentMapping(Character[].class, argument -> ArrayUtils.toObject(argument.toCharArray()));
+        registerArgumentMapping(char[].class, String::toCharArray);
         registerPrimitiveArgumentMapping(char.class, argument -> argument.charAt(0));
         registerPrimitiveArgumentMapping(byte.class, Byte::parseByte);
         registerPrimitiveArgumentMapping(short.class, Short::parseShort);
