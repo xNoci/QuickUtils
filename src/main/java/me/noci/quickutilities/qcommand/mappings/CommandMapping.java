@@ -27,6 +27,7 @@ public class CommandMapping {
             case "3", "spec", "spectator" -> GameMode.SPECTATOR;
             default -> null;
         });
+        registerArgumentMapping(String.class, argument -> argument);
         registerArgumentMapping(char.class, argument -> argument.charAt(0));
         registerArgumentMapping(char[].class, String::toCharArray);
         registerArgumentMapping(byte.class, Byte::parseByte);
