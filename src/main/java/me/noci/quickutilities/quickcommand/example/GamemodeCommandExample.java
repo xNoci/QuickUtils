@@ -2,10 +2,7 @@ package me.noci.quickutilities.quickcommand.example;
 
 import me.noci.quickutilities.QuickUtils;
 import me.noci.quickutilities.quickcommand.QuickCommand;
-import me.noci.quickutilities.quickcommand.annotation.Command;
-import me.noci.quickutilities.quickcommand.annotation.CommandPermission;
-import me.noci.quickutilities.quickcommand.annotation.FallbackCommand;
-import me.noci.quickutilities.quickcommand.annotation.SubCommand;
+import me.noci.quickutilities.quickcommand.annotation.*;
 import me.noci.quickutilities.quickcommand.mappings.CommandMapping;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -68,9 +65,9 @@ public final class GamemodeCommandExample extends QuickCommand {
     }
 
     @SubCommand(path = {"test", "12"}) // Should be /gamemode test 12 <gamemode>
-    private void test12Gamemode(Player player, GameMode gameMode) {
+    private void test12Gamemode(Player player, @IgnoreStrictEnum GameMode gameMode) {
         System.out.println("Third method");
-        if(gameMode == null) {
+        if(gameMode == null) { //BECAUSE @IgnoreStrictEnum is used
             playerFallback(player);
             return;
         }

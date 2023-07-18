@@ -2,6 +2,7 @@ package me.noci.quickutilities.quickcommand.mappings;
 
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Primitives;
+import me.noci.quickutilities.quickcommand.annotation.IgnoreStrictEnum;
 import me.noci.quickutilities.utils.Require;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
@@ -99,9 +100,12 @@ public class CommandMapping {
             int argumentIndex = i - 1;
             if (args.length <= argumentIndex) return false;
             String currentArg = args[i - 1];
+            Class<?> parameterType = methodParameter[i].getType();
+
+            if (parameterType.isEnum() && methodParameter[i].isAnnotationPresent(IgnoreStrictEnum.class)) continue;
 
             try {
-                Object mapping = mapArgument(currentArg, methodParameter[i].getType());
+                Object mapping = mapArgument(currentArg, parameterType);
                 if (mapping == null) return false;
             } catch (Exception e) {
                 return false;
