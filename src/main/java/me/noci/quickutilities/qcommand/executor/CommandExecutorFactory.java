@@ -21,9 +21,13 @@ public class CommandExecutorFactory {
         List<T> executors = Lists.newArrayList();
 
         for (Method method : methods) {
-            T executor = (T) create(method, annotationType, executorType);
-            if (executor == null) continue;
-            executors.add(executor);
+            try {
+                T executor = (T) create(method, annotationType, executorType);
+                if (executor == null) continue;
+                executors.add(executor);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return executors;
