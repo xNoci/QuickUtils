@@ -48,6 +48,15 @@ public class CommandMapping {
         ARGUMENT_MAPPING.put(argumentType, mapping);
     }
 
+    public static boolean isSenderType(Class<?> type) {
+        if (type.equals(CommandSender.class) || type.equals(ConsoleCommandSender.class) || type.equals(Player.class))
+            return true;
+        return PLAYER_MAPPING.containsKey(type);
+    }
+
+    public static boolean isArgumentType(Class<?> type) {
+        return ARGUMENT_MAPPING.containsKey(type);
+    }
     @Nullable
     public static <T> T mapSender(CommandSender sender, Class<T> mappingType) throws MappingException {
         if (mappingType.equals(CommandSender.class)) return (T) sender;
