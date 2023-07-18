@@ -30,11 +30,16 @@ public class FallbackCommandExecutor implements CommandExecutor<FallbackCommandE
 
     @Override
     public boolean matches(CommandSender sender, String[] args) {
-        return false;
+        return true;
     }
 
     @Override
     public MatchPriority compareMatch(FallbackCommandExecutor toCompare, CommandSender sender, String[] args) {
-        return null;
+        boolean thisMatches = CommandMapping.matchesSenderType(method, sender);
+        boolean otherMatches = CommandMapping.matchesSenderType(toCompare.method, sender);
+
+        if (thisMatches && otherMatches) return MatchPriority.EQUAL;
+        if (otherMatches) return MatchPriority.OTHER;
+        return MatchPriority.THIS;
     }
 }
