@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import me.noci.quickutilities.qcommand.QCommand;
 import me.noci.quickutilities.qcommand.annotation.CommandPermission;
 import me.noci.quickutilities.qcommand.annotation.FallbackCommand;
+import me.noci.quickutilities.qcommand.annotation.SubCommand;
 import me.noci.quickutilities.qcommand.mappings.CommandMapping;
 import me.noci.quickutilities.utils.Require;
 
@@ -53,10 +54,11 @@ public class CommandExecutorFactory {
         }
 
         CommandPermission permissionNode = method.getDeclaredAnnotation(CommandPermission.class);
+        SubCommand subCommandNode = method.getDeclaredAnnotation(SubCommand.class);
 
         if (executorType.equals(FallbackCommandExecutor.class)) return new FallbackCommandExecutor(method);
         if (executorType.equals(SubCommandCommandExecutor.class))
-            return new SubCommandCommandExecutor(method, permissionNode);
+            return new SubCommandCommandExecutor(method, permissionNode, subCommandNode);
         if (executorType.equals(DefaultCommandExecutor.class))
             return new DefaultCommandExecutor(method, permissionNode);
         return null;
