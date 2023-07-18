@@ -97,7 +97,7 @@ public class CommandMapping {
         Parameter[] methodParameter = method.getParameters();
         for (int i = 1; i < methodParameter.length; i++) {
             int argumentIndex = i - 1;
-            if (args.length < argumentIndex) return false;
+            if (args.length <= argumentIndex) return false;
             String currentArg = args[i - 1];
 
             try {
