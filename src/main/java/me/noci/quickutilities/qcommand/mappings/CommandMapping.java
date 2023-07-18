@@ -10,6 +10,9 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class CommandMapping {
