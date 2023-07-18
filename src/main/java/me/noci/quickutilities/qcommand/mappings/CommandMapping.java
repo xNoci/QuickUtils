@@ -93,10 +93,10 @@ public class CommandMapping {
         return mappedParameters;
     }
 
-    public static boolean matchesSenderType(Method method, CommandSender sender) {
+    public static boolean matchesSenderType(Method method, CommandSender sender, boolean matchPlayerToCommandSender) {
         if (method.getParameterCount() == 0) return false;
         try {
-            Object senderType = mapSender(sender, method.getParameters()[0].getType(), false);
+            Object senderType = mapSender(sender, method.getParameters()[0].getType(), matchPlayerToCommandSender);
             return senderType != null;
         } catch (Exception e) {
             return false;
