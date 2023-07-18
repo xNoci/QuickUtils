@@ -66,7 +66,7 @@ public class CommandMapping {
         Parameter[] methodParameter = method.getParameters();
         Object[] mappedParameters = new Object[method.getParameterCount()];
 
-        mappedParameters[0] = mapSender(sender, methodParameter[0].getType());
+        mappedParameters[0] = mapSender(sender, methodParameter[0].getType(), true);
 
         for (int i = 1; i < mappedParameters.length; i++) {
             boolean lastParameter = i == mappedParameters.length - 1;
@@ -85,7 +85,7 @@ public class CommandMapping {
     public static boolean matchesSenderType(Method method, CommandSender sender) {
         if(method.getParameterCount() == 0) return false;
         try {
-            Object senderType = mapSender(sender, method.getParameters()[0].getType());
+            Object senderType = mapSender(sender, method.getParameters()[0].getType(), false);
             return senderType != null;
         } catch (Exception e) {
             return false;
@@ -93,9 +93,13 @@ public class CommandMapping {
     }
 
     @Nullable
-    private static <T> T mapSender(CommandSender sender, Class<T> mappingType) throws MappingException {
+    private static <T> T mapSender(CommandSender sender, Class<T> mappingType, boolean playerFallback) throws MappingException {
         if (mappingType.equals(Player.class) && sender instanceof Player) return (T) sender;
         if (sender instanceof Player player) {
+            if(playerFallback && mappingType.equals(CommandSender.class)) {
+                return (T) player;
+            }
+
             Require.check(() -> PLAYER_MAPPING.containsKey(mappingType), new MappingException("Could not find player mapping for type '%s'".formatted(mappingType.getName())));
             PlayerMapping<T> mapping = (PlayerMapping<T>) PLAYER_MAPPING.get(mappingType);
             return mapOrThrow(mapping, player, mappingType, Player.class);
