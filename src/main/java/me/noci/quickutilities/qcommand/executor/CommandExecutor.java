@@ -1,5 +1,6 @@
 package me.noci.quickutilities.qcommand.executor;
 
+import me.noci.quickutilities.qcommand.QCommand;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -7,9 +8,9 @@ import java.util.Optional;
 
 public interface CommandExecutor<T extends CommandExecutor<T>> {
 
-    boolean hasPermission(CommandSender sender);
+    void execute(QCommand command, CommandSender sender, String[] args);
 
-    void execute(CommandSender sender, String[] args);
+    boolean hasPermission(CommandSender sender);
 
     boolean matches(CommandSender sender, String[] args);
 
