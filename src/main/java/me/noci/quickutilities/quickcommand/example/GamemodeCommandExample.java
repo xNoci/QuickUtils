@@ -4,6 +4,8 @@ import me.noci.quickutilities.QuickUtils;
 import me.noci.quickutilities.quickcommand.QuickCommand;
 import me.noci.quickutilities.quickcommand.annotation.*;
 import me.noci.quickutilities.quickcommand.mappings.CommandMapping;
+import me.noci.quickutilities.quickcommand.mappings.spacedvalues.SpacedCharArray;
+import me.noci.quickutilities.quickcommand.mappings.spacedvalues.SpacedString;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
@@ -20,12 +22,13 @@ public final class GamemodeCommandExample extends QuickCommand {
 
     private GamemodeCommandExample() {
         super(QuickUtils.instance(), "gamemode", List.of("gm"), "Change the gamemode", "/gamemode <type> [player]");
+        autoRegister();
     }
 
     @Command // Should be /gamemode <gamemode>
     private void changeGamemode(SamplePlayer player, GameMode gameMode) {
         System.out.println("First method");
-        if(gameMode == null) {
+        if (gameMode == null) {
             playerFallback(player.player);
             return;
         }
@@ -36,7 +39,7 @@ public final class GamemodeCommandExample extends QuickCommand {
     @SubCommand(path = "test") // Should be /gamemode test <gamemode>
     private void testGamemode(Player player, GameMode gameMode) {
         System.out.println("Second method");
-        if(gameMode == null) {
+        if (gameMode == null) {
             playerFallback(player);
             return;
         }
@@ -59,7 +62,7 @@ public final class GamemodeCommandExample extends QuickCommand {
         System.out.println("test2 method console");
     }
 
-    @SubCommand(path = "test3") // Should be /gamemode test2
+    @SubCommand(path = "test3") // Should be /gamemode test3
     private void test3Gamemode(CommandSender player) {
         System.out.println("test3 method console");
     }
@@ -67,7 +70,7 @@ public final class GamemodeCommandExample extends QuickCommand {
     @SubCommand(path = {"test", "12"}) // Should be /gamemode test 12 <gamemode>
     private void test12Gamemode(Player player, @IgnoreStrictEnum GameMode gameMode) {
         System.out.println("Third method");
-        if(gameMode == null) { //BECAUSE @IgnoreStrictEnum is used
+        if (gameMode == null) { //BECAUSE @IgnoreStrictEnum is used
             playerFallback(player);
             return;
         }
@@ -75,33 +78,58 @@ public final class GamemodeCommandExample extends QuickCommand {
         player.setGameMode(gameMode);
     }
 
-    @SubCommand(path = {"string"}) // Should be /gamemode string [string] <still string>
+    @SubCommand(path = {"string"}) // Should be /gamemode string [string]
     private void test12Gamemode(Player player, String string) {
         System.out.println("Fourth method");
         player.sendMessage(string);
     }
 
-    @SubCommand(path = {"string2"}) // Should be /gamemode string [string1] [string2] <still string2>
+    @SubCommand(path = {"string2"}) // Should be /gamemode string [string1] [string2]
     private void test12Gamemode(Player player, String string1, String string2) {
         System.out.println("Fifth method");
         player.sendMessage(string1 + " - " + string2);
+    }
+
+    @SubCommand(path = "string3")
+    private void test3(CommandSender sender, SpacedString string) {
+        sender.sendMessage(string.value());
+    }
+
+    @SubCommand(path = "string4")
+    private void test4(CommandSender sender, String s, SpacedString string) {
+        sender.sendMessage(s + " - " + string);
+    }
+
+    @SubCommand(path = "string5")
+    private void test5(CommandSender sender, String s, double doesCompile, SpacedCharArray string) {
+        sender.sendMessage(s + ":" + doesCompile + " - " + string);
+    }
+
+    @SubCommand(path = "string5")
+    private void test5(CommandSender sender, String s, SpacedString string, double doseNotCompileNow) {
+        sender.sendMessage(s + " - " + string);
+    }
+
+    @SubCommand(path = "string6")
+    private void test6(CommandSender sender, String s) {
+        sender.sendMessage(s);
     }
 
     @Command
     @CommandPermission("command.gamemode") // Should be /gamemode <gamemode> <target>
     private void changeOther(Player player, GameMode gameMode, SamplePlayer target) {
         System.out.println("Sixth method");
-        if(target == null || target.player == null || !target.player.isOnline()) {
+        if (target == null || target.player == null || !target.player.isOnline()) {
             player.sendMessage("Could not find your requested player");
             return;
         }
 
-        if(gameMode == null) {
+        if (gameMode == null) {
             playerFallback(player);
             return;
         }
 
-        if(player.getUniqueId().equals(target.player.getUniqueId())) {
+        if (player.getUniqueId().equals(target.player.getUniqueId())) {
             player.sendMessage("Cannot target yourself");
             return;
         }
