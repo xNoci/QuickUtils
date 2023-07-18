@@ -3,9 +3,9 @@ package me.noci.quickutilities.qcommand.executor;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import me.noci.quickutilities.qcommand.QCommand;
+import me.noci.quickutilities.qcommand.annotation.CommandPermission;
 import me.noci.quickutilities.qcommand.annotation.FallbackCommand;
 import me.noci.quickutilities.qcommand.mappings.CommandMapping;
-import me.noci.quickutilities.quickcommand.annotations.CommandPermission;
 import me.noci.quickutilities.utils.Require;
 
 import java.lang.annotation.Annotation;
@@ -52,7 +52,7 @@ public class CommandExecutorFactory {
             Require.checkState(() -> CommandMapping.isArgumentType(current.getType()), "The parameter '%s' at index %s in %s is not a valid command parameter type".formatted(current.getName(), i, method.getName()));
         }
 
-        CommandPermission permissionNode = method.getAnnotation(CommandPermission.class);
+        CommandPermission permissionNode = method.getDeclaredAnnotation(CommandPermission.class);
 
         if (executorType.equals(FallbackCommandExecutor.class)) return new FallbackCommandExecutor(method);
         if (executorType.equals(SubCommandCommandExecutor.class))

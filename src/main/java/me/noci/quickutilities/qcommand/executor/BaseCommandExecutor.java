@@ -3,8 +3,8 @@ package me.noci.quickutilities.qcommand.executor;
 import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
 import me.noci.quickutilities.qcommand.QCommand;
+import me.noci.quickutilities.qcommand.annotation.CommandPermission;
 import me.noci.quickutilities.qcommand.mappings.CommandMapping;
-import me.noci.quickutilities.quickcommand.annotations.CommandPermission;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
 
