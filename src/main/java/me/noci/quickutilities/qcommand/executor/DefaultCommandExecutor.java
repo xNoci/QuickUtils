@@ -22,6 +22,11 @@ public class DefaultCommandExecutor extends BaseCommandExecutor<DefaultCommandEx
 
     @Override
     public MatchPriority compareMatch(DefaultCommandExecutor toCompare, CommandSender sender, String[] args) {
+        boolean thisMatches = CommandMapping.matchesSenderType(method, sender, false);
+        boolean otherMatches = CommandMapping.matchesSenderType(toCompare.method, sender, false);
+
+        if (thisMatches && otherMatches) return MatchPriority.EQUAL;
+        if (otherMatches) return MatchPriority.OTHER;
         return MatchPriority.THIS;
     }
 }
