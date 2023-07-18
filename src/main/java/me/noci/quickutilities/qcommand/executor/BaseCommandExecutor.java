@@ -18,9 +18,11 @@ import java.util.stream.Stream;
 
 public abstract class BaseCommandExecutor<T extends CommandExecutor<T>> implements CommandExecutor<T> {
 
-    private final Method method;
-    private final CommandPermission permissionNode;
-    private final List<String> permissions;
+    protected final Method method;
+    protected final CommandPermission permissionNode;
+    protected final List<String> permissions;
+    protected boolean fixedArgumentLength;
+    protected int argumentLength;
 
     public BaseCommandExecutor(Method method, CommandPermission permissionNode) {
         this.method = method;
@@ -36,6 +38,14 @@ public abstract class BaseCommandExecutor<T extends CommandExecutor<T>> implemen
                     .collect(Collectors.toCollection(ArrayList::new));
         }
         this.permissions = permissions;
+
+        boolean fixedArgumentLength = true;
+        if (method.getParameterCount() > 1) {
+            fixedArgumentLength = !method.getParameters()[method.getParameterCount() - 1].getType().equals(String.class);
+        }
+
+        this.fixedArgumentLength = fixedArgumentLength;
+        this.argumentLength = method.getParameterCount() - 1;
     }
 
     @Override

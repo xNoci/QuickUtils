@@ -1,6 +1,7 @@
 package me.noci.quickutilities.qcommand.executor;
 
 import me.noci.quickutilities.qcommand.annotation.CommandPermission;
+import me.noci.quickutilities.qcommand.mappings.CommandMapping;
 import org.bukkit.command.CommandSender;
 
 import java.lang.reflect.Method;
@@ -13,7 +14,10 @@ public class DefaultCommandExecutor extends BaseCommandExecutor<DefaultCommandEx
 
     @Override
     public boolean matches(CommandSender sender, String[] args) {
-        return true;
+        boolean matchesSenderType = CommandMapping.matchesSenderType(method, sender, true);
+        if (!matchesSenderType) return false;
+        if (fixedArgumentLength && args.length != argumentLength) return false;
+        return CommandMapping.doesArgsMatchParameters(method, args);
     }
 
     @Override
