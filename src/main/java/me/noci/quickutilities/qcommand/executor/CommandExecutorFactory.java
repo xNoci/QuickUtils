@@ -34,6 +34,10 @@ public class CommandExecutorFactory {
 
         Require.checkState(() -> method.getParameterCount() > 0, "A command method has to have at least one parameter");
 
+        if (annotationType.equals(FallbackCommand.class) && method.getParameterCount() != 1) {
+            throw new IllegalStateException("A fallback command method needs exactly one parameter");
+        }
+
         Parameter[] parameters = method.getParameters();
         Require.checkState(() -> CommandMapping.isSenderType(parameters[0].getType()), "The first method parameter has to be a sender parameter");
 
