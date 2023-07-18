@@ -6,7 +6,6 @@ import me.noci.quickutilities.qcommand.annotation.Command;
 import me.noci.quickutilities.qcommand.annotation.FallbackCommand;
 import me.noci.quickutilities.qcommand.annotation.SubCommand;
 import me.noci.quickutilities.qcommand.executor.*;
-import me.noci.quickutilities.quickcommand.commandmethod.CommandMethod;
 import me.noci.quickutilities.utils.Require;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
@@ -20,7 +19,7 @@ public abstract class QCommand {
 
     private final List<FallbackCommandExecutor> fallbackCommandList;
     private final List<SubCommandCommandExecutor> subCommandList;
-    private final List<CommandCommandExecutor> commandList;
+    private final List<DefaultCommandExecutor> defaultCommandList;
 
     @Getter private final JavaPlugin plugin;
     @Getter private final String name;
@@ -51,9 +50,9 @@ public abstract class QCommand {
 
         fallbackCommandList = CommandExecutorFactory.loadExecutors(getClass(), FallbackCommand.class, FallbackCommandExecutor.class);
         subCommandList = CommandExecutorFactory.loadExecutors(getClass(), SubCommand.class, SubCommandCommandExecutor.class);
-        commandList = CommandExecutorFactory.loadExecutors(getClass(), Command.class, CommandCommandExecutor.class);
+        defaultCommandList = CommandExecutorFactory.loadExecutors(getClass(), Command.class, DefaultCommandExecutor.class);
 
-        if (commandList.size() == 0) {
+        if (defaultCommandList.size() == 0) {
             plugin.getLogger().warning("Did not found any commands for '%s'".formatted(getClass().getName()));
         }
 
@@ -81,7 +80,7 @@ public abstract class QCommand {
         Optional<SubCommandCommandExecutor> subCommands = CommandExecutor.bestMatch(subCommandList, sender, args);
         if(subCommands.isPresent()) return subCommands.get();
 
-        Optional<CommandCommandExecutor> commands = CommandExecutor.bestMatch(commandList, sender, args);
+        Optional<DefaultCommandExecutor> commands = CommandExecutor.bestMatch(defaultCommandList, sender, args);
         if(commands.isPresent()) return commands.get();
 
         Optional<FallbackCommandExecutor> fallbackCommands = CommandExecutor.bestMatch(fallbackCommandList, sender, args);
