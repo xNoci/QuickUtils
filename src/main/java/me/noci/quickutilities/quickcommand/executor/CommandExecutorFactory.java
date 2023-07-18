@@ -37,14 +37,10 @@ public class CommandExecutorFactory {
 
     private static CommandExecutor create(Method method, Class<? extends Annotation> annotationType, Class<?> executorType) {
         if (!method.isAnnotationPresent(annotationType)) return null;
+        Parameter[] parameters = method.getParameters();
 
         Require.checkState(() -> method.getParameterCount() > 0, "A command method has to have at least one parameter. Method: %s#%s".formatted(method.getDeclaringClass().getName(), method.getName()));
-
-        if (annotationType.equals(FallbackCommand.class) && method.getParameterCount() != 1) {
-            throw new IllegalStateException("A fallback command method needs exactly one parameter. Method: %s#%s".formatted(method.getDeclaringClass().getName(), method.getName()));
-        }
-
-        Parameter[] parameters = method.getParameters();
+        Require.checkState(() -> !annotationType.equals(FallbackCommand.class) || method.getParameterCount() == 1, "A fallback command method needs exactly one parameter. Method: %s#%s".formatted(method.getDeclaringClass().getName(), method.getName()));
         Require.checkState(() -> CommandMapping.isSenderType(parameters[0].getType()), "The first method parameter of %s#%s has to be a sender parameter".formatted(method.getDeclaringClass().getName(), method.getName()));
 
         for (int i = 1; i < parameters.length; i++) {
