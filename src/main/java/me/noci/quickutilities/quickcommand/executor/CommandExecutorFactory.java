@@ -7,6 +7,7 @@ import me.noci.quickutilities.quickcommand.annotation.CommandPermission;
 import me.noci.quickutilities.quickcommand.annotation.FallbackCommand;
 import me.noci.quickutilities.quickcommand.annotation.SubCommand;
 import me.noci.quickutilities.quickcommand.mappings.CommandMapping;
+import me.noci.quickutilities.quickcommand.mappings.spacedvalues.SpacedValue;
 import me.noci.quickutilities.utils.Require;
 
 import java.lang.annotation.Annotation;
@@ -45,6 +46,9 @@ public class CommandExecutorFactory {
 
         for (int i = 1; i < parameters.length; i++) {
             Parameter current = parameters[i];
+            boolean lastParameter = i == parameters.length - 1;
+
+            Require.checkState(() -> !SpacedValue.class.isAssignableFrom(current.getType()) || lastParameter, "Spaced value parameter '%s (%s)' at index %s in %s#%s is only allowed at last parameter position".formatted(current.getName(), current.getType().getName(), i, method.getDeclaringClass().getName(), method.getName()));
             Require.checkState(() -> CommandMapping.isArgumentType(current.getType()), "The parameter '%s (%s)' at index %s in %s#%s is not a valid command parameter type".formatted(current.getName(), current.getType().getName(), i, method.getDeclaringClass().getName(), method.getName()));
         }
 

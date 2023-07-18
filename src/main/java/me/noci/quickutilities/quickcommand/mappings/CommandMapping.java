@@ -3,6 +3,9 @@ package me.noci.quickutilities.quickcommand.mappings;
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Primitives;
 import me.noci.quickutilities.quickcommand.annotation.IgnoreStrictEnum;
+import me.noci.quickutilities.quickcommand.mappings.spacedvalues.SpacedCharArray;
+import me.noci.quickutilities.quickcommand.mappings.spacedvalues.SpacedString;
+import me.noci.quickutilities.quickcommand.mappings.spacedvalues.SpacedValue;
 import me.noci.quickutilities.utils.Require;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
@@ -22,6 +25,7 @@ public class CommandMapping {
 
     private static final HashMap<Class<?>, PlayerMapping<?>> PLAYER_MAPPING = Maps.newHashMap();
     private static final HashMap<Class<?>, ArgumentMapping<?>> ARGUMENT_MAPPING = Maps.newHashMap();
+    private static final HashMap<Class<? extends SpacedValue<?>>, SpacedArgumentMapping<?>> SPACED_MAPPINGS = Maps.newHashMap();
 
     static {
         registerArgumentMapping(World.class, Bukkit::getWorld);
@@ -33,9 +37,14 @@ public class CommandMapping {
             case "3", "spec", "spectator" -> GameMode.SPECTATOR;
             default -> null;
         });
+
+        registerSpacedArgumentMapping(SpacedString.class, SpacedString::new);
+        registerSpacedArgumentMapping(SpacedCharArray.class, SpacedCharArray::new);
+
         registerArgumentMapping(String.class, argument -> argument);
         registerArgumentMapping(Character[].class, argument -> ArrayUtils.toObject(argument.toCharArray()));
         registerArgumentMapping(char[].class, String::toCharArray);
+
         registerPrimitiveArgumentMapping(char.class, argument -> argument.charAt(0));
         registerPrimitiveArgumentMapping(byte.class, Byte::parseByte);
         registerPrimitiveArgumentMapping(short.class, Short::parseShort);
@@ -53,7 +62,13 @@ public class CommandMapping {
         PLAYER_MAPPING.put(mappingType, mapping);
     }
 
+    public static <T extends SpacedValue<?>> void registerSpacedArgumentMapping(Class<T> argumentType, SpacedArgumentMapping<T> mapping) {
+        Require.checkState(() -> !SPACED_MAPPINGS.containsKey(argumentType), "Cannot register spaced argument mapping for type '%s' twice".formatted(argumentType.getName()));
+        SPACED_MAPPINGS.put(argumentType, mapping);
+    }
+
     public static <T> void registerArgumentMapping(Class<T> argumentType, ArgumentMapping<T> mapping) {
+        Require.checkState(() -> !SpacedValue.class.isAssignableFrom(argumentType), "Cannot register type '%s'. To register spaced values use registerSpacedArgumentMapping.".formatted(argumentType.getName()));
         Require.checkState(() -> !ARGUMENT_MAPPING.containsKey(argumentType), "Cannot register argument mapping for type '%s' twice".formatted(argumentType.getName()));
         ARGUMENT_MAPPING.put(argumentType, mapping);
     }
@@ -71,7 +86,7 @@ public class CommandMapping {
     }
 
     public static boolean isArgumentType(Class<?> type) {
-        return ARGUMENT_MAPPING.containsKey(type) || type.isEnum();
+        return ARGUMENT_MAPPING.containsKey(type) || SPACED_MAPPINGS.containsKey(type) || type.isEnum();
     }
 
     public static Object[] mapParameters(Method method, CommandSender sender, String[] args) {
@@ -82,9 +97,10 @@ public class CommandMapping {
 
         for (int i = 1; i < mappedParameters.length; i++) {
             boolean lastParameter = i == mappedParameters.length - 1;
-            boolean isString = methodParameter[i].getType().equals(String.class); //TODO MAYBE ALSO char[] and Character[]
-            if (lastParameter && isString) {
-                mappedParameters[i] = String.join(" ", Arrays.asList(args).subList(i - 1, args.length));
+            boolean isSpacedValue = SpacedValue.class.isAssignableFrom(methodParameter[i].getType());
+            if (lastParameter && isSpacedValue) {
+                String[] leftArgs = Arrays.asList(args).subList(i - 1, args.length).toArray(String[]::new);
+                mappedParameters[i] = mapSpacedArgument(leftArgs, (Class<? extends SpacedValue<?>>) methodParameter[i].getType());
                 break;
             }
 
@@ -97,14 +113,20 @@ public class CommandMapping {
     public static boolean doesArgsMatchParameters(Method method, String[] args) {
         Parameter[] methodParameter = method.getParameters();
         for (int i = 1; i < methodParameter.length; i++) {
-            int argumentIndex = i - 1;
-            if (args.length <= argumentIndex) return false;
-            String currentArg = args[i - 1];
-            Class<?> parameterType = methodParameter[i].getType();
-
-            if (parameterType.isEnum() && methodParameter[i].isAnnotationPresent(IgnoreStrictEnum.class)) continue;
-
             try {
+                int argumentIndex = i - 1;
+                if (args.length <= argumentIndex) return false;
+                String currentArg = args[i - 1];
+                Class<?> parameterType = methodParameter[i].getType();
+
+                if (parameterType.isEnum() && methodParameter[i].isAnnotationPresent(IgnoreStrictEnum.class)) continue;
+
+                if (SpacedValue.class.isAssignableFrom(parameterType)) {
+                    Object spacedMapping = mapSpacedArgument(new String[]{currentArg}, (Class<? extends SpacedValue>) parameterType);
+                    if (spacedMapping == null) return false;
+                    continue;
+                }
+
                 Object mapping = mapArgument(currentArg, parameterType);
                 if (mapping == null) return false;
             } catch (Exception e) {
@@ -141,6 +163,13 @@ public class CommandMapping {
         if (mappingType.equals(CommandSender.class)) return (T) sender;
         if (mappingType.equals(ConsoleCommandSender.class) && sender instanceof ConsoleCommandSender) return (T) sender;
         throw new MappingException("Failed to map %s to '%s'".formatted(sender.getName(), mappingType.getName()));
+    }
+
+    @Nullable
+    private static <T extends SpacedValue<?>> T mapSpacedArgument(String[] arguments, Class<T> mappingType) throws MappingException {
+        Require.check(() -> SPACED_MAPPINGS.containsKey(mappingType), new MappingException("Could not find spaced argument mapping for type '%s'".formatted(mappingType.getName())));
+        SpacedArgumentMapping<T> mapping = (SpacedArgumentMapping<T>) SPACED_MAPPINGS.get(mappingType);
+        return mapOrThrow(mapping, arguments, mappingType, String[].class);
     }
 
     @Nullable

@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 import me.noci.quickutilities.quickcommand.QuickCommand;
 import me.noci.quickutilities.quickcommand.annotation.CommandPermission;
 import me.noci.quickutilities.quickcommand.mappings.CommandMapping;
+import me.noci.quickutilities.quickcommand.mappings.spacedvalues.SpacedValue;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
 
@@ -41,7 +42,8 @@ public abstract class BaseCommandExecutor implements CommandExecutor {
 
         boolean fixedArgumentLength = true;
         if (method.getParameterCount() > 1) {
-            fixedArgumentLength = !method.getParameters()[method.getParameterCount() - 1].getType().equals(String.class);
+            boolean spacedValue = SpacedValue.class.isAssignableFrom(method.getParameters()[method.getParameterCount() - 1].getType());
+            fixedArgumentLength = !spacedValue;
         }
 
         this.fixedArgumentLength = fixedArgumentLength;
