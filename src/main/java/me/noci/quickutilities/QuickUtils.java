@@ -5,6 +5,8 @@ import me.noci.quickutilities.input.sign.packets.SignPacketHandlerManager;
 import me.noci.quickutilities.inventory.GuiManager;
 import me.noci.quickutilities.listener.EntityDamageByEntityListener;
 import me.noci.quickutilities.packethandler.PacketHandlerFactory;
+import me.noci.quickutilities.qcommand.CommandRegister;
+import me.noci.quickutilities.qcommand.example.GamemodeCommandExample;
 import me.noci.quickutilities.quicktab.packets.TeamPacketHandlerManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,6 +26,8 @@ public class QuickUtils extends JavaPlugin {
         PacketHandlerFactory.registerPacketManger(new SignPacketHandlerManager());
 
         new GuiManager(this);
+
+        CommandRegister.register(new GamemodeCommandExample());
 
         registerListener();
         registerCommands();
