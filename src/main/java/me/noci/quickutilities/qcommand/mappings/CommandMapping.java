@@ -43,6 +43,8 @@ public class CommandMapping {
     }
 
     public static <T> void registerPlayerMapping(Class<T> mappingType, PlayerMapping<T> mapping) {
+        Require.checkArgument(() -> !mappingType.equals(Player.class), "Cannot register player mapping for type '%s'".formatted(mappingType.getName()));
+        Require.checkArgument(() -> !mappingType.equals(CommandSender.class), "Cannot register player mapping for type '%s'".formatted(mappingType.getName()));
         Require.checkState(() -> !PLAYER_MAPPING.containsKey(mappingType), "Cannot register player mapping for type '%s' twice".formatted(mappingType.getName()));
         PLAYER_MAPPING.put(mappingType, mapping);
     }
