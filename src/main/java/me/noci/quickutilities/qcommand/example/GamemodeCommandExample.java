@@ -27,6 +27,7 @@ public class GamemodeCommandExample extends QCommand {
 
     @Command // Should be /gamemode <gamemode>
     private void changeGamemode(SamplePlayer player, GameMode gameMode) { //SUPPORT Optional<GameMode> - With every argument type
+        System.out.println("First method");
         if(gameMode == null) {
             playerFallback(player.player);
             return;
@@ -37,6 +38,7 @@ public class GamemodeCommandExample extends QCommand {
 
     @SubCommand(path = "test") // Should be /gamemode test <gamemode>
     private void testGamemode(Player player, GameMode gameMode) {
+        System.out.println("Second method");
         if(gameMode == null) {
             playerFallback(player);
             return;
@@ -47,6 +49,7 @@ public class GamemodeCommandExample extends QCommand {
 
     @SubCommand(path = {"test", "12"}) // Should be /gamemode test 12 <gamemode>
     private void test12Gamemode(Player player, GameMode gameMode) {
+        System.out.println("Third method");
         if(gameMode == null) {
             playerFallback(player);
             return;
@@ -55,9 +58,22 @@ public class GamemodeCommandExample extends QCommand {
         player.setGameMode(gameMode);
     }
 
+    @SubCommand(path = {"string"}) // Should be /gamemode string [string] <still string>
+    private void test12Gamemode(Player player, String string) {
+        System.out.println("Fourth method");
+        player.sendMessage(string);
+    }
+
+    @SubCommand(path = {"string2"}) // Should be /gamemode string [string1] [string2] <still string2>
+    private void test12Gamemode(Player player, String string1, String string2) {
+        System.out.println("Fifth method");
+        player.sendMessage(string1 + " - " + string2);
+    }
+
     @Command
     @CommandPermission("command.gamemode") // Should be /gamemode <gamemode> <target>
     private void changeOther(Player player, GameMode gameMode, SamplePlayer target) {
+        System.out.println("Sixth method");
         if(target == null || target.player == null || !target.player.isOnline()) {
             player.sendMessage("Could not find your requested player");
             return;
