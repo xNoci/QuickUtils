@@ -81,7 +81,7 @@ public class CommandMapping {
 
         for (int i = 1; i < mappedParameters.length; i++) {
             boolean lastParameter = i == mappedParameters.length - 1;
-            boolean isString = methodParameter[i].getType().equals(String.class);
+            boolean isString = methodParameter[i].getType().equals(String.class); //TODO MAYBE ALSO char[] and Character[]
             if (lastParameter && isString) {
                 mappedParameters[i] = String.join(" ", Arrays.asList(args).subList(i - 1, args.length));
                 break;
