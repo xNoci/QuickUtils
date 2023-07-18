@@ -93,6 +93,24 @@ public class CommandMapping {
         return mappedParameters;
     }
 
+    public static boolean doesArgsMatchParameters(Method method, String[] args) {
+        Parameter[] methodParameter = method.getParameters();
+        for (int i = 1; i < methodParameter.length; i++) {
+            int argumentIndex = i - 1;
+            if (args.length < argumentIndex) return false;
+            String currentArg = args[i - 1];
+
+            try {
+                Object mapping = mapArgument(currentArg, methodParameter[i].getType());
+                if (mapping == null) return false;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static boolean matchesSenderType(Method method, CommandSender sender, boolean matchPlayerToCommandSender) {
         if (method.getParameterCount() == 0) return false;
         try {
