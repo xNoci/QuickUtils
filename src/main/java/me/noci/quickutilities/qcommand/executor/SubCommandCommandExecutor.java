@@ -1,16 +1,31 @@
 package me.noci.quickutilities.qcommand.executor;
 
+import lombok.SneakyThrows;
+import me.noci.quickutilities.qcommand.QCommand;
+import me.noci.quickutilities.qcommand.mappings.CommandMapping;
 import org.bukkit.command.CommandSender;
 
+import java.lang.reflect.Method;
+
 public class SubCommandCommandExecutor implements CommandExecutor<SubCommandCommandExecutor> {
-    @Override
-    public boolean hasPermission(CommandSender sender) {
-        return false;
+
+    private final Method method;
+
+    public SubCommandCommandExecutor(Method method) {
+        this.method = method;
+        this.method.setAccessible(true);
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    @SneakyThrows
+    public void execute(QCommand command, CommandSender sender, String[] args) {
+        Object[] params = CommandMapping.mapParameters(method, sender, args);
+        method.invoke(command, params);
+    }
 
+    @Override
+    public boolean hasPermission(CommandSender sender) {
+        return false;
     }
 
     @Override

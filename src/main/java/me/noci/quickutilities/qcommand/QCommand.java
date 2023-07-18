@@ -72,7 +72,7 @@ public abstract class QCommand {
             sender.sendMessage(noPermission);
             return true;
         }
-        executor.execute(sender, args);
+        executor.execute(this, sender, args);
         return true;
     }
 
