@@ -1,12 +1,14 @@
 package me.noci.quickutilities.qcommand.executor;
 
 import me.noci.quickutilities.qcommand.QCommand;
+import me.noci.quickutilities.qcommand.mappings.CommandMapping;
 import org.bukkit.command.CommandSender;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 
-public interface CommandExecutor<T extends CommandExecutor<T>> {
+public interface CommandExecutor {
 
     void execute(QCommand command, CommandSender sender, String[] args);
 
@@ -14,11 +16,20 @@ public interface CommandExecutor<T extends CommandExecutor<T>> {
 
     boolean matches(CommandSender sender, String[] args);
 
-    MatchPriority compareMatch(T toCompare, CommandSender sender, String[] args);
+    Method method();
 
-    static <T extends CommandExecutor<T>> Optional<T> bestMatch(List<T> commands, CommandSender sender, String[] args) {
+    default MatchPriority compareMatch(CommandExecutor toCompare, CommandSender sender) {
+        boolean thisMatches = CommandMapping.matchesSenderType(method(), sender, false);
+        boolean otherMatches = CommandMapping.matchesSenderType(toCompare.method(), sender, false);
+
+        if (thisMatches && otherMatches) return MatchPriority.EQUAL;
+        if (otherMatches) return MatchPriority.OTHER;
+        return MatchPriority.THIS;
+    }
+
+    static Optional<CommandExecutor> bestMatch(List<CommandExecutor> commands, CommandSender sender, String[] args) {
         return commands.stream().filter(command -> command.matches(sender, args))
-                .min((o1, o2) -> o1.compareMatch(o2, sender, args).priority);
+                .min((o1, o2) -> o1.compareMatch(o2, sender).priority);
     }
 
     enum MatchPriority {

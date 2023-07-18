@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class BaseCommandExecutor<T extends CommandExecutor<T>> implements CommandExecutor<T> {
+public abstract class BaseCommandExecutor implements CommandExecutor {
 
     protected final Method method;
     protected final CommandPermission permissionNode;
@@ -62,4 +62,8 @@ public abstract class BaseCommandExecutor<T extends CommandExecutor<T>> implemen
         return permissionNode.strict() ? permissions.allMatch(sender::hasPermission) : permissions.anyMatch(sender::hasPermission);
     }
 
+    @Override
+    public Method method() {
+        return method;
+    }
 }

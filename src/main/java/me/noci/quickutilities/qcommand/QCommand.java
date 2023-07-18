@@ -17,9 +17,9 @@ import java.util.Optional;
 
 public abstract class QCommand {
 
-    private final List<FallbackCommandExecutor> fallbackCommandList;
-    private final List<SubCommandExecutor> subCommandList;
-    private final List<DefaultCommandExecutor> defaultCommandList;
+    private final List<CommandExecutor> fallbackCommandList;
+    private final List<CommandExecutor> subCommandList;
+    private final List<CommandExecutor> defaultCommandList;
 
     @Getter private final JavaPlugin plugin;
     @Getter private final String name;
@@ -62,7 +62,7 @@ public abstract class QCommand {
     }
 
     protected boolean execute(@NotNull CommandSender sender, @NotNull String label, String[] args) {
-        CommandExecutor<?> executor = findCommand(sender, args);
+        CommandExecutor executor = findCommand(sender, args);
         if (executor == null) {
             sender.sendMessage(noFallbackCommand.formatted(String.join(" ", ObjectArrays.concat(label, args))));
             return false;
@@ -76,15 +76,15 @@ public abstract class QCommand {
         return true;
     }
 
-    private CommandExecutor<?> findCommand(CommandSender sender, String[] args) {
-        Optional<SubCommandExecutor> subCommands = CommandExecutor.bestMatch(subCommandList, sender, args);
-        if(subCommands.isPresent()) return subCommands.get();
-
-        Optional<DefaultCommandExecutor> commands = CommandExecutor.bestMatch(defaultCommandList, sender, args);
+    private CommandExecutor findCommand(CommandSender sender, String[] args) {
+        Optional<CommandExecutor> commands = CommandExecutor.bestMatch(subCommandList, sender, args);
         if(commands.isPresent()) return commands.get();
 
-        Optional<FallbackCommandExecutor> fallbackCommands = CommandExecutor.bestMatch(fallbackCommandList, sender, args);
-        return fallbackCommands.orElse(null);
+        commands = CommandExecutor.bestMatch(defaultCommandList, sender, args);
+        if(commands.isPresent()) return commands.get();
+
+        commands = CommandExecutor.bestMatch(fallbackCommandList, sender, args);
+        return commands.orElse(null);
     }
 
 }

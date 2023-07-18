@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class SubCommandExecutor extends BaseCommandExecutor<SubCommandExecutor> {
+public class SubCommandExecutor extends BaseCommandExecutor {
 
     private String[] subCommandPath;
 
@@ -49,16 +49,6 @@ public class SubCommandExecutor extends BaseCommandExecutor<SubCommandExecutor> 
 
         if (fixedArgumentLength && args.length != argumentLength) return false;
         return CommandMapping.doesArgsMatchParameters(method, args);
-    }
-
-    @Override
-    public MatchPriority compareMatch(SubCommandExecutor toCompare, CommandSender sender, String[] args) {
-        boolean thisMatches = CommandMapping.matchesSenderType(method, sender, false);
-        boolean otherMatches = CommandMapping.matchesSenderType(toCompare.method, sender, false);
-
-        if (thisMatches && otherMatches) return MatchPriority.EQUAL;
-        if (otherMatches) return MatchPriority.OTHER;
-        return MatchPriority.THIS;
     }
 
 }

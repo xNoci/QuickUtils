@@ -18,14 +18,13 @@ import java.util.Set;
 
 public class CommandExecutorFactory {
 
-    @SuppressWarnings("unchecked")
-    public static <T extends CommandExecutor<T>> List<T> loadExecutors(Class<? extends QCommand> commandClass, Class<? extends Annotation> annotationType, Class<T> executorType) {
+    public static List<CommandExecutor> loadExecutors(Class<? extends QCommand> commandClass, Class<? extends Annotation> annotationType, Class<?> executorType) {
         Set<Method> methods = getClassMethods(commandClass);
-        List<T> executors = Lists.newArrayList();
+        List<CommandExecutor> executors = Lists.newArrayList();
 
         for (Method method : methods) {
             try {
-                T executor = (T) create(method, annotationType, executorType);
+                CommandExecutor executor = create(method, annotationType, executorType);
                 if (executor == null) continue;
                 executors.add(executor);
             } catch (Exception e) {
@@ -36,7 +35,7 @@ public class CommandExecutorFactory {
         return executors;
     }
 
-    private static <T extends CommandExecutor<T>> CommandExecutor<?> create(Method method, Class<? extends Annotation> annotationType, Class<T> executorType) {
+    private static CommandExecutor create(Method method, Class<? extends Annotation> annotationType, Class<?> executorType) {
         if (!method.isAnnotationPresent(annotationType)) return null;
 
         Require.checkState(() -> method.getParameterCount() > 0, "A command method has to have at least one parameter");

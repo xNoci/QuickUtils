@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import java.lang.reflect.Method;
 
-public class DefaultCommandExecutor extends BaseCommandExecutor<DefaultCommandExecutor> {
+public class DefaultCommandExecutor extends BaseCommandExecutor {
 
     public DefaultCommandExecutor(Method method, CommandPermission permission) {
         super(method, permission);
@@ -20,13 +20,4 @@ public class DefaultCommandExecutor extends BaseCommandExecutor<DefaultCommandEx
         return CommandMapping.doesArgsMatchParameters(method, args);
     }
 
-    @Override
-    public MatchPriority compareMatch(DefaultCommandExecutor toCompare, CommandSender sender, String[] args) {
-        boolean thisMatches = CommandMapping.matchesSenderType(method, sender, false);
-        boolean otherMatches = CommandMapping.matchesSenderType(toCompare.method, sender, false);
-
-        if (thisMatches && otherMatches) return MatchPriority.EQUAL;
-        if (otherMatches) return MatchPriority.OTHER;
-        return MatchPriority.THIS;
-    }
 }
