@@ -25,7 +25,7 @@ public class FallbackCommandExecutor implements CommandExecutor<FallbackCommandE
 
     @Override
     public boolean hasPermission(CommandSender sender) {
-        return false;
+        return true;
     }
 
     @Override
