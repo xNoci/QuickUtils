@@ -1,4 +1,4 @@
-package me.noci.quickutilities.quickcommand.annotations;
+package me.noci.quickutilities.quickcommand.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,8 +7,5 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Subcommand {
-
-    String value();
-
+public @interface Command {
 }
