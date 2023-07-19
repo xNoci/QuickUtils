@@ -16,13 +16,9 @@ public class QuickUtilsCommand extends QuickCommand {
     }
 
     @Command
+    @FallbackCommand
     public void handleExecute(CommandSender sender) {
         sender.sendMessage("§7The version of §9%s §7is currently §9%s§7.".formatted(getPlugin().getName(), getPlugin().getDescription().getVersion()));
-    }
-
-    @FallbackCommand
-    public void fallback(CommandSender sender) {
-        handleExecute(sender);
     }
 
 }
