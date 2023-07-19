@@ -109,7 +109,7 @@ public class SubscribedEventImpl<T extends Event> implements SubscribedEvent<T>,
 
     @Override
     public void register() {
-        if (active) return;
+        if (active || expired) return;
         active = true;
         Bukkit.getPluginManager().registerEvent(eventClass, this, priority, this, plugin);
     }
