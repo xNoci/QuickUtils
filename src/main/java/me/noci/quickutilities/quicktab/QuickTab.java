@@ -7,6 +7,7 @@ import me.noci.quickutilities.quicktab.builder.QuickTabBuilder;
 import me.noci.quickutilities.quicktab.builder.TabListTeam;
 import me.noci.quickutilities.quicktab.packets.TeamPacketHandler;
 import me.noci.quickutilities.packethandler.PacketHandlerFactory;
+import me.noci.quickutilities.utils.Require;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -39,9 +40,7 @@ public class QuickTab {
      * @throws IllegalStateException When a {@link UpdatingTabList} is set. Use {@link #update(Player)} instead or remove the {@link UpdatingTabList} via {@link #removeUpdatingTabList()}.
      */
     public static void update(Player player, QuickTabBuilder builder) {
-        if (updatingTabList != null) {
-            throw new IllegalStateException("This is only possible if no UpdatingTabList is set.");
-        }
+        Require.checkState(updatingTabList == null, "This is only possible if no UpdatingTabList is set.");
         internalUpdate(player, builder);
     }
 
@@ -63,11 +62,8 @@ public class QuickTab {
      * @throws IllegalStateException When a {@link UpdatingTabList} is already set. Use {@link #removeUpdatingTabList()} to remove the current one.
      */
     public static void setUpdatingTabList(JavaPlugin plugin, QuickTabBuilder builder) {
-        if (updatingTabList != null) {
-            throw new IllegalStateException("Cannot set updating tab list while one is already set.");
-        }
 
-        updatingTabList = new UpdatingTabList(plugin, builder);
+        Require.checkState(updatingTabList == null, "Cannot set updating tab list while one is already set.");
         updatingTabList.update();
     }
 
@@ -77,10 +73,7 @@ public class QuickTab {
      * @throws IllegalStateException When no {@link UpdatingTabList} is set.
      */
     public static void removeUpdatingTabList() {
-        if (updatingTabList == null) {
-            throw new IllegalStateException("Cannot remove updating tab list, because no one is set.");
-        }
-
+        Require.checkState(updatingTabList != null, "Cannot remove updating tab list, because no one is set.");
         updatingTabList.delete();
         updatingTabList = null;
     }
@@ -91,9 +84,7 @@ public class QuickTab {
      * @throws IllegalStateException When no {@link UpdatingTabList} is set.
      */
     public static void update(Player player) {
-        if (updatingTabList == null) {
-            throw new IllegalStateException("This is only possible if an UpdatingTabList is set.");
-        }
+        Require.checkState(updatingTabList != null, "This is only possible if an UpdatingTabList is set.");
         updatingTabList.update(player);
     }
 
