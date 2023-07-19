@@ -1,5 +1,6 @@
 package me.noci.quickutilities.utils;
 
+import com.google.common.collect.Lists;
 import me.noci.quickutilities.inventory.ClickHandler;
 import me.noci.quickutilities.inventory.GuiItem;
 import org.bukkit.ChatColor;
@@ -73,6 +74,12 @@ public class QuickItemStack extends ItemStack {
     public QuickItemStack setMeta(ItemMeta itemMeta) {
         this.setItemMeta(itemMeta);
         return this;
+    }
+
+    public List<String> getLore() {
+        ItemMeta itemMeta = this.getItemMeta();
+        if (itemMeta == null) return Lists.newArrayList();
+        return itemMeta.getLore();
     }
 
     public QuickItemStack setLore(List<String> lore) {
