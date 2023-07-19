@@ -99,8 +99,8 @@ public class CommandMapping {
             boolean lastParameter = i == mappedParameters.length - 1;
             boolean isSpacedValue = SpacedValue.class.isAssignableFrom(methodParameter[i].getType());
             if (lastParameter && isSpacedValue) {
-                String[] leftArgs = Arrays.asList(args).subList(i - 1, args.length).toArray(String[]::new);
-                mappedParameters[i] = mapSpacedArgument(leftArgs, (Class<? extends SpacedValue<?>>) methodParameter[i].getType());
+                String[] remainingArgs = Arrays.asList(args).subList(i - 1, args.length).toArray(String[]::new);
+                mappedParameters[i] = mapSpacedArgument(remainingArgs, (Class<? extends SpacedValue<?>>) methodParameter[i].getType());
                 break;
             }
 
