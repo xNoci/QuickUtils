@@ -13,7 +13,10 @@ version = "${project.property("version")!!}-b${gitRevision()}.${gitHash()}"
 
 repositories {
     mavenCentral()
-    mavenLocal()
+    maven {
+        name = "EngineHub"
+        url = uri("https://maven.enginehub.org/repo/")
+    }
     maven {
         name = "ProtocolLib"
         url = uri("https://repo.dmulloy2.net/repository/public/")
