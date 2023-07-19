@@ -1,3 +1,4 @@
+import org.apache.commons.io.output.ByteArrayOutputStream
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
@@ -5,9 +6,10 @@ plugins {
     id("com.github.johnrengelman.shadow") version ("8.1.1")
 }
 
-group = project.property("group")!!
-version = project.property("version")!!
+
 var pluginName = project.property("pluginName")!!
+group = project.property("group")!!
+version = "${project.property("version")!!}-b${gitRevision()}.${gitHash()}"
 
 repositories {
     mavenCentral()
@@ -65,3 +67,20 @@ tasks {
 
 }
 
+fun gitRevision() : String {
+    val out = ByteArrayOutputStream();
+    exec {
+        commandLine("git", "rev-list", "--count", "HEAD")
+        standardOutput = out;
+    }
+    return out.toString("UTF-8").trim();
+}
+
+fun gitHash() : String {
+    val out = ByteArrayOutputStream();
+    exec {
+        commandLine("git", "rev-parse", "--short", "HEAD")
+        standardOutput = out;
+    }
+    return out.toString("UTF-8").trim();
+}
