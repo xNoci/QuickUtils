@@ -2,15 +2,14 @@ package me.noci.quickutilities.quicktab;
 
 import com.cryptomorin.xseries.ReflectionUtils;
 import com.google.common.collect.Sets;
+import me.noci.quickutilities.packethandler.PacketHandlerFactory;
 import me.noci.quickutilities.quicktab.builder.DefaultQuickTabBuilder;
 import me.noci.quickutilities.quicktab.builder.QuickTabBuilder;
 import me.noci.quickutilities.quicktab.builder.TabListTeam;
 import me.noci.quickutilities.quicktab.packets.TeamPacketHandler;
-import me.noci.quickutilities.packethandler.PacketHandlerFactory;
 import me.noci.quickutilities.utils.Require;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Set;
@@ -57,13 +56,12 @@ public class QuickTab {
     /**
      * Sets the {@link UpdatingTabList} which will automatically update the current used {@link QuickTabBuilder} when a player joins the server.
      *
-     * @param plugin  The plugin which sets the {@link UpdatingTabList}
      * @param builder The {@link QuickTabBuilder} which should be used
      * @throws IllegalStateException When a {@link UpdatingTabList} is already set. Use {@link #removeUpdatingTabList()} to remove the current one.
      */
-    public static void setUpdatingTabList(JavaPlugin plugin, QuickTabBuilder builder) {
-
+    public static void setUpdatingTabList(QuickTabBuilder builder) {
         Require.checkState(updatingTabList == null, "Cannot set updating tab list while one is already set.");
+        updatingTabList = new UpdatingTabList(builder);
         updatingTabList.update();
     }
 
