@@ -40,16 +40,16 @@ public class CommandExecutorFactory {
         if (!method.isAnnotationPresent(annotationType)) return null;
         Parameter[] parameters = method.getParameters();
 
-        Require.checkState(() -> method.getParameterCount() > 0, "A command method has to have at least one parameter. Method: %s#%s".formatted(method.getDeclaringClass().getName(), method.getName()));
-        Require.checkState(() -> !annotationType.equals(FallbackCommand.class) || method.getParameterCount() == 1, "A fallback command method needs exactly one parameter. Method: %s#%s".formatted(method.getDeclaringClass().getName(), method.getName()));
-        Require.checkState(() -> CommandMapping.isSenderType(parameters[0].getType()), "The first method parameter of %s#%s has to be a sender parameter".formatted(method.getDeclaringClass().getName(), method.getName()));
+        Require.checkState(method.getParameterCount() > 0, "A command method has to have at least one parameter. Method: %s#%s".formatted(method.getDeclaringClass().getName(), method.getName()));
+        Require.checkState(!annotationType.equals(FallbackCommand.class) || method.getParameterCount() == 1, "A fallback command method needs exactly one parameter. Method: %s#%s".formatted(method.getDeclaringClass().getName(), method.getName()));
+        Require.checkState(CommandMapping.isSenderType(parameters[0].getType()), "The first method parameter of %s#%s has to be a sender parameter".formatted(method.getDeclaringClass().getName(), method.getName()));
 
         for (int i = 1; i < parameters.length; i++) {
             Parameter current = parameters[i];
             boolean lastParameter = i == parameters.length - 1;
 
-            Require.checkState(() -> !SpacedValue.class.isAssignableFrom(current.getType()) || lastParameter, "Spaced value parameter '%s (%s)' at index %s in %s#%s is only allowed at last parameter position".formatted(current.getName(), current.getType().getName(), i, method.getDeclaringClass().getName(), method.getName()));
-            Require.checkState(() -> CommandMapping.isArgumentType(current.getType()), "The parameter '%s (%s)' at index %s in %s#%s is not a valid command parameter type".formatted(current.getName(), current.getType().getName(), i, method.getDeclaringClass().getName(), method.getName()));
+            Require.checkState(!SpacedValue.class.isAssignableFrom(current.getType()) || lastParameter, "Spaced value parameter '%s (%s)' at index %s in %s#%s is only allowed at last parameter position".formatted(current.getName(), current.getType().getName(), i, method.getDeclaringClass().getName(), method.getName()));
+            Require.checkState(CommandMapping.isArgumentType(current.getType()), "The parameter '%s (%s)' at index %s in %s#%s is not a valid command parameter type".formatted(current.getName(), current.getType().getName(), i, method.getDeclaringClass().getName(), method.getName()));
         }
 
         CommandPermission permissionNode = method.getDeclaredAnnotation(CommandPermission.class);

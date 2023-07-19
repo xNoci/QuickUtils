@@ -56,25 +56,25 @@ public class CommandMapping {
     }
 
     public static <T> void registerPlayerMapping(Class<T> mappingType, PlayerMapping<T> mapping) {
-        Require.checkArgument(() -> !mappingType.equals(Player.class), "Cannot register player mapping for type '%s'".formatted(mappingType.getName()));
-        Require.checkArgument(() -> !mappingType.equals(CommandSender.class), "Cannot register player mapping for type '%s'".formatted(mappingType.getName()));
-        Require.checkState(() -> !PLAYER_MAPPING.containsKey(mappingType), "Cannot register player mapping for type '%s' twice".formatted(mappingType.getName()));
+        Require.checkArgument(!mappingType.equals(Player.class), "Cannot register player mapping for type '%s'".formatted(mappingType.getName()));
+        Require.checkArgument(!mappingType.equals(CommandSender.class), "Cannot register player mapping for type '%s'".formatted(mappingType.getName()));
+        Require.checkState(!PLAYER_MAPPING.containsKey(mappingType), "Cannot register player mapping for type '%s' twice".formatted(mappingType.getName()));
         PLAYER_MAPPING.put(mappingType, mapping);
     }
 
     public static <T extends SpacedValue<?>> void registerSpacedArgumentMapping(Class<T> argumentType, SpacedArgumentMapping<T> mapping) {
-        Require.checkState(() -> !SPACED_MAPPINGS.containsKey(argumentType), "Cannot register spaced argument mapping for type '%s' twice".formatted(argumentType.getName()));
+        Require.checkState(!SPACED_MAPPINGS.containsKey(argumentType), "Cannot register spaced argument mapping for type '%s' twice".formatted(argumentType.getName()));
         SPACED_MAPPINGS.put(argumentType, mapping);
     }
 
     public static <T> void registerArgumentMapping(Class<T> argumentType, ArgumentMapping<T> mapping) {
-        Require.checkState(() -> !SpacedValue.class.isAssignableFrom(argumentType), "Cannot register type '%s'. To register spaced values use registerSpacedArgumentMapping.".formatted(argumentType.getName()));
-        Require.checkState(() -> !ARGUMENT_MAPPING.containsKey(argumentType), "Cannot register argument mapping for type '%s' twice".formatted(argumentType.getName()));
+        Require.checkState(!SpacedValue.class.isAssignableFrom(argumentType), "Cannot register type '%s'. To register spaced values use registerSpacedArgumentMapping.".formatted(argumentType.getName()));
+        Require.checkState(!ARGUMENT_MAPPING.containsKey(argumentType), "Cannot register argument mapping for type '%s' twice".formatted(argumentType.getName()));
         ARGUMENT_MAPPING.put(argumentType, mapping);
     }
 
     private static <T> void registerPrimitiveArgumentMapping(Class<T> argumentType, ArgumentMapping<T> mapping) {
-        Require.checkArgument(argumentType::isPrimitive, "This method only supports registering primitives");
+        Require.checkArgument(argumentType.isPrimitive(), "This method only supports registering primitives");
         registerArgumentMapping(Primitives.unwrap(argumentType), mapping);
         registerArgumentMapping(Primitives.wrap(argumentType), mapping);
     }
@@ -155,7 +155,7 @@ public class CommandMapping {
                 return (T) player;
             }
 
-            Require.check(() -> PLAYER_MAPPING.containsKey(mappingType), new MappingException("Could not find player mapping for type '%s'".formatted(mappingType.getName())));
+            Require.check(PLAYER_MAPPING.containsKey(mappingType), new MappingException("Could not find player mapping for type '%s'".formatted(mappingType.getName())));
             PlayerMapping<T> mapping = (PlayerMapping<T>) PLAYER_MAPPING.get(mappingType);
             return mapOrThrow(mapping, player, mappingType, Player.class);
         }
@@ -167,7 +167,7 @@ public class CommandMapping {
 
     @Nullable
     private static <T extends SpacedValue<?>> T mapSpacedArgument(String[] arguments, Class<T> mappingType) throws MappingException {
-        Require.check(() -> SPACED_MAPPINGS.containsKey(mappingType), new MappingException("Could not find spaced argument mapping for type '%s'".formatted(mappingType.getName())));
+        Require.check(SPACED_MAPPINGS.containsKey(mappingType), new MappingException("Could not find spaced argument mapping for type '%s'".formatted(mappingType.getName())));
         SpacedArgumentMapping<T> mapping = (SpacedArgumentMapping<T>) SPACED_MAPPINGS.get(mappingType);
         return mapOrThrow(mapping, arguments, mappingType, String[].class);
     }
@@ -181,7 +181,7 @@ public class CommandMapping {
             return null;
         }
 
-        Require.check(() -> ARGUMENT_MAPPING.containsKey(mappingType), new MappingException("Could not find argument mapping for type '%s'".formatted(mappingType.getName())));
+        Require.check(ARGUMENT_MAPPING.containsKey(mappingType), new MappingException("Could not find argument mapping for type '%s'".formatted(mappingType.getName())));
         ArgumentMapping<T> mapping = (ArgumentMapping<T>) ARGUMENT_MAPPING.get(mappingType);
         return mapOrThrow(mapping, argument, mappingType, String.class);
     }

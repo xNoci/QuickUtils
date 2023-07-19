@@ -37,7 +37,7 @@ public abstract class QuickCommand {
     protected QuickCommand(JavaPlugin plugin, String name, List<String> aliases, String description, String usage) {
         Require.nonNull(plugin, "Plugin cannot be null");
         Require.nonNull(name, "Name cannot be null");
-        Require.checkState(() -> !StringUtils.isBlank(name), "Name cannot be empty or blank");
+        Require.checkState(!StringUtils.isBlank(name), "Name cannot be empty or blank");
         Require.nonNull(aliases, "Aliases cannot be null");
         Require.nonNull(description, "Description cannot be null");
         Require.nonNull(usage, "Usage cannot be null");

@@ -33,8 +33,8 @@ public class CommandRegister {
 
     @SneakyThrows
     public static void register(QuickCommand command) {
-        Require.checkArgument(() -> command.getPlugin() != null, "Plugin cannot be null");
-        Require.checkArgument(() -> command.getName() != null && !StringUtils.isBlank(command.getName()), "Command name cannot be null or empty");
+        Require.checkArgument(command.getPlugin() != null, "Plugin cannot be null");
+        Require.checkArgument(command.getName() != null && !StringUtils.isBlank(command.getName()), "Command name cannot be null or empty");
 
         SimpleCommandMap commandMap = (SimpleCommandMap) COMMAND_MAP.invoke(Bukkit.getServer());
         commandMap.register(command.getPlugin().getName(), new CommandRegister.CommandContainer(command));

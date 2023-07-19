@@ -26,7 +26,7 @@ public class SubCommandExecutor extends BaseCommandExecutor {
                     .toArray(String[]::new);
         }
 
-        Require.checkState(() -> subCommandPath != null && subCommandPath.length > 0, "");
+        Require.checkState(subCommandPath != null && subCommandPath.length > 0, "");
     }
 
     @Override
