@@ -6,10 +6,13 @@ public class Require {
      * Check if object is not null.
      *
      * @param object to check
+     * @param <T>
+     * @return The given object
      * @throws NullPointerException Throws if object is null
      */
-    public static void nonNull(Object object) throws NullPointerException {
+    public static <T> T nonNull(T object) throws NullPointerException {
         check(object != null, new NullPointerException());
+        return object;
     }
 
     /**
@@ -17,10 +20,13 @@ public class Require {
      *
      * @param object  to check
      * @param message to send when object is null
+     * @return The given object
+     * @param <T>
      * @throws NullPointerException Throws if object is null
      */
-    public static void nonNull(Object object, String message) throws NullPointerException {
+    public static <T> T nonNull(T object, String message) throws NullPointerException {
         check(object != null, new NullPointerException(message));
+        return object;
     }
 
     /**
