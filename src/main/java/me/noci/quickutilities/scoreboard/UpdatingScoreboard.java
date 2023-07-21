@@ -2,8 +2,6 @@ package me.noci.quickutilities.scoreboard;
 
 import me.noci.quickutilities.events.Events;
 import me.noci.quickutilities.events.subscriber.SubscribedEvent;
-import me.noci.quickutilities.quicktab.QuickTab;
-import me.noci.quickutilities.quicktab.builder.QuickTabBuilder;
 import me.noci.quickutilities.utils.Require;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -12,8 +10,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
-
-import java.util.function.Consumer;
 
 public class UpdatingScoreboard {
 
