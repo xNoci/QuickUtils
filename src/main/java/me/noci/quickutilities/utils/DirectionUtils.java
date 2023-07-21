@@ -5,6 +5,11 @@ import org.bukkit.entity.Player;
 
 public class DirectionUtils {
 
+    /**
+     * Get the direction the player is looking.
+     * @param player to check
+     * @return the direction the player is looking
+     */
     public static BlockFace getPlayerDirection(Player player) {
         float yaw = player.getLocation().getYaw();
         if (yaw < 0) yaw += 360;
@@ -32,17 +37,29 @@ public class DirectionUtils {
         };
     }
 
-    public static BlockFace getBlockDirection(Player player, boolean allowDownUp) {
+    /**
+     * Get the {@link BlockFace} which the player is locking at.
+     * <br>Allowing to get the upper and under side of the block
+     * @param player which is looking at a block
+     * @param allowDownUp if this method should also return if the player is facing the top or bottom side
+     * @return the side the player is looking at
+     */
+    public static BlockFace getFacingBlockDirection(Player player, boolean allowDownUp) {
         if (allowDownUp) {
             float pitch = player.getLocation().getPitch();
             if (pitch <= -45) return BlockFace.DOWN;
             if (pitch >= 45) return BlockFace.UP;
         }
 
-        return getCardinalDirection(player);
+        return getFacingBlockDirection(player);
     }
 
-    public static BlockFace getCardinalDirection(Player player) {
+    /**
+     * Get the {@link BlockFace} which the player is locking at.
+     * @param player which is looking at a block
+     * @return the side the player is looking at
+     */
+    public static BlockFace getFacingBlockDirection(Player player) {
         BlockFace blockFace = getPlayerDirection(player);
 
         return switch (blockFace) {
