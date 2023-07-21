@@ -6,6 +6,7 @@ import me.noci.quickutilities.quickcommand.annotation.IgnoreStrictEnum;
 import me.noci.quickutilities.quickcommand.mappings.spacedvalues.SpacedCharArray;
 import me.noci.quickutilities.quickcommand.mappings.spacedvalues.SpacedString;
 import me.noci.quickutilities.quickcommand.mappings.spacedvalues.SpacedValue;
+import me.noci.quickutilities.utils.Fraction;
 import me.noci.quickutilities.utils.Require;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
@@ -41,6 +42,7 @@ public class CommandMapping {
         registerSpacedArgumentMapping(SpacedString.class, SpacedString::new);
         registerSpacedArgumentMapping(SpacedCharArray.class, SpacedCharArray::new);
 
+        registerArgumentMapping(Fraction.class, Fraction::of);
         registerArgumentMapping(String.class, argument -> argument);
         registerArgumentMapping(Character[].class, argument -> ArrayUtils.toObject(argument.toCharArray()));
         registerArgumentMapping(char[].class, String::toCharArray);
