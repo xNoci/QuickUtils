@@ -29,19 +29,12 @@ public class CommandMapping {
     private static final HashMap<Class<? extends SpacedValue<?>>, SpacedArgumentMapping<?>> SPACED_MAPPINGS = Maps.newHashMap();
 
     static {
-        registerArgumentMapping(World.class, Bukkit::getWorld);
-        registerArgumentMapping(Player.class, Bukkit::getPlayer);
-        registerArgumentMapping(GameMode.class, argument -> switch (argument.toLowerCase()) {
-            case "0", "survival" -> GameMode.SURVIVAL;
-            case "1", "creative" -> GameMode.CREATIVE;
-            case "2", "adventure" -> GameMode.ADVENTURE;
-            case "3", "spec", "spectator" -> GameMode.SPECTATOR;
-            default -> null;
-        });
-
         registerSpacedArgumentMapping(SpacedString.class, SpacedString::new);
         registerSpacedArgumentMapping(SpacedCharArray.class, SpacedCharArray::new);
 
+        registerArgumentMapping(World.class, Bukkit::getWorld);
+        registerArgumentMapping(Player.class, Bukkit::getPlayer);
+        registerArgumentMapping(GameMode.class, MappingFunctions::parseGameMode);
         registerArgumentMapping(Fraction.class, Fraction::of);
         registerArgumentMapping(String.class, argument -> argument);
         registerArgumentMapping(Character[].class, argument -> ArrayUtils.toObject(argument.toCharArray()));
