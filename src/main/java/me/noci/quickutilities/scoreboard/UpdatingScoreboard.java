@@ -22,7 +22,11 @@ public class UpdatingScoreboard {
         Require.checkState(scoreboardHandler != null, "TabListTeamBuilder cannot be null.");
         this.scoreboardHandler = scoreboardHandler;
         this.joinEvent = Events.subscribe(PlayerJoinEvent.class, EventPriority.MONITOR).handle(event -> update());
-        this.quitEvent = Events.subscribe(PlayerQuitEvent.class, EventPriority.MONITOR).handle(event -> update());
+        this.quitEvent = Events.subscribe(PlayerQuitEvent.class, EventPriority.MONITOR).handle(event -> {
+            Bukkit.getOnlinePlayers().stream()
+                    .filter(player -> !player.getUniqueId().equals(event.getPlayer().getUniqueId()))
+                    .forEach(this::update);
+        });
         this.runnable = Bukkit.getScheduler().runTaskTimer(plugin, this::update, 0, ticks);
     }
 

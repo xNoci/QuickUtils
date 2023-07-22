@@ -6,7 +6,7 @@ import me.noci.quickutilities.utils.BukkitUnit;
 import me.noci.quickutilities.utils.Require;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -19,7 +19,12 @@ public final class QuickBoard {
     private static UpdatingScoreboard updatingScoreboard = null;
 
     static {
-        Events.subscribe(PlayerJoinEvent.class, EventPriority.LOWEST).handle(event -> getScoreboardInternal(event.getPlayer()).delete());
+        Events.subscribe(PlayerQuitEvent.class, EventPriority.MONITOR).handle(event -> {
+            var scoreboard = PLAYER_BOARDS.remove(event.getPlayer().getUniqueId());
+            if (scoreboard != null) {
+                scoreboard.delete();
+            }
+        });
     }
 
     /**
