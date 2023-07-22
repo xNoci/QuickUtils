@@ -5,6 +5,7 @@ protocollib = "5.0.0"
 jetbrains-annotations = "23.0.0"
 xseries = "9.4.0"
 fastboard= "2.0.0"
+viaversion= "4.7.0"
 
 [libraries]
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
@@ -13,3 +14,4 @@ protocollib = { group = "com.comphenix.protocol", name = "ProtocolLib", version.
 jetbrains-annotations = { group = "org.jetbrains", name = "annotations", version.ref = "jetbrains-annotations" }
 xseries = { group = "com.github.cryptomorin", name = "XSeries", version.ref = "xseries" }
 fastboard = { group = "fr.mrmicky", name = "fastboard", version.ref = "fastboard"}
+viavsersion = { group = "com.viaversion", name = "viaversion-api", version.ref = "viaversion"}

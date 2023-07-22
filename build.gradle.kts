@@ -21,6 +21,10 @@ repositories {
         name = "ProtocolLib"
         url = uri("https://repo.dmulloy2.net/repository/public/")
     }
+    maven {
+        name = "ViaVersion"
+        url = uri("https://repo.viaversion.com")
+    }
 }
 
 dependencies {
@@ -29,6 +33,7 @@ dependencies {
 
     compileOnly(libs.spigot)
     compileOnly(libs.protocollib)
+    compileOnly(libs.viavsersion)
     compileOnly(libs.jetbrains.annotations)
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
