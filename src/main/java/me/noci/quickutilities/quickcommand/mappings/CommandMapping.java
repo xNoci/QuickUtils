@@ -3,6 +3,7 @@ package me.noci.quickutilities.quickcommand.mappings;
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Primitives;
 import me.noci.quickutilities.quickcommand.annotation.IgnoreStrictEnum;
+import me.noci.quickutilities.quickcommand.annotation.MatchNull;
 import me.noci.quickutilities.quickcommand.mappings.spacedvalues.SpacedCharArray;
 import me.noci.quickutilities.quickcommand.mappings.spacedvalues.SpacedString;
 import me.noci.quickutilities.quickcommand.mappings.spacedvalues.SpacedValue;
@@ -114,16 +115,19 @@ public class CommandMapping {
                 String currentArg = args[i - 1];
                 Class<?> parameterType = methodParameter[i].getType();
 
-                if (parameterType.isEnum() && methodParameter[i].isAnnotationPresent(IgnoreStrictEnum.class)) continue;
+                boolean ignoreStrictEnum = methodParameter[i].isAnnotationPresent(IgnoreStrictEnum.class);
+                boolean allowNull = methodParameter[i].isAnnotationPresent(MatchNull.class);
+
+                if (parameterType.isEnum() && ignoreStrictEnum) continue;
 
                 if (SpacedValue.class.isAssignableFrom(parameterType)) {
                     Object spacedMapping = mapSpacedArgument(new String[]{currentArg}, (Class<? extends SpacedValue>) parameterType);
-                    if (spacedMapping == null) return false;
+                    if (!allowNull && spacedMapping == null) return false;
                     continue;
                 }
 
                 Object mapping = mapArgument(currentArg, parameterType);
-                if (mapping == null) return false;
+                if (!allowNull && mapping == null) return false;
             } catch (Exception e) {
                 return false;
             }

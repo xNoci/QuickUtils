@@ -8,6 +8,7 @@ import me.noci.quickutilities.quickcommand.mappings.spacedvalues.SpacedCharArray
 import me.noci.quickutilities.quickcommand.mappings.spacedvalues.SpacedString;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -18,6 +19,10 @@ public final class GamemodeCommandExample extends QuickCommand {
     static {
         CommandMapping.registerPlayerMapping(SamplePlayer.class, SamplePlayer::new);
         CommandMapping.registerArgumentMapping(SamplePlayer.class, argument -> new SamplePlayer(Bukkit.getPlayer(argument)));
+        CommandMapping.registerArgumentMapping(SampleWorld.class, argument -> {
+            World world = Bukkit.getWorld(argument);
+            return world != null ? new SampleWorld(world) : null;
+        });
     }
 
     private GamemodeCommandExample() {
@@ -115,6 +120,11 @@ public final class GamemodeCommandExample extends QuickCommand {
         sender.sendMessage(s);
     }
 
+    @SubCommand(path = "world")
+    private void test(CommandSender sender, @MatchNull SampleWorld world) {
+        sender.sendMessage("World: " + (world == null));
+    }
+
     @Command
     @CommandPermission("command.gamemode") // Should be /gamemode <gamemode> <target>
     private void changeOther(Player player, GameMode gameMode, SamplePlayer target) {
@@ -150,13 +160,10 @@ public final class GamemodeCommandExample extends QuickCommand {
     }
 
 
-    private static class SamplePlayer {
+    private record SamplePlayer(Player player) {
+    }
 
-        private final Player player;
-
-        private SamplePlayer(Player player) {
-            this.player = player;
-        }
+    private record SampleWorld(World world) {
     }
 
 
