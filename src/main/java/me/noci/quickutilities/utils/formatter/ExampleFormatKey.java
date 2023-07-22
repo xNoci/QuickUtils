@@ -23,7 +23,7 @@ public final class ExampleFormatKey {
                 " He  currently has " + STATIC_FORMAT_KEY + " lives.";
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            ChatColor favColor = RandomUtils.randomChatColor();
+            ChatColor favColor = RandomUtils.color();
 
             MessageFormatter formatter = MessageFormatter.format(exampleMessage);    // Creating Message Formatter
             formatter.apply(ExampleEnumFormatKey.COLOR, favColor);                   // Key via EnumFormatKey

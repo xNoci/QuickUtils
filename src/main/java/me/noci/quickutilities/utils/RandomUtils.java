@@ -3,31 +3,26 @@ package me.noci.quickutilities.utils;
 import org.bukkit.ChatColor;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.SplittableRandom;
 import java.util.random.RandomGenerator;
 
 public class RandomUtils {
 
     public static boolean chance(double chance) {
-        if (chance <= 0)
-            return false;
-        return (RandomHolder.RANDOM.nextDouble() <= chance);
+        return !(chance <= 0) && RandomHolder.RANDOM.nextDouble() <= chance;
     }
 
-    public static boolean fiftyFifty() {
-        return RandomHolder.RANDOM.nextBoolean();
-    }
-
-    public static ChatColor randomChatColor() {
+    public static ChatColor color() {
         return ChatColor.values()[RandomHolder.RANDOM.nextInt(16)];
     }
 
-    public static ChatColor randomChatColor(ChatColor... exclude) {
-        ChatColor newColor;
-        do {
-            newColor = randomChatColor();
-        } while (Arrays.asList(exclude).contains(newColor));
-        return newColor;
+    @SuppressWarnings("StatementWithEmptyBody")
+    public static ChatColor color(ChatColor... exclude) {
+        List<ChatColor> excluded = Arrays.asList(exclude);
+        ChatColor color;
+        while (excluded.contains(color = color())) ;
+        return color;
     }
 
     public static RandomGenerator random() {
@@ -37,6 +32,5 @@ public class RandomUtils {
     private static class RandomHolder {
         private static final RandomGenerator RANDOM = new SplittableRandom();
     }
-
 
 }
