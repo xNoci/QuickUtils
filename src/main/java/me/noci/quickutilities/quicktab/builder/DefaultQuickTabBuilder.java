@@ -12,8 +12,9 @@ public class DefaultQuickTabBuilder implements QuickTabBuilder {
 
     private static final ChatColor DEFAULT_COLOR = ChatColor.WHITE;
 
-    private final TeamPrefix prefix = new TeamPrefix();
-    private final TeamSuffix suffix = new TeamSuffix();
+    private final TeamExtension prefix = new TeamExtension();
+    private final TeamExtension suffix = new TeamExtension();
+    private TabListFunction<Player, String> displayName = null;
     private TabListFunction<Player, Integer> sortID = (player, target) -> Integer.MAX_VALUE; //Default sorted as last
     private TabListFunction<Player, String[]> entries = (player, target) -> new String[]{target.getName()}; //Default only at the target to the team
     //If the server does not support 1.13 color is set to null because it will be used as the color of the end of the prefix
@@ -39,15 +40,21 @@ public class DefaultQuickTabBuilder implements QuickTabBuilder {
     }
 
     @Override
+    public QuickTabBuilder displayName(TabListFunction<Player, String> displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    @Override
     public QuickTabBuilder prefix(TabListFunction<Player, String> prefix, TabListCondition<Player> condition) {
-        this.prefix.setPrefixFunction(prefix);
+        this.prefix.setExtensionFunction(prefix);
         this.prefix.setCondition(condition);
         return this;
     }
 
     @Override
     public QuickTabBuilder suffix(TabListFunction<Player, String> suffix, TabListCondition<Player> condition) {
-        this.suffix.setSuffixFunction(suffix);
+        this.suffix.setExtensionFunction(suffix);
         this.suffix.setCondition(condition);
         return this;
     }
@@ -87,20 +94,22 @@ public class DefaultQuickTabBuilder implements QuickTabBuilder {
         int sortID = Math.min(this.sortID.apply(player, target), 999);
         List<String> entries = Lists.newArrayList(this.entries.apply(player, target));
 
+
+        String displayName = this.displayName != null ? this.displayName.apply(player, target) : null;
         ChatColor chatColor = this.color.apply(player, target);
         String prefix = convertPrefix(player, target, chatColor);
-        String suffix = this.suffix.getSuffix(player, target);
+        String suffix = this.suffix.getExtension(player, target);
         ChatColor color = this.color.apply(player, target);
         NameTagVisibility nameTagVisibility = this.nameTagVisibility.apply(player, target);
         CollisionRule collisionRule = this.collisionRule.apply(player, target);
         boolean allowFriendlyFire = this.allowFriendlyFire.apply(player, target);
         boolean seeFriendlyInvisible = this.seeFriendlyInvisible.apply(player, target);
 
-        return new TabListTeam(target, sortID, entries, prefix, suffix, color == null ? DEFAULT_COLOR : color, nameTagVisibility, collisionRule, allowFriendlyFire, seeFriendlyInvisible);
+        return new TabListTeam(target, sortID, displayName, entries, prefix, suffix, color == null ? DEFAULT_COLOR : color, nameTagVisibility, collisionRule, allowFriendlyFire, seeFriendlyInvisible);
     }
 
     /**
-     * Create a Prefix with the {@link TeamPrefix} field.
+     * Create a Prefix with the {@link TeamExtension} field.
      *
      * @param player The player which tab list will be set
      * @param target The current player that will be changed
@@ -112,7 +121,7 @@ public class DefaultQuickTabBuilder implements QuickTabBuilder {
      * This will limit the actual prefix length to 14 characters.
      */
     private String convertPrefix(Player player, Player target, ChatColor color) {
-        String prefix = this.prefix.getPrefix(player, target);
+        String prefix = this.prefix.getExtension(player, target);
 
         if (ReflectionUtils.supports(13) || color == null) return prefix;
         if (endsWithColorCode(prefix)) return prefix;

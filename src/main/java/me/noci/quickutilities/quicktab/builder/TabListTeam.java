@@ -4,6 +4,7 @@ import com.cryptomorin.xseries.ReflectionUtils;
 import lombok.Getter;
 import me.noci.quickutilities.quicktab.utils.CollisionRule;
 import me.noci.quickutilities.quicktab.utils.NameTagVisibility;
+import me.noci.quickutilities.utils.Require;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -15,7 +16,7 @@ public class TabListTeam {
     private final int sortID;
 
     @Getter private final List<String> entries;
-    @Getter private final String displayName; //TODO Set with builder
+    @Getter private final String displayName;
     @Getter private final String prefix;
     @Getter private final String suffix;
     @Getter private final ChatColor color;
@@ -24,12 +25,12 @@ public class TabListTeam {
     @Getter private final boolean allowFriendlyFire;
     @Getter private final boolean seeFriendlyInvisible;
 
-    public TabListTeam(Player player, int sortID, List<String> entries, String prefix, String suffix,
+    public TabListTeam(Player player, int sortID, String displayName, List<String> entries, String prefix, String suffix,
                        ChatColor color, NameTagVisibility nameTagVisibility, CollisionRule collisionRule,
                        boolean allowFriendlyFire, boolean seeFriendlyInvisible) {
         this.owner = player;
         this.sortID = sortID;
-        this.displayName = player.getDisplayName();
+        this.displayName = Require.nonBlank(displayName).orElse(player.getDisplayName());
         this.entries = entries;
         this.prefix = chopString(prefix);
         this.suffix = chopString(suffix);

@@ -35,6 +35,16 @@ public interface QuickTabBuilder {
     QuickTabBuilder entries(TabListFunction<Player, String[]> entries);
 
     /**
+     * This method sets the displayname for scoreboard team. If this is not set,
+     * the default display name will be the display name of the player,
+     * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
+     *
+     * @param displayName - The display name for the team of the given player
+     * @return the used {@link QuickTabBuilder}
+     */
+    QuickTabBuilder displayName(TabListFunction<Player, String> displayName);
+
+    /**
      * This method set the prefix for the given player if the {@link TabListCondition condition} is true, otherwise the prefix will be empty.
      * <br>If the version is below <strong>1.18</strong> the max prefix length will be limited to 16 characters.
      * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
