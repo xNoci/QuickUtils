@@ -2,7 +2,7 @@ package me.noci.quickutilities.packethandler;
 
 import com.cryptomorin.xseries.ReflectionUtils;
 import me.noci.quickutilities.QuickUtils;
-import me.noci.quickutilities.utils.ProtocolLibHook;
+import me.noci.quickutilities.hooks.ProtocolLibHook;
 
 import java.util.Set;
 
