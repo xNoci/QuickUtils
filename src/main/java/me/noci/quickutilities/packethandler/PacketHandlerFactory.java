@@ -1,12 +1,19 @@
 package me.noci.quickutilities.packethandler;
 
 import com.google.common.collect.Maps;
+import me.noci.quickutilities.input.sign.packets.SignPacketHandlerManager;
+import me.noci.quickutilities.quicktab.packets.TeamPacketHandlerManager;
 
 import java.util.HashMap;
 
 public class PacketHandlerFactory<T extends PacketHandler<T>> {
 
     private static final HashMap<Class<PacketHandler<?>>, PacketHandlerManager<?>> PACKET_HANDLER_MANAGERS = Maps.newHashMap();
+
+    static {
+        PacketHandlerFactory.registerPacketManger(new TeamPacketHandlerManager());
+        PacketHandlerFactory.registerPacketManger(new SignPacketHandlerManager());
+    }
 
     public static <T extends PacketHandler<T>> T getPacketHandler(Class<T> type) {
         try {
