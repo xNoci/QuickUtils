@@ -1,6 +1,43 @@
 package me.noci.quickutilities.utils;
 
+import java.util.Optional;
+
 public class Require {
+
+    /**
+     * Check if a string is not null, empty or blank
+     *
+     * @param sequence to test
+     * @return Optional with the given string, when it's not null, empty or blank. Otherwise, returns an empty optional
+     */
+    public static Optional<String> nonBlank(CharSequence sequence) {
+        return !isBlank(sequence) ? Optional.of(sequence.toString()) : Optional.empty();
+    }
+
+    /**
+     * Check if a string is not null, empty or blank
+     *
+     * @param sequence to test
+     * @return false - when string is null, empty or blank
+     */
+    public static boolean notBlank(CharSequence sequence) {
+        return !isBlank(sequence);
+    }
+
+    /**
+     * Check if a string is null, empty or blank
+     *
+     * @param sequence to test
+     * @return true - when string is null, empty or blank
+     */
+    public static boolean isBlank(CharSequence sequence) {
+        if (sequence == null || sequence.length() == 0) return true;
+        for (int i = 0; i < sequence.length(); i++) {
+            char c = sequence.charAt(i);
+            if (!Character.isWhitespace(c)) return false;
+        }
+        return true;
+    }
 
     /**
      * Check if object is not null.
@@ -20,8 +57,8 @@ public class Require {
      *
      * @param object  to check
      * @param message to send when object is null
-     * @return The given object
      * @param <T>
+     * @return The given object
      * @throws NullPointerException Throws if object is null
      */
     public static <T> T nonNull(T object, String message) throws NullPointerException {
