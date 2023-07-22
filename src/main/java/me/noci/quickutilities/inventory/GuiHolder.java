@@ -6,6 +6,10 @@ import org.bukkit.inventory.InventoryHolder;
 
 public class GuiHolder implements InventoryHolder {
 
+    static {
+        GuiManager.initialise();
+    }
+
     @Getter private final QuickGUIProvider provider;
     @Getter private final InventoryContent content;
     @Getter private PageContent pageContent = null;

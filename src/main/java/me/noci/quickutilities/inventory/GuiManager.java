@@ -1,63 +1,65 @@
 package me.noci.quickutilities.inventory;
 
+import me.noci.quickutilities.QuickUtils;
+import me.noci.quickutilities.events.Events;
 import me.noci.quickutilities.utils.BukkitUnit;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class GuiManager extends BukkitRunnable implements Listener {
+public final class GuiManager {
 
-    public GuiManager(JavaPlugin plugin) {
-        runTaskTimer(plugin, 0, BukkitUnit.SECONDS.toTicks(1) / 2);
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    private GuiManager() {
+        //SEAL CLASS
     }
 
-    @Override
-    public void run() {
-        Bukkit.getOnlinePlayers().stream()
-                .filter(player -> player.getOpenInventory().getTopInventory() != null)
-                .filter(player -> player.getOpenInventory().getTopInventory().getHolder() instanceof GuiHolder)
-                .forEach(player -> {
-                    Inventory inventory = player.getOpenInventory().getTopInventory();
-                    GuiHolder inventoryHolder = (GuiHolder) inventory.getHolder();
+    static void initialise() {
+        QuickUtils.instance().getLogger().info("Initialising gui manager");
 
-                    inventoryHolder.getProvider().update(player, inventoryHolder.getContent());
+        Events.subscribe(InventoryClickEvent.class)
+                .filter(event -> !(event.getWhoClicked() instanceof Player))
+                .filter(event -> event.getClickedInventory() == null)
+                .filter(event -> !(event.getInventory().getHolder() instanceof GuiHolder))
+                .handle(event -> {
+                    Player player = (Player) event.getWhoClicked();
+                    GuiHolder holder = (GuiHolder) event.getInventory().getHolder();
+                    QuickGUIProvider provider = holder.getProvider();
+                    InventoryContent content = holder.getContent();
 
-                    if (inventoryHolder.hasPageContent()) {
-                        inventoryHolder.getPageContent().updatePage();
-                    }
+                    event.setCancelled(provider.isCancelledClick());
+                    if (event.getClickedInventory().equals(event.getView().getBottomInventory())) return;
 
-                    inventoryHolder.applyContent();
+                    Slot slot = content.getSlot(event.getSlot());
+                    if (slot == null) return;
+
+                    ClickType clickType = event.getClick();
+                    InventoryAction action = event.getAction();
+                    SlotClickEvent clickEvent = new SlotClickEvent(player, slot, slot.getItemStack(), clickType, action);
+                    Slot clickedSlot = holder.getContent().getSlot(event.getSlot());
+                    clickedSlot.getAction().handle(clickEvent);
                 });
+
+        Bukkit.getScheduler().runTaskTimer(QuickUtils.instance(), () -> {
+            Bukkit.getOnlinePlayers().stream()
+                    .filter(player -> player.getOpenInventory().getTopInventory() != null)
+                    .filter(player -> player.getOpenInventory().getTopInventory().getHolder() instanceof GuiHolder)
+                    .forEach(player -> {
+                        Inventory inventory = player.getOpenInventory().getTopInventory();
+                        GuiHolder inventoryHolder = (GuiHolder) inventory.getHolder();
+
+                        inventoryHolder.getProvider().update(player, inventoryHolder.getContent());
+
+                        if (inventoryHolder.hasPageContent()) {
+                            inventoryHolder.getPageContent().updatePage();
+                        }
+
+                        inventoryHolder.applyContent();
+                    });
+        }, 0, BukkitUnit.SECONDS.toTicks(1) / 2);
     }
 
-    @EventHandler
-    public void handleInventoryClick(InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player player)) return;
-        if (!(event.getInventory().getHolder() instanceof GuiHolder inventoryHolder) || event.getClickedInventory() == null)
-            return;
-
-        QuickGUIProvider provider = inventoryHolder.getProvider();
-        InventoryContent content = inventoryHolder.getContent();
-
-        event.setCancelled(provider.isCancelledClick());
-        if (event.getClickedInventory().equals(event.getView().getBottomInventory())) return;
-
-        Slot slot = content.getSlot(event.getSlot());
-        if (slot == null) return;
-
-        ClickType clickType = event.getClick();
-        InventoryAction action = event.getAction();
-        SlotClickEvent clickEvent = new SlotClickEvent(player, slot, slot.getItemStack(), clickType, action);
-        Slot clickedSlot = inventoryHolder.getContent().getSlot(event.getSlot());
-        clickedSlot.getAction().handle(clickEvent);
-    }
 
 }

@@ -1,7 +1,6 @@
 package me.noci.quickutilities;
 
 import me.noci.quickutilities.commands.QuickUtilsCommand;
-import me.noci.quickutilities.inventory.GuiManager;
 import me.noci.quickutilities.listener.EntityDamageByEntityListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,9 +15,6 @@ public class QuickUtils extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-
-
-        new GuiManager(this);
 
         registerListener();
         registerCommands();
