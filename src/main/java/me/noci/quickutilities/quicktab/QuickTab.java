@@ -7,6 +7,7 @@ import me.noci.quickutilities.quicktab.builder.DefaultQuickTabBuilder;
 import me.noci.quickutilities.quicktab.builder.QuickTabBuilder;
 import me.noci.quickutilities.quicktab.builder.TabListTeam;
 import me.noci.quickutilities.quicktab.packets.TeamPacketHandler;
+import me.noci.quickutilities.utils.BukkitUnit;
 import me.noci.quickutilities.utils.Require;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -60,8 +61,21 @@ public class QuickTab {
      * @throws IllegalStateException When a {@link UpdatingTabList} is already set. Use {@link #removeUpdatingTabList()} to remove the current one.
      */
     public static void setUpdatingTabList(QuickTabBuilder builder) {
+        setUpdatingTabList(builder, -1, BukkitUnit.TICKS);
+    }
+
+    /**
+     * Sets the {@link UpdatingTabList} which will automatically update the current used {@link QuickTabBuilder} when a player joins the server.
+     * It also updates in a specific interval which can be set using {@param value} and {@param timeUnit}.
+     *
+     * @param builder  The {@link QuickTabBuilder} which should be used
+     * @param value    interval to update scoreboard
+     * @param timeUnit interval unit
+     * @throws IllegalStateException When a {@link UpdatingTabList} is already set. Use {@link #removeUpdatingTabList()} to remove the current one.
+     */
+    public static void setUpdatingTabList(QuickTabBuilder builder, int value, BukkitUnit timeUnit) {
         Require.checkState(updatingTabList == null, "Cannot set updating tab list while one is already set.");
-        updatingTabList = new UpdatingTabList(builder);
+        updatingTabList = new UpdatingTabList(builder, value <= 0 ? -1 : timeUnit.toTicks(value));
         updatingTabList.update();
     }
 
