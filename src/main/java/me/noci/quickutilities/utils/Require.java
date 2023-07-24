@@ -10,8 +10,8 @@ public class Require {
      * @param sequence to test
      * @return Optional with the given string, when it's not null, empty or blank. Otherwise, returns an empty optional
      */
-    public static Optional<String> nonBlank(CharSequence sequence) {
-        return !isBlank(sequence) ? Optional.of(sequence.toString()) : Optional.empty();
+    public static <T extends CharSequence> Optional<T> nonBlank(T sequence) {
+        return !isBlank(sequence) ? Optional.of(sequence) : Optional.empty();
     }
 
     /**
