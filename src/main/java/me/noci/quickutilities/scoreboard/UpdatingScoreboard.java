@@ -27,13 +27,13 @@ public class UpdatingScoreboard {
                     .filter(player -> !player.getUniqueId().equals(event.getPlayer().getUniqueId()))
                     .forEach(this::update);
         });
-        this.runnable = Bukkit.getScheduler().runTaskTimer(plugin, this::update, 0, ticks);
+        this.runnable = ticks <= 0 ? null : Bukkit.getScheduler().runTaskTimer(plugin, this::update, 0, ticks);
     }
 
     public void delete() {
         joinEvent.unsubscribe();
         quitEvent.unsubscribe();
-        runnable.cancel();
+        if (runnable != null) runnable.cancel();
     }
 
     public void update(Player player) {

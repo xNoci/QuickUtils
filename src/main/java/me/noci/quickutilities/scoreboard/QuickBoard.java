@@ -64,6 +64,18 @@ public final class QuickBoard {
     /**
      * Setting a new updating scoreboard instance.
      * The scoreboard for each player will be updated every time a player leaves or joins.
+     *
+     * @param plugin     which sets the updating scoreboard instance
+     * @param scoreboard the scoreboard which will be set for every player
+     * @throws IllegalStateException when an updating scoreboard instance is already set
+     */
+    public static synchronized void setUpdatingScoreboard(JavaPlugin plugin, ScoreboardUpdate<String> scoreboard) {
+        setUpdatingScoreboard(plugin, -1, BukkitUnit.TICKS, scoreboard);
+    }
+
+    /**
+     * Setting a new updating scoreboard instance.
+     * The scoreboard for each player will be updated every time a player leaves or joins.
      * It also updates in a specific interval which can be set using {@param value} and {@param timeUnit}.
      *
      * @param plugin     which sets the updating scoreboard instance
@@ -74,7 +86,7 @@ public final class QuickBoard {
      */
     public static synchronized void setUpdatingScoreboard(JavaPlugin plugin, int value, BukkitUnit timeUnit, ScoreboardUpdate<String> scoreboard) {
         checkScoreboardNotSet();
-        updatingScoreboard = new UpdatingScoreboard(plugin, timeUnit.toTicks(value), scoreboard);
+        updatingScoreboard = new UpdatingScoreboard(plugin, value <= 0 ? -1 : timeUnit.toTicks(value), scoreboard);
     }
 
     /**
