@@ -20,4 +20,6 @@ public @interface SubCommand {
      */
     String[] path();
 
+    //TODO ADD ALIASES PATH
+
 }
