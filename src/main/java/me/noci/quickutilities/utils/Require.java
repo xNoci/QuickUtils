@@ -57,6 +57,20 @@ public class Require {
      *
      * @param object  to check
      * @param message to send when object is null
+     * @param args    arguments to format the message
+     * @param <T>
+     * @return The given object
+     * @throws NullPointerException Throws if object is null
+     */
+    public static <T> T nonNull(T object, String message, Object... args) throws NullPointerException {
+        return nonNull(object, message.formatted(args));
+    }
+
+    /**
+     * Check if object is not null.
+     *
+     * @param object  to check
+     * @param message to send when object is null
      * @param <T>
      * @return The given object
      * @throws NullPointerException Throws if object is null
@@ -71,10 +85,34 @@ public class Require {
      *
      * @param requirement which has to be fulfilled
      * @param message     to send when the {@code requirement} is false
+     * @param args        arguments to format the message
+     * @throws IllegalStateException Throws if {@param requirement} is false
+     */
+    public static void checkState(boolean requirement, String message, Object... args) throws IllegalStateException {
+        checkState(requirement, message.formatted(args));
+    }
+
+    /**
+     * Check if a requirement is fulfilled.
+     *
+     * @param requirement which has to be fulfilled
+     * @param message     to send when the {@code requirement} is false
      * @throws IllegalStateException Throws if {@param requirement} is false
      */
     public static void checkState(boolean requirement, String message) throws IllegalStateException {
         check(requirement, new IllegalStateException(message));
+    }
+
+    /**
+     * Check if a requirement is fulfilled.
+     *
+     * @param requirement which has to be fulfilled
+     * @param message     to send when the {@code requirement} is false
+     * @param args        arguments to format the message
+     * @throws IllegalArgumentException Throws if {@param requirement} is false
+     */
+    public static void checkArgument(boolean requirement, String message, Object... args) throws IllegalStateException {
+        checkArgument(requirement, message.formatted(args));
     }
 
     /**
