@@ -2,19 +2,19 @@ package me.noci.quickutilities.utils;
 
 public class MathUtils {
 
-    public static int clamp(int min, int max, int value) {
+    public static int clamp(int value, int min, int max) {
         return Math.max(min, Math.min(value, max));
     }
 
-    public static long clamp(long min, long max, long value) {
+    public static long clamp(long value, long min, long max) {
         return Math.max(min, Math.min(value, max));
     }
 
-    public static float clamp(float min, float max, float value) {
+    public static float clamp(float value, float min, float max) {
         return Math.max(min, Math.min(value, max));
     }
 
-    public static double clamp(double min, double max, double value) {
+    public static double clamp(double value, double min, double max) {
         return Math.max(min, Math.min(value, max));
     }
 
