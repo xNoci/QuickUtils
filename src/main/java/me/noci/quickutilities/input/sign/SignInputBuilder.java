@@ -82,7 +82,7 @@ public class SignInputBuilder {
     }
 
     public SignInputBuilder inputLine(int inputLine) {
-        this.inputLine = MathUtils.clamp(1, 4, inputLine) - 1;
+        this.inputLine = MathUtils.clamp(inputLine, 1, 4) - 1;
         return this;
     }
 
