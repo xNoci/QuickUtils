@@ -1,5 +1,7 @@
 package me.noci.quickutilities.utils;
 
+import com.google.common.collect.Lists;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +50,14 @@ public class EnumUtils {
         return Arrays.stream(enumClass.getEnumConstants())
                 .filter(e -> ignoreCase ? e.name().equalsIgnoreCase(value) : e.name().equals(value))
                 .findFirst();
+    }
+
+    public static <T extends Enum<?>> List<T> asList(Class<T> enumClass) {
+        return asList(enumClass.getEnumConstants());
+    }
+
+    public static <T extends Enum<?>> List<T> asList(T[] values) {
+        return Lists.newArrayList(values);
     }
 
 }
