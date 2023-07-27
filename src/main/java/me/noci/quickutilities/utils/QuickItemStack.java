@@ -183,8 +183,16 @@ public class QuickItemStack extends ItemStack {
     }
 
     public QuickItemStack glow() {
+        return this.glow(false);
+    }
+
+    public QuickItemStack glow(boolean remove) {
         addItemFlags();
-        setUnsafeEnchantment(Enchantment.DURABILITY, 1);
+        if (!remove) {
+            setUnsafeEnchantment(Enchantment.DURABILITY, 1);
+        } else {
+            removeEnchantment(Enchantment.DURABILITY);
+        }
         return this;
     }
 
