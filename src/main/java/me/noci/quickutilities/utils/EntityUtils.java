@@ -36,6 +36,10 @@ public class EntityUtils {
         Bukkit.getScheduler().runTaskLater(QuickUtils.instance(), () -> player.spigot().respawn(), ticks);
     }
 
+    public static void setLevelProgress(Player player, int value, int max) {
+        setLevelProgress(player, value, 0, max);
+    } 
+
     public static void setLevelProgress(Player player, int value, int min, int max) {
         Require.checkArgument(value >= 0, "Value has to be greater or equal to zero");
         Require.checkState(max > min, "Max (%s) has to be greater than min (%s)", min, max);
