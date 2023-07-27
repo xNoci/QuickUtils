@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class EnumUtils {
 
@@ -58,6 +59,19 @@ public class EnumUtils {
 
     public static <T extends Enum<?>> List<T> asList(T[] values) {
         return Lists.newArrayList(values);
+    }
+
+    public static <T extends Enum<?>> Stream<T> asStream(Class<T> enumClass) {
+        return asStream(enumClass.getEnumConstants());
+    }
+
+    public static <T extends Enum<?>> Stream<T> asStream(T[] values) {
+        return asList(values).stream();
+    }
+
+    public static <T extends Enum<?>> T at(Class<T> enumClass, int index) {
+        T[] values = enumClass.getEnumConstants();
+        return values[index % values.length];
     }
 
 }
