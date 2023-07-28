@@ -38,7 +38,7 @@ public class EntityUtils {
 
     public static void setLevelProgress(Player player, int value, int max) {
         setLevelProgress(player, value, 0, max);
-    } 
+    }
 
     public static void setLevelProgress(Player player, int value, int min, int max) {
         Require.checkArgument(value >= 0, "Value has to be greater or equal to zero");
@@ -89,7 +89,10 @@ public class EntityUtils {
                 .filter(entity -> entity.getLocation().distanceSquared(rootLocation) <= squaredDistance)
                 .map(entity -> (T) entity)
                 .collect(Collectors.toCollection(ArrayList::new));
+    }
 
+    public static int generateEntityID() {
+        return EntityCountAccessor.get();
     }
 
 }

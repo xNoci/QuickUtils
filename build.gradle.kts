@@ -43,9 +43,10 @@ dependencies {
 tasks {
 
     shadowJar {
+        val relocatePackage = "${project.group}.dep."
         archiveFileName.set("${project.property("pluginName")}-${project.property("version")}.jar")
-        relocate("com.cryptomorin.xseries", "${project.group}.dep.xseries")
-        relocate("fr.mrmicky.fastboard", "${project.group}.dep.fastboard")
+        relocate("com.cryptomorin.xseries", "${relocatePackage}xseries")
+        relocate("fr.mrmicky.fastboard", "${relocatePackage}fastboard")
 
         minimize()
     }
