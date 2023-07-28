@@ -14,6 +14,7 @@ public final class GuiManager {
 
     private GuiManager() {
         //SEAL CLASS
+        //TODO Add animation system
     }
 
     static void initialise() {
