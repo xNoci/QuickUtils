@@ -11,7 +11,7 @@ import java.util.List;
 public class QuickUtilsCommand extends QuickCommand {
 
     public QuickUtilsCommand(JavaPlugin plugin) {
-        super(plugin, "quickutils", List.of(), "Shows information about this plugin.", "§cUsage: /quickutils");
+        super(plugin, "quickutils", List.of("qu"), "Shows information about this plugin.", "§cUsage: /quickutils");
         autoRegister();
     }
 
