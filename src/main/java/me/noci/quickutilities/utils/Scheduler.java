@@ -24,64 +24,84 @@ public class Scheduler {
         task.cancel();
     }
 
-    public BukkitTask execute(Runnable runnable) {
-        return bukkitScheduler().runTask(QuickUtils.instance(), runnable);
+    public BukkitTask execute(Task task) {
+        return bukkitScheduler().runTask(QuickUtils.instance(), task::run);
     }
 
-    public BukkitTask executeAsync(Runnable runnable) {
-        return bukkitScheduler().runTaskAsynchronously(QuickUtils.instance(), runnable);
+    public BukkitTask executeAsync(Task task) {
+        return bukkitScheduler().runTaskAsynchronously(QuickUtils.instance(), task::run);
     }
 
-    public static BukkitTask delay(long time, BukkitUnit timeUnit, Runnable runnable) {
-        return delay(timeUnit.toTicks(time), runnable);
+    public static BukkitTask delay(long time, BukkitUnit timeUnit, Task task) {
+        return delay(timeUnit.toTicks(time), task);
     }
 
-    public static BukkitTask delay(long ticks, Runnable runnable) {
-        return bukkitScheduler().runTaskLater(QuickUtils.instance(), runnable, ticks);
+    public static BukkitTask delay(long ticks, Task task) {
+        return bukkitScheduler().runTaskLater(QuickUtils.instance(), task::run, ticks);
     }
 
-    public static BukkitTask delayAsync(long time, BukkitUnit timeUnit, Runnable runnable) {
-        return delayAsync(timeUnit.toTicks(time), runnable);
+    public static BukkitTask delayAsync(long time, BukkitUnit timeUnit, Task task) {
+        return delayAsync(timeUnit.toTicks(time), task);
     }
 
-    public static BukkitTask delayAsync(long ticks, Runnable runnable) {
-        return bukkitScheduler().runTaskLaterAsynchronously(QuickUtils.instance(), runnable, ticks);
+    public static BukkitTask delayAsync(long ticks, Task task) {
+        return bukkitScheduler().runTaskLaterAsynchronously(QuickUtils.instance(), task::run, ticks);
     }
 
-    public static void repeat(long time, BukkitUnit timeUnit, BukkitRunnable runnable) {
-        repeat(0, timeUnit.toTicks(time), runnable);
+    public static void repeat(long time, BukkitUnit timeUnit, CancelableTask task) {
+        repeat(0, timeUnit.toTicks(time), task);
     }
 
-    public static void repeat(long repeatTicks, BukkitRunnable runnable) {
-        repeat(0, repeatTicks, runnable);
+    public static void repeat(long repeatTicks, CancelableTask task) {
+        repeat(0, repeatTicks, task);
     }
 
-    public static void repeat(long delayTicks, long repeatTicks, BukkitRunnable runnable) {
-        runnable.runTaskTimer(QuickUtils.instance(), delayTicks, repeatTicks);
+    public static void repeat(long delayTicks, long repeatTicks, CancelableTask task) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                task.run(this);
+            }
+        }.runTaskTimer(QuickUtils.instance(), delayTicks, repeatTicks);
     }
 
-    public static BukkitTask repeat(long time, BukkitUnit timeUnit, Runnable runnable) {
-        return repeat(0, timeUnit.toTicks(time), runnable);
+    public static BukkitTask repeat(long time, BukkitUnit timeUnit, Task task) {
+        return repeat(0, timeUnit.toTicks(time), task);
     }
 
-    public static BukkitTask repeat(long repeatTicks, Runnable runnable) {
-        return repeat(0, repeatTicks, runnable);
+    public static BukkitTask repeat(long repeatTicks, Task task) {
+        return repeat(0, repeatTicks, task);
     }
 
-    public static BukkitTask repeat(long delayTicks, long repeatTicks, Runnable runnable) {
-        return bukkitScheduler().runTaskTimer(QuickUtils.instance(), runnable, delayTicks, repeatTicks);
+    public static BukkitTask repeat(long delayTicks, long repeatTicks, Task task) {
+        return bukkitScheduler().runTaskTimer(QuickUtils.instance(), task::run, delayTicks, repeatTicks);
     }
 
-    public static void repeatAsync(long time, BukkitUnit timeUnit, BukkitRunnable runnable) {
-        repeatAsync(0, timeUnit.toTicks(time), runnable);
+    public static void repeatAsync(long time, BukkitUnit timeUnit, CancelableTask task) {
+        repeatAsync(0, timeUnit.toTicks(time), task);
     }
 
-    public static void repeatAsync(long repeatTicks, BukkitRunnable runnable) {
-        repeatAsync(0, repeatTicks, runnable);
+    public static void repeatAsync(long repeatTicks, CancelableTask task) {
+        repeatAsync(0, repeatTicks, task);
     }
 
-    public static void repeatAsync(long delayTicks, long repeatTicks, BukkitRunnable runnable) {
-        runnable.runTaskTimerAsynchronously(QuickUtils.instance(), delayTicks, repeatTicks);
+    public static void repeatAsync(long delayTicks, long repeatTicks, CancelableTask task) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                task.run(this);
+            }
+        }.runTaskTimerAsynchronously(QuickUtils.instance(), delayTicks, repeatTicks);
+    }
+
+    @FunctionalInterface
+    public interface Task {
+        void run();
+    }
+
+    @FunctionalInterface
+    public interface CancelableTask {
+        void run(BukkitRunnable runnable);
     }
 
 }

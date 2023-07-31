@@ -5,7 +5,6 @@ import me.noci.quickutilities.input.functions.InputExecutor;
 import me.noci.quickutilities.utils.BukkitUnit;
 import me.noci.quickutilities.utils.Scheduler;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class TitledPlayerChatInput extends BaseChatInput {
 
@@ -24,20 +23,17 @@ public class TitledPlayerChatInput extends BaseChatInput {
     protected TitledPlayerChatInput(Player player, String cancelString, InputExecutor inputExecutor, String title, String subtitle) {
         super(player, cancelString, inputExecutor);
 
-        Scheduler.repeat(10, new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (!isInputMode()) {
-                    if (fadeOut) {
-                        Titles.sendTitle(player, 0, 10, fadeOutTime, title, subtitle);
-                    } else {
-                        Titles.clearTitle(player);
-                    }
-                    cancel();
-                    return;
+        Scheduler.repeat(10, runnable -> {
+            if (!isInputMode()) {
+                if (fadeOut) {
+                    Titles.sendTitle(player, 0, 10, fadeOutTime, title, subtitle);
+                } else {
+                    Titles.clearTitle(player);
                 }
-                Titles.sendTitle(player, 0, 20, 0, title, subtitle);
+                runnable.cancel();
+                return;
             }
+            Titles.sendTitle(player, 0, 20, 0, title, subtitle);
         });
     }
 }

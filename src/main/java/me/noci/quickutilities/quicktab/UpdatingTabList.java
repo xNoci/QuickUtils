@@ -22,9 +22,9 @@ public class UpdatingTabList {
     protected UpdatingTabList(QuickTabBuilder builder, long ticks) {
         Require.checkState(builder != null, "TabListTeamBuilder cannot be null.");
         this.builder = builder;
-        this.joinEvent = Events.subscribe(PlayerJoinEvent.class, EventPriority.MONITOR).handle(event -> update());
-        this.quitEvent = Events.subscribe(PlayerQuitEvent.class, EventPriority.MONITOR).handle(event -> update());
-        this.runnable = ticks <= 0 ? null : Scheduler.repeat(ticks, this::update);
+        this.joinEvent = Events.subscribe(PlayerJoinEvent.class, EventPriority.MONITOR).handle(event -> updateAll());
+        this.quitEvent = Events.subscribe(PlayerQuitEvent.class, EventPriority.MONITOR).handle(event -> updateAll());
+        this.runnable = ticks <= 0 ? null : Scheduler.repeat(ticks, this::updateAll);
     }
 
     public void delete() {
@@ -37,7 +37,7 @@ public class UpdatingTabList {
         QuickTab.internalUpdate(player, builder);
     }
 
-    public void update() {
+    public void updateAll() {
         Bukkit.getOnlinePlayers().forEach(this::update);
     }
 

@@ -76,7 +76,7 @@ public class QuickTab {
     public static void setUpdatingTabList(QuickTabBuilder builder, int value, BukkitUnit timeUnit) {
         Require.checkState(updatingTabList == null, "Cannot set updating tab list while one is already set.");
         updatingTabList = new UpdatingTabList(builder, value <= 0 ? -1 : timeUnit.toTicks(value));
-        updatingTabList.update();
+        updatingTabList.updateAll();
     }
 
     /**

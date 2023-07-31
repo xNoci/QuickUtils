@@ -58,7 +58,7 @@ public final class QuickBoard {
      */
     public static void updateAll() {
         checkScoreboardSet();
-        updatingScoreboard.update();
+        updatingScoreboard.updateAll();
     }
 
     /**
