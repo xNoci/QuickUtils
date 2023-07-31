@@ -19,6 +19,7 @@ import java.util.function.Consumer;
 public class SignPacketHandlerV1_8 implements SignPacketHandler {
 
     @Override
+    @SuppressWarnings("deprecation")
     public void openEditor(Player player, BlockPosition position, SignData signData) {
         var protocol = ProtocolLibrary.getProtocolManager();
 
