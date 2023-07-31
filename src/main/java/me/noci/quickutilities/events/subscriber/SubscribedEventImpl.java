@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import me.noci.quickutilities.events.subscriber.eventattribute.AttributeRegistryImpl;
 import me.noci.quickutilities.events.subscriber.eventattribute.EventAttributeImpl;
+import me.noci.quickutilities.utils.Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.event.*;
 import org.bukkit.plugin.EventExecutor;
@@ -78,7 +79,7 @@ public class SubscribedEventImpl<T extends Event> implements SubscribedEvent<T>,
         if(delayTicks <= 0) {
             eventHandler.handle(typedEvent, attributeRegistry);
         } else {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> eventHandler.handle(typedEvent, attributeRegistry), delayTicks);
+            Scheduler.delay(delayTicks, () -> eventHandler.handle(typedEvent, attributeRegistry));
         }
 
         calls++;

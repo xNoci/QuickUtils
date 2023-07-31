@@ -1,7 +1,5 @@
 package me.noci.quickutilities.utils;
 
-import me.noci.quickutilities.QuickUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -26,14 +24,17 @@ public class EntityUtils {
         }
     }
 
-    public static void respawn(Player player, int delay, BukkitUnit timeUnit) {
-        long ticks = timeUnit.toTicks(delay);
+    public static void respawn(Player player, long delay, BukkitUnit timeUnit) {
+        respawn(player, timeUnit.toTicks(delay));
+    }
+
+    public static void respawn(Player player, long ticks) {
         if (ticks <= 0) {
             player.spigot().respawn();
             return;
         }
 
-        Bukkit.getScheduler().runTaskLater(QuickUtils.instance(), () -> player.spigot().respawn(), ticks);
+        Scheduler.delay(ticks, () -> player.spigot().respawn());
     }
 
     public static void setLevelProgress(Player player, int value, int max) {

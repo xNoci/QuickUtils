@@ -1,10 +1,10 @@
 package me.noci.quickutilities.quicktab;
 
-import me.noci.quickutilities.QuickUtils;
 import me.noci.quickutilities.events.Events;
 import me.noci.quickutilities.events.subscriber.SubscribedEvent;
 import me.noci.quickutilities.quicktab.builder.QuickTabBuilder;
 import me.noci.quickutilities.utils.Require;
+import me.noci.quickutilities.utils.Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
@@ -24,7 +24,7 @@ public class UpdatingTabList {
         this.builder = builder;
         this.joinEvent = Events.subscribe(PlayerJoinEvent.class, EventPriority.MONITOR).handle(event -> update());
         this.quitEvent = Events.subscribe(PlayerQuitEvent.class, EventPriority.MONITOR).handle(event -> update());
-        this.runnable = ticks <= 0 ? null : Bukkit.getScheduler().runTaskTimer(QuickUtils.instance(), this::update, 0, ticks);
+        this.runnable = ticks <= 0 ? null : Scheduler.repeat(ticks, this::update);
     }
 
     public void delete() {

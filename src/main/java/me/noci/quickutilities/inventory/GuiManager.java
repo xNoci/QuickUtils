@@ -3,6 +3,7 @@ package me.noci.quickutilities.inventory;
 import me.noci.quickutilities.QuickUtils;
 import me.noci.quickutilities.events.Events;
 import me.noci.quickutilities.utils.BukkitUnit;
+import me.noci.quickutilities.utils.Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -43,23 +44,21 @@ public final class GuiManager {
                     clickedSlot.getAction().handle(clickEvent);
                 });
 
-        Bukkit.getScheduler().runTaskTimer(QuickUtils.instance(), () -> {
-            Bukkit.getOnlinePlayers().stream()
-                    .filter(player -> player.getOpenInventory().getTopInventory() != null)
-                    .filter(player -> player.getOpenInventory().getTopInventory().getHolder() instanceof GuiHolder)
-                    .forEach(player -> {
-                        Inventory inventory = player.getOpenInventory().getTopInventory();
-                        GuiHolder inventoryHolder = (GuiHolder) inventory.getHolder();
+        Scheduler.repeat(BukkitUnit.SECONDS.toTicks(1) / 2, () -> Bukkit.getOnlinePlayers().stream()
+                .filter(player -> player.getOpenInventory().getTopInventory() != null)
+                .filter(player -> player.getOpenInventory().getTopInventory().getHolder() instanceof GuiHolder)
+                .forEach(player -> {
+                    Inventory inventory = player.getOpenInventory().getTopInventory();
+                    GuiHolder inventoryHolder = (GuiHolder) inventory.getHolder();
 
-                        inventoryHolder.getProvider().update(player, inventoryHolder.getContent());
+                    inventoryHolder.getProvider().update(player, inventoryHolder.getContent());
 
-                        if (inventoryHolder.hasPageContent()) {
-                            inventoryHolder.getPageContent().updatePage();
-                        }
+                    if (inventoryHolder.hasPageContent()) {
+                        inventoryHolder.getPageContent().updatePage();
+                    }
 
-                        inventoryHolder.applyContent();
-                    });
-        }, 0, BukkitUnit.SECONDS.toTicks(1) / 2);
+                    inventoryHolder.applyContent();
+                }));
     }
 
 

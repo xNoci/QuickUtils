@@ -3,6 +3,7 @@ package me.noci.quickutilities.scoreboard;
 import me.noci.quickutilities.events.Events;
 import me.noci.quickutilities.events.subscriber.SubscribedEvent;
 import me.noci.quickutilities.utils.Require;
+import me.noci.quickutilities.utils.Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
@@ -27,7 +28,7 @@ public class UpdatingScoreboard {
                     .filter(player -> !player.getUniqueId().equals(event.getPlayer().getUniqueId()))
                     .forEach(this::update);
         });
-        this.runnable = ticks <= 0 ? null : Bukkit.getScheduler().runTaskTimer(plugin, this::update, 0, ticks);
+        this.runnable = ticks <= 0 ? null : Scheduler.repeat(ticks, this::update);
     }
 
     public void delete() {

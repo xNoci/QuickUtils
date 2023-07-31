@@ -1,9 +1,9 @@
 package me.noci.quickutilities.input;
 
 import com.cryptomorin.xseries.messages.Titles;
-import me.noci.quickutilities.QuickUtils;
 import me.noci.quickutilities.input.functions.InputExecutor;
 import me.noci.quickutilities.utils.BukkitUnit;
+import me.noci.quickutilities.utils.Scheduler;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -24,7 +24,7 @@ public class TitledPlayerChatInput extends BaseChatInput {
     protected TitledPlayerChatInput(Player player, String cancelString, InputExecutor inputExecutor, String title, String subtitle) {
         super(player, cancelString, inputExecutor);
 
-        new BukkitRunnable() {
+        Scheduler.repeat(10, new BukkitRunnable() {
             @Override
             public void run() {
                 if (!isInputMode()) {
@@ -36,11 +36,8 @@ public class TitledPlayerChatInput extends BaseChatInput {
                     cancel();
                     return;
                 }
-
                 Titles.sendTitle(player, 0, 20, 0, title, subtitle);
             }
-        }.runTaskTimerAsynchronously(QuickUtils.instance(), 0, 10);
-
+        });
     }
-
 }
