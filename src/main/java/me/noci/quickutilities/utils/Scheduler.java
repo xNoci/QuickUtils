@@ -24,11 +24,11 @@ public class Scheduler {
         task.cancel();
     }
 
-    public BukkitTask execute(Task task) {
+    public static BukkitTask execute(Task task) {
         return bukkitScheduler().runTask(QuickUtils.instance(), task::run);
     }
 
-    public BukkitTask executeAsync(Task task) {
+    public static BukkitTask executeAsync(Task task) {
         return bukkitScheduler().runTaskAsynchronously(QuickUtils.instance(), task::run);
     }
 
