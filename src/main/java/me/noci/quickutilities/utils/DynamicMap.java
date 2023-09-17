@@ -7,12 +7,12 @@ import lombok.Setter;
 import java.util.Map;
 import java.util.Set;
 
-public class OptionMap<K> {
+public class DynamicMap<K> {
 
     private final Map<K, Value<?>> DATA = Maps.newHashMap();
 
-    public static <T> OptionMap<T> create() {
-        return new OptionMap<>();
+    public static <T> DynamicMap<T> create() {
+        return new DynamicMap<>();
     }
 
     @SuppressWarnings("unchecked")
