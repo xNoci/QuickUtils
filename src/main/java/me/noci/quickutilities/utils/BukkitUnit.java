@@ -4,72 +4,78 @@ public enum BukkitUnit {
 
     MILLISECONDS {
         public long toMilliseconds(long d)     { return d; }
-        public long toTicks(long d)            { return d/(C1 / C0); }
-        public long toSeconds(long d)          { return d/(C2 / C0); }
-        public long toMinutes(long d)          { return d/(C3 / C0); }
-        public long toHours(long d)            { return d/(C4 / C0); }
-        public long toDays(long d)             { return d/(C5 / C0); }
+        public long toTicks(long d)            { return convertUp(d, C_MILLISECOND, C_TICK); }
+        public long toSeconds(long d)          { return convertUp(d, C_MILLISECOND, C_SECOND); }
+        public long toMinutes(long d)          { return convertUp(d, C_MILLISECOND, C_MINUTE); }
+        public long toHours(long d)            { return convertUp(d, C_MILLISECOND, C_HOUR); }
+        public long toDays(long d)             { return convertUp(d, C_MILLISECOND, C_DAY); }
         public long convert(long d, BukkitUnit u) { return u.toMilliseconds(d); }
     },
     TICKS {
-        public long toMilliseconds(long d)     { return x(d, C1 / C0, MAX/(C1 / C0)); }
+        public long toMilliseconds(long d)     { return convertDown(d, C_TICK, C_MILLISECOND); }
         public long toTicks(long d)            { return d; }
-        public long toSeconds(long d)          { return d/(C2 / C1); }
-        public long toMinutes(long d)          { return d/(C3 / C1); }
-        public long toHours(long d)            { return d/(C4 / C1); }
-        public long toDays(long d)             { return d/(C5 / C1); }
+        public long toSeconds(long d)          { return convertUp(d, C_TICK, C_SECOND); }
+        public long toMinutes(long d)          { return convertUp(d, C_TICK, C_MINUTE); }
+        public long toHours(long d)            { return convertUp(d, C_TICK, C_HOUR); }
+        public long toDays(long d)             { return convertUp(d, C_TICK, C_DAY); }
         public long convert(long d, BukkitUnit u) { return u.toTicks(d); }
     },
     SECONDS {
-        public long toMilliseconds(long d)     { return x(d, C2 / C0, MAX/(C2 / C0)); }
-        public long toTicks(long d)            { return x(d, C2 / C1, MAX/(C2 / C1)); }
+        public long toMilliseconds(long d)     { return convertDown(d, C_SECOND, C_MILLISECOND); }
+        public long toTicks(long d)            { return convertDown(d, C_SECOND, C_TICK); }
         public long toSeconds(long d)          { return d; }
-        public long toMinutes(long d)          { return d/(C3 / C2); }
-        public long toHours(long d)            { return d/(C4 / C2); }
-        public long toDays(long d)             { return d/(C5 / C2); }
+        public long toMinutes(long d)          { return convertUp(d, C_SECOND, C_MILLISECOND); }
+        public long toHours(long d)            { return convertUp(d, C_SECOND, C_HOUR); }
+        public long toDays(long d)             { return convertUp(d, C_SECOND, C_DAY); }
         public long convert(long d, BukkitUnit u) { return u.toSeconds(d); }
     },
     MINUTES {
-        public long toMilliseconds(long d)     { return x(d, C3 / C0, MAX/(C3 / C0)); }
-        public long toTicks(long d)            { return x(d, C3 / C1, MAX/(C3 / C1)); }
-        public long toSeconds(long d)          { return x(d, C3 / C2, MAX/(C3 / C2)); }
+        public long toMilliseconds(long d)     { return convertDown(d, C_MINUTE, C_MILLISECOND); }
+        public long toTicks(long d)            { return convertDown(d, C_MINUTE, C_TICK); }
+        public long toSeconds(long d)          { return convertDown(d, C_MINUTE, C_SECOND); }
         public long toMinutes(long d)          { return d; }
-        public long toHours(long d)            { return d/(C4 / C3); }
-        public long toDays(long d)             { return d/(C5 / C3); }
+        public long toHours(long d)            { return convertUp(d, C_MINUTE, C_HOUR); }
+        public long toDays(long d)             { return convertUp(d, C_MINUTE, C_DAY); }
         public long convert(long d, BukkitUnit u) { return u.toMinutes(d); }
     },
     HOURS {
-        public long toMilliseconds(long d)     { return x(d, C4 / C0, MAX/(C4 / C0)); }
-        public long toTicks(long d)            { return x(d, C4 / C1, MAX/(C4 / C1)); }
-        public long toSeconds(long d)          { return x(d, C4 / C2, MAX/(C4 / C2)); }
-        public long toMinutes(long d)          { return x(d, C4 / C3, MAX/(C4 / C3)); }
+        public long toMilliseconds(long d)     { return convertDown(d, C_HOUR, C_MILLISECOND); }
+        public long toTicks(long d)            { return convertDown(d, C_HOUR, C_TICK); }
+        public long toSeconds(long d)          { return convertDown(d, C_HOUR, C_SECOND); }
+        public long toMinutes(long d)          { return convertDown(d, C_HOUR, C_MINUTE); }
         public long toHours(long d)            { return d; }
-        public long toDays(long d)             { return d/(C5 / C4); }
+        public long toDays(long d)             { return convertUp(d, C_HOUR, C_DAY); }
         public long convert(long d, BukkitUnit u) { return u.toHours(d); }
     },
     DAYS {
-        public long toMilliseconds(long d)     { return x(d, C5 / C0, MAX/(C5 / C0)); }
-        public long toTicks(long d)            { return x(d, C5 / C1, MAX/(C5 / C1)); }
-        public long toSeconds(long d)          { return x(d, C5 / C2, MAX/(C5 / C2)); }
-        public long toMinutes(long d)          { return x(d, C5 / C3, MAX/(C5 / C3)); }
-        public long toHours(long d)            { return x(d, C5 / C4, MAX/(C5 / C4)); }
+        public long toMilliseconds(long d)     { return convertDown(d, C_DAY, C_MILLISECOND); }
+        public long toTicks(long d)            { return convertDown(d, C_DAY, C_TICK); }
+        public long toSeconds(long d)          { return convertDown(d, C_DAY, C_SECOND); }
+        public long toMinutes(long d)          { return convertDown(d, C_DAY, C_MINUTE); }
+        public long toHours(long d)            { return convertDown(d, C_DAY, C_HOUR); }
         public long toDays(long d)             { return d; }
         public long convert(long d, BukkitUnit u) { return u.toDays(d); }
     };
 
-    private static final long C0 = 1L; //ONE MILLISECOND
-    private static final long C1 = C0 * 50L; //ONE TICK
-    private static final long C2 = C1 * 20L; //ONE SECOND
-    private static final long C3 = C2 * 60L; //ONE MINUTE
-    private static final long C4 = C3 * 60L; //ONE HOUR
-    private static final long C5 = C4 * 24L; //ONE DAY
+    private static final long C_MILLISECOND = 1L; //ONE MILLISECOND
+    private static final long C_TICK = C_MILLISECOND * 50L; //ONE TICK
+    private static final long C_SECOND = C_TICK * 20L; //ONE SECOND
+    private static final long C_MINUTE = C_SECOND * 60L; //ONE MINUTE
+    private static final long C_HOUR = C_MINUTE * 60L; //ONE HOUR
+    private static final long C_DAY = C_HOUR * 24L; //ONE DAY
 
     private static final long MAX = Long.MAX_VALUE;
 
-    private static long x(long d, long m, long over) {
+    private static long convertDown(long d, long thisConstant, long otherConstant) {
+        long m = thisConstant / otherConstant;
+        long over = MAX / m;
         if (d > over) return Long.MAX_VALUE;
         if (d < -over) return Long.MIN_VALUE;
         return d * m;
+    }
+
+    private static long convertUp(long d, long thisConstant, long otherConstant) {
+        return d / (otherConstant / thisConstant);
     }
 
     public abstract long convert(long sourceDuration, BukkitUnit sourceUnit);

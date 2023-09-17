@@ -31,7 +31,7 @@ public class Require {
      * @return true - when string is null, empty or blank
      */
     public static boolean isBlank(CharSequence sequence) {
-        if (sequence == null || sequence.length() == 0) return true;
+        if (sequence == null || sequence.isEmpty()) return true;
         for (int i = 0; i < sequence.length(); i++) {
             char c = sequence.charAt(i);
             if (!Character.isWhitespace(c)) return false;
