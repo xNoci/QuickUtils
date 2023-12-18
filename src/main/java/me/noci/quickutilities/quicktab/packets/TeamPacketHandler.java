@@ -1,8 +1,8 @@
 package me.noci.quickutilities.quicktab.packets;
 
 import lombok.Getter;
-import me.noci.quickutilities.quicktab.builder.TabListTeam;
 import me.noci.quickutilities.packethandler.PacketHandler;
+import me.noci.quickutilities.quicktab.builder.TabListTeam;
 
 public interface TeamPacketHandler extends PacketHandler<TeamPacketHandler> {
 

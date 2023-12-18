@@ -49,4 +49,9 @@ public class TeamPacketHandlerV1_13 implements TeamPacketHandler {
         return "v1.13";
     }
 
+    @Override
+    public int[] supportedVersions() {
+        return new int[]{13, 14, 15, 16};
+    }
+
 }

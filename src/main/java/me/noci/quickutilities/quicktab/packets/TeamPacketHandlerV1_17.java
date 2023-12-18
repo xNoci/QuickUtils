@@ -59,4 +59,9 @@ public class TeamPacketHandlerV1_17 implements TeamPacketHandler {
         return "v1.17";
     }
 
+    @Override
+    public int[] supportedVersions() {
+        return new int[]{17, 18, 19, 20};
+    }
+
 }

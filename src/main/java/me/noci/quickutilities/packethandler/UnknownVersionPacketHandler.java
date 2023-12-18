@@ -7,4 +7,9 @@ public class UnknownVersionPacketHandler<T extends PacketHandler<T>> implements 
         return "Unknown";
     }
 
+    @Override
+    public int[] supportedVersions() {
+        return new int[]{-1};
+    }
+
 }

@@ -3,26 +3,46 @@ package me.noci.quickutilities.packethandler;
 import com.cryptomorin.xseries.ReflectionUtils;
 import me.noci.quickutilities.QuickUtils;
 import me.noci.quickutilities.hooks.ProtocolLibHook;
+import me.noci.quickutilities.utils.GenericType;
 
+import java.util.Arrays;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-public interface PacketHandlerManager<T extends PacketHandler<T>> {
+public abstract class PacketHandlerManager<T extends PacketHandler<T>> extends GenericType<T> {
 
-    boolean requiresProtocolLib();
+    private final PacketHandlerContainer<T> supportedContainer;
+    private final boolean requiresProtocolLib;
 
-    default T getHandler() {
-        checkSupportedVersion(this);
-        checkProtocolLib(this);
-        return getHandlerInfo().getHandler();
+    @SafeVarargs
+    public PacketHandlerManager(boolean requiresProtocolLib, PacketHandler<T>... packetHandlers) {
+        this.requiresProtocolLib = requiresProtocolLib;
+        Set<PacketHandlerContainer<T>> handlers = Arrays.stream(packetHandlers).map(PacketHandler::createContainer).collect(Collectors.toSet());
+        this.supportedContainer = findSupportedContainer(handlers);
     }
 
-    PacketHandlerInfo<T> getHandlerInfo();
+    public T getHandler() {
+        checkSupportedVersion();
+        checkProtocolLib();
+        return packetContainer().getHandler();
+    }
 
-    Class<T> getHandlerType();
+    public boolean requiresProtocolLib() {
+        return this.requiresProtocolLib;
+    }
 
-    default PacketHandlerInfo<T> findSupportedHandler(Set<PacketHandlerInfo<T>> handlers) {
+    public PacketHandlerContainer<T> packetContainer() {
+        return this.supportedContainer;
+    }
+
+    @SuppressWarnings({"unchecked", "UnstableApiUsage"})
+    public Class<T> getHandlerType() {
+        return (Class<T>) type.getRawType();
+    }
+
+    protected PacketHandlerContainer<T> findSupportedContainer(Set<PacketHandlerContainer<T>> handlers) {
         int currentVersion = ReflectionUtils.MINOR_NUMBER;
-        PacketHandlerInfo<T> supportedPacket = handlers.stream().filter(packetInfo -> packetInfo.isSupported(currentVersion)).findFirst().orElse(PacketHandlerInfo.unknown());
+        PacketHandlerContainer<T> supportedPacket = handlers.stream().filter(packetInfo -> packetInfo.isSupported(currentVersion)).findFirst().orElse(PacketHandlerContainer.unknown());
 
         String info = "Using %s version mapping '%s'. Current server version: %s (%s)"
                 .formatted(
@@ -37,15 +57,15 @@ public interface PacketHandlerManager<T extends PacketHandler<T>> {
         return supportedPacket;
     }
 
-    private static <T extends PacketHandler<T>> void checkSupportedVersion(PacketHandlerManager<T> handlerManager) {
-        if (!handlerManager.getHandlerInfo().isUnknownVersion()) return;
-        throw new UnsupportedOperationException("%s of type '%s' currently does not support your version: %s (%s).".formatted(PacketHandler.class.getSimpleName(), handlerManager.getHandlerType().getName(), ReflectionUtils.NMS_VERSION, ReflectionUtils.MINOR_NUMBER));
+    private void checkSupportedVersion() {
+        if (!packetContainer().isUnknownVersion()) return;
+        throw new UnsupportedOperationException("%s of type '%s' currently does not support your version: %s (%s).".formatted(PacketHandler.class.getSimpleName(), getHandlerType().getName(), ReflectionUtils.NMS_VERSION, ReflectionUtils.MINOR_NUMBER));
     }
 
-    private static <T extends PacketHandler<T>> void checkProtocolLib(PacketHandlerManager<T> handlerManager) {
-        if (!handlerManager.requiresProtocolLib()) return;
+    private void checkProtocolLib() {
+        if (!requiresProtocolLib()) return;
         if (ProtocolLibHook.isEnabled()) return;
-        throw new UnsupportedOperationException("%s of type '%s' currently only works with ProtocolLib.".formatted(PacketHandler.class.getSimpleName(), handlerManager.getHandlerType().getName()));
+        throw new UnsupportedOperationException("%s of type '%s' currently only works with ProtocolLib.".formatted(PacketHandler.class.getSimpleName(), getHandlerType().getName()));
     }
 
 }

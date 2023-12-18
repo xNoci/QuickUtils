@@ -6,7 +6,7 @@ import me.noci.quickutilities.quicktab.packets.TeamPacketHandlerManager;
 
 import java.util.HashMap;
 
-public class PacketHandlerFactory<T extends PacketHandler<T>> {
+public class PacketHandlerFactory {
 
     private static final HashMap<Class<PacketHandler<?>>, PacketHandlerManager<?>> PACKET_HANDLER_MANAGERS = Maps.newHashMap();
 
@@ -33,7 +33,8 @@ public class PacketHandlerFactory<T extends PacketHandler<T>> {
 
     @SuppressWarnings("unchecked")
     private static <T extends PacketHandler<T>> PacketHandlerManager<T> getPacketManager(Class<T> type) {
-        if (PACKET_HANDLER_MANAGERS.containsKey(type)) return (PacketHandlerManager<T>) PACKET_HANDLER_MANAGERS.get(type);
+        if (PACKET_HANDLER_MANAGERS.containsKey(type))
+            return (PacketHandlerManager<T>) PACKET_HANDLER_MANAGERS.get(type);
         throw new IllegalStateException("Could not find '%s' for %s of type '%s'.".formatted(PacketHandlerManager.class.getSimpleName(), PacketHandler.class.getSimpleName(), type.getName()));
     }
 

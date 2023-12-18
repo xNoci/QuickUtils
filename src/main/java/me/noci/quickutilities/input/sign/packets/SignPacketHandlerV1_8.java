@@ -78,6 +78,11 @@ public class SignPacketHandlerV1_8 implements SignPacketHandler {
         return "v1.8";
     }
 
+    @Override
+    public int[] supportedVersions() {
+        return new int[]{8};
+    }
+
     private WrappedChatComponent[] signText(SignData signData) {
         List<String> lines = signData.signLines();
 

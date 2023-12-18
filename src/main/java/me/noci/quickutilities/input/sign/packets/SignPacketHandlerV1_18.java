@@ -82,6 +82,11 @@ public class SignPacketHandlerV1_18 implements SignPacketHandler {
         return "v1.18";
     }
 
+    @Override
+    public int[] supportedVersions() {
+        return new int[]{18, 19};
+    }
+
     private NbtCompound signText(SignData signData) {
         List<NbtBase<?>> tags = Lists.newArrayList();
 
