@@ -1,6 +1,7 @@
 package me.noci.quickutilities.quickcommand.mappings;
 
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.jetbrains.annotations.Nullable;
 
 public class MappingFunctions {
@@ -15,4 +16,7 @@ public class MappingFunctions {
         };
     }
 
+    public static @Nullable Material parseMaterial(String value) {
+        return Material.matchMaterial(value);
+    }
 }

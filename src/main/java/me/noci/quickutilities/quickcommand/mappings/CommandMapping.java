@@ -12,6 +12,7 @@ import me.noci.quickutilities.utils.Require;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -36,6 +37,7 @@ public class CommandMapping {
         registerArgumentMapping(World.class, Bukkit::getWorld);
         registerArgumentMapping(Player.class, Bukkit::getPlayer);
         registerArgumentMapping(GameMode.class, MappingFunctions::parseGameMode);
+        registerArgumentMapping(Material.class, MappingFunctions::parseMaterial);
         registerArgumentMapping(Fraction.class, Fraction::of);
         registerArgumentMapping(String.class, argument -> argument);
         registerArgumentMapping(Character[].class, argument -> ArrayUtils.toObject(argument.toCharArray()));
@@ -58,9 +60,9 @@ public class CommandMapping {
         PLAYER_MAPPING.put(mappingType, mapping);
     }
 
-    public static <T extends SpacedValue<?>> void registerSpacedArgumentMapping(Class<T> argumentType, SpacedArgumentMapping<T> mapping) {
-        Require.checkState(!SPACED_MAPPINGS.containsKey(argumentType), "Cannot register spaced argument mapping for type '%s' twice".formatted(argumentType.getName()));
-        SPACED_MAPPINGS.put(argumentType, mapping);
+    public static <T extends SpacedValue<?>> void registerSpacedArgumentMapping(Class<T> spacedArgumentType, SpacedArgumentMapping<T> mapping) {
+        Require.checkState(!SPACED_MAPPINGS.containsKey(spacedArgumentType), "Cannot register spaced argument mapping for type '%s' twice".formatted(spacedArgumentType.getName()));
+        SPACED_MAPPINGS.put(spacedArgumentType, mapping);
     }
 
     public static <T> void registerArgumentMapping(Class<T> argumentType, ArgumentMapping<T> mapping) {
@@ -69,10 +71,10 @@ public class CommandMapping {
         ARGUMENT_MAPPING.put(argumentType, mapping);
     }
 
-    private static <T> void registerPrimitiveArgumentMapping(Class<T> argumentType, ArgumentMapping<T> mapping) {
-        Require.checkArgument(argumentType.isPrimitive(), "This method only supports registering primitives");
-        registerArgumentMapping(Primitives.unwrap(argumentType), mapping);
-        registerArgumentMapping(Primitives.wrap(argumentType), mapping);
+    private static <T> void registerPrimitiveArgumentMapping(Class<T> primitiveType, ArgumentMapping<T> mapping) {
+        Require.checkArgument(primitiveType.isPrimitive(), "This method only supports registering primitives");
+        registerArgumentMapping(Primitives.unwrap(primitiveType), mapping);
+        registerArgumentMapping(Primitives.wrap(primitiveType), mapping);
     }
 
     public static boolean isSenderType(Class<?> type) {
