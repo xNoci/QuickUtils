@@ -21,7 +21,9 @@ public enum Version {
     V1_19_2(760, sPVN(92, 103)), //Same protocol version than 1.19.1, so it will be skipped
     V1_19_3(761, sPVN(104, 114)),
     V1_19_4(762, sPVN(115, 126)),
-    V1_20_1(763, sPVN(127, 142)),//Same protocol version than 1.29, so it will be skipped
+    V1_20_1(763, sPVN(127, 142)),//Same protocol version than 1.20, so it will be skipped
+    V1_20_2(764, sPVN(144, 153)),
+    V1_20_4(765, sPVN(154, 169)),//Same protocol version than 1.20.3, so it will be skipped
     UNKNOWN(-1), //If the protocol version is unknown or does not match any of the above
     UNREGISTERED_SNAPSHOT(-2); //Unregistered snapshot pvn
 

@@ -3,9 +3,9 @@ lombok = "1.18.24"
 spigot = "1.8.8-R0.1-SNAPSHOT"
 protocollib = "5.0.0"
 jetbrains-annotations = "23.0.0"
-xseries = "9.4.0"
-fastboard= "2.0.0"
-viaversion= "4.7.0"
+xseries = "9.9.0"
+fastboard= "2.0.2"
+viaversion= "4.9.3"
 
 [libraries]
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
