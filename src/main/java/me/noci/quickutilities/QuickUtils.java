@@ -1,7 +1,6 @@
 package me.noci.quickutilities;
 
 import me.noci.quickutilities.commands.QuickUtilsCommand;
-import me.noci.quickutilities.listener.EntityDamageByEntityListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class QuickUtils extends JavaPlugin {
@@ -16,12 +15,7 @@ public class QuickUtils extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        registerListener();
         registerCommands();
-    }
-
-    private void registerListener() {
-        EntityDamageByEntityListener.initialise();
     }
 
     private void registerCommands() {

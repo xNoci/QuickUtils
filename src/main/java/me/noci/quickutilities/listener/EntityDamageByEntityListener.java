@@ -16,20 +16,24 @@ public class EntityDamageByEntityListener {
 
     public static void initialise() {
         if (initialised) return;
-        initialised = true;
-        Events.subscribe(EntityDamageByEntityEvent.class, EventPriority.HIGHEST)
-                .attribute(EventAttacker.class, EntityDamageByEntityListener::getEventAttacker)
-                .filter(e -> !(e.getEntity() instanceof Player))
-                .filterAttribute(EventAttacker.class, (e, a) -> a.get().getAttacker() != null)
-                .handle((e, attribute) -> {
-                    EventAttacker eventAttacker = attribute.get(EventAttacker.class).get();
-                    Player player = (Player) e.getEntity();
-                    PlayerDamagedPlayerEvent playerDamageByPlayerEvent = new PlayerDamagedPlayerEvent(player, eventAttacker.getAttacker(), e.getCause(), eventAttacker.getProjectile(), e.getDamage(), e.isCancelled());
-                    Bukkit.getPluginManager().callEvent(playerDamageByPlayerEvent);
 
-                    e.setDamage(playerDamageByPlayerEvent.getDamage());
-                    e.setCancelled(playerDamageByPlayerEvent.isCancelled());
-                });
+        synchronized (EntityDamageByEntityListener.class) {
+            if (initialised) return;
+            initialised = true;
+            Events.subscribe(EntityDamageByEntityEvent.class, EventPriority.HIGHEST)
+                    .attribute(EventAttacker.class, EntityDamageByEntityListener::getEventAttacker)
+                    .filter(e -> !(e.getEntity() instanceof Player))
+                    .filterAttribute(EventAttacker.class, (e, a) -> a.get().getAttacker() != null)
+                    .handle((e, attribute) -> {
+                        EventAttacker eventAttacker = attribute.get(EventAttacker.class).get();
+                        Player player = (Player) e.getEntity();
+                        PlayerDamagedPlayerEvent playerDamageByPlayerEvent = new PlayerDamagedPlayerEvent(player, eventAttacker.getAttacker(), e.getCause(), eventAttacker.getProjectile(), e.getDamage(), e.isCancelled());
+                        Bukkit.getPluginManager().callEvent(playerDamageByPlayerEvent);
+
+                        e.setDamage(playerDamageByPlayerEvent.getDamage());
+                        e.setCancelled(playerDamageByPlayerEvent.isCancelled());
+                    });
+        }
     }
 
     private static EventAttacker getEventAttacker(EntityDamageByEntityEvent event) {
