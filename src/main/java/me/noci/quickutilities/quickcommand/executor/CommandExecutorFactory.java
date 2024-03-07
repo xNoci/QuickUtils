@@ -40,6 +40,7 @@ public class CommandExecutorFactory {
         if (!method.isAnnotationPresent(annotationType)) return null;
         Parameter[] parameters = method.getParameters();
 
+        //TODO Support method parameter without sender
         Require.checkState(method.getParameterCount() > 0, "A command method has to have at least one parameter. Method: %s#%s".formatted(method.getDeclaringClass().getName(), method.getName()));
         Require.checkState(!annotationType.equals(FallbackCommand.class) || method.getParameterCount() == 1, "A fallback command method needs exactly one parameter. Method: %s#%s".formatted(method.getDeclaringClass().getName(), method.getName()));
         Require.checkState(CommandMapping.isSenderType(parameters[0].getType()), "The first method parameter of %s#%s has to be a sender parameter".formatted(method.getDeclaringClass().getName(), method.getName()));
