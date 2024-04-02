@@ -68,7 +68,7 @@ public class SubscribedEventImpl<T extends Event> implements SubscribedEvent<T>,
         }
 
         for (Predicate<T> filter : filters) {
-            if (filter.test(typedEvent)) return;
+            if (!filter.test(typedEvent)) return;
         }
 
         for (EventAttributeImpl<T, ?> attribute : attributeRegistry.getAttributes()) {
