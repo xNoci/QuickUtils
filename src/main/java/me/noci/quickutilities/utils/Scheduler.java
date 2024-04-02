@@ -6,6 +6,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
+
 public class Scheduler {
 
     public static BukkitScheduler bukkitScheduler() {
@@ -22,6 +25,16 @@ public class Scheduler {
 
     public static void cancelTask(BukkitTask task) {
         task.cancel();
+    }
+
+    public static <T> T execute(Supplier<T> task) {
+        CompletableFuture<T> future = new CompletableFuture<>();
+        if (isMainThread()) {
+            return task.get();
+        }
+
+        execute(() -> future.complete(task.get()));
+        return future.join();
     }
 
     public static BukkitTask execute(Task task) {
