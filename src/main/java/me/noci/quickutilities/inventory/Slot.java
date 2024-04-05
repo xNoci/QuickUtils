@@ -35,6 +35,10 @@ public class Slot {
         return this.item.getAction();
     }
 
+    public GuiItem getGuiItem() {
+        return this.item;
+    }
+
     @Override
     public String toString() {
         return "Slot{position=%s, itemStack={type=%s, displayName=%s}, clickHandler=%s}".
