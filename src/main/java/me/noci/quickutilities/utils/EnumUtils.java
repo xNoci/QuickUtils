@@ -53,6 +53,10 @@ public class EnumUtils {
                 .findFirst();
     }
 
+    public static <T extends Enum<?>> T[] values(Class<T> enumClass) {
+        return enumClass.getEnumConstants();
+    }
+
     public static <T extends Enum<?>> List<T> asList(Class<T> enumClass) {
         return asList(enumClass.getEnumConstants());
     }
