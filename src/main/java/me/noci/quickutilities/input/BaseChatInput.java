@@ -16,7 +16,7 @@ public abstract class BaseChatInput extends BasePlayerInput {
         super(player, inputExecutor);
         chatEvent = Events.subscribe(AsyncPlayerChatEvent.class)
                 .expireAfter(1)
-                .filter(event -> !event.getPlayer().getUniqueId().equals(player.getUniqueId()))
+                .filter(event -> event.getPlayer().getUniqueId().equals(player.getUniqueId()))
                 .handle(event -> {
                     event.setCancelled(true);
                     String message = event.getMessage();

@@ -22,7 +22,7 @@ public class EntityDamageByEntityListener {
             initialised = true;
             Events.subscribe(EntityDamageByEntityEvent.class, EventPriority.HIGHEST)
                     .attribute(EventAttacker.class, EntityDamageByEntityListener::getEventAttacker)
-                    .filter(e -> !(e.getEntity() instanceof Player))
+                    .filter(e -> e.getEntity() instanceof Player)
                     .filterAttribute(EventAttacker.class, (e, a) -> a.get().getAttacker() != null)
                     .handle((e, attribute) -> {
                         EventAttacker eventAttacker = attribute.get(EventAttacker.class).get();

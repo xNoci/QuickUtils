@@ -21,7 +21,7 @@ public abstract class BasePlayerInput implements Input {
         this.inputExecutor = inputExecutor;
         quitEvent = Events.subscribe(PlayerQuitEvent.class)
                 .expireAfter(1)
-                .filter(event -> !event.getPlayer().getUniqueId().equals(player.getUniqueId()))
+                .filter(event -> event.getPlayer().getUniqueId().equals(player.getUniqueId()))
                 .handle(event -> {
                     stopInput(true);
                 });

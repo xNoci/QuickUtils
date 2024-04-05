@@ -22,9 +22,9 @@ public final class GuiManager {
         QuickUtils.instance().getLogger().info("Initialising gui manager");
 
         Events.subscribe(InventoryClickEvent.class)
-                .filter(event -> !(event.getWhoClicked() instanceof Player))
-                .filter(event -> event.getClickedInventory() == null)
-                .filter(event -> !(event.getInventory().getHolder() instanceof GuiHolder))
+                .filter(event -> event.getWhoClicked() instanceof Player)
+                .filter(event -> event.getClickedInventory() != null)
+                .filter(event -> event.getInventory().getHolder() instanceof GuiHolder)
                 .handle(event -> {
                     Player player = (Player) event.getWhoClicked();
                     GuiHolder holder = (GuiHolder) event.getInventory().getHolder();
