@@ -54,4 +54,7 @@ public abstract class PagedQuickGUIProvider extends QuickGUIProvider {
 
     public abstract void initPage(Player player, PageContent pageContent);
 
+    public void updatePageContent(Player player, PageContent content) {
+    }
+
 }

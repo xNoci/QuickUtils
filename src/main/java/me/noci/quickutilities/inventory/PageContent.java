@@ -2,6 +2,7 @@ package me.noci.quickutilities.inventory;
 
 import lombok.AccessLevel;
 import lombok.Setter;
+import me.noci.quickutilities.utils.Require;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
@@ -38,6 +39,22 @@ public class PageContent {
 
     public void setPageContent(GuiItem... pageContent) {
         this.pageContent = pageContent;
+    }
+
+    public void setItem(int index, GuiItem item) {
+        Require.nonNull(pageContent, "pageContent cannot be null");
+        Require.checkState(index <= pageContent.length, "index (%s) has to be less or equal to pageContent.length (%s)", index, pageContent.length);
+        pageContent[index] = item;
+    }
+
+    public GuiItem getItem(int index) {
+        Require.nonNull(pageContent, "pageContent cannot be null");
+        Require.checkState(index <= pageContent.length, "index (%s) has to be less or equal to pageContent.length (%s)", index, pageContent.length);
+        return pageContent[index];
+    }
+
+    public int getTotalItemCount() {
+        return this.pageContent.length;
     }
 
     public void setItemSlots(int... slots) {
