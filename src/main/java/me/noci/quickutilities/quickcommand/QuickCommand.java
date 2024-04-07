@@ -52,7 +52,7 @@ public abstract class QuickCommand {
         subCommandList = CommandExecutorFactory.loadExecutors(getClass(), SubCommand.class, SubCommandExecutor.class);
         defaultCommandList = CommandExecutorFactory.loadExecutors(getClass(), Command.class, DefaultCommandExecutor.class);
 
-        if (defaultCommandList.isEmpty()) {
+        if (defaultCommandList.isEmpty() && subCommandList.isEmpty()) {
             plugin.getLogger().warning("Did not found any commands for '%s'".formatted(getClass().getName()));
         }
 
