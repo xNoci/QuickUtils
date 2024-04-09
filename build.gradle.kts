@@ -2,7 +2,7 @@ import org.apache.commons.io.output.ByteArrayOutputStream
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
-    id("java")
+    id("java-library")
     id("com.github.johnrengelman.shadow") version ("8.1.1")
 }
 
@@ -30,6 +30,8 @@ repositories {
 dependencies {
     implementation(libs.xseries) { isTransitive = false }
     implementation(libs.fastboard)
+
+    api(libs.bundles.kyori.adventure);
 
     compileOnly(libs.spigot)
     compileOnly(libs.protocollib)

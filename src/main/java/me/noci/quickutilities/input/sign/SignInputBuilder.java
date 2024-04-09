@@ -8,12 +8,16 @@ import me.noci.quickutilities.input.functions.CanceledInput;
 import me.noci.quickutilities.input.functions.InputExecutor;
 import me.noci.quickutilities.input.sign.packets.SignPacketHandler;
 import me.noci.quickutilities.packethandler.PacketHandlerFactory;
+import me.noci.quickutilities.utils.Legacy;
 import me.noci.quickutilities.utils.MathUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SignInputBuilder {
 
@@ -41,24 +45,33 @@ public class SignInputBuilder {
         return this;
     }
 
-    public SignInputBuilder signLines(String... signLines) {
-        return signLines(List.of(signLines));
+    public SignInputBuilder signeLines(Component... signLines) {
+        return signLines(Arrays.asList(signLines));
     }
 
-    public SignInputBuilder signLines(List<String> signLines) {
+    public SignInputBuilder signLines(List<Component> signLines) {
+        this.signLines = signLines.stream().map(Legacy::serialize).collect(Collectors.toList());
+        return this;
+    }
+
+    public SignInputBuilder setSignLines(String... signLines) {
+        return this.setSignLines(List.of(signLines));
+    }
+
+    public SignInputBuilder setSignLines(List<String> signLines) {
         this.signLines = signLines;
         return this;
     }
 
-    public SignInputBuilder addLine(String... line) {
+    public SignInputBuilder addLines(Component... lines) {
+        return addLines(Arrays.stream(lines).map(Legacy::serialize).toArray(String[]::new));
+    }
+
+    public SignInputBuilder addLines(String... line) {
         Collections.addAll(this.signLines, line);
         return this;
     }
 
-    public SignInputBuilder addLine(String line) {
-        this.signLines.add(line);
-        return this;
-    }
 
     public SignInputBuilder color(SignColor signColor) {
         this.signColor = signColor;

@@ -40,20 +40,20 @@ public class DefaultQuickTabBuilder implements QuickTabBuilder {
     }
 
     @Override
-    public QuickTabBuilder displayName(TabListFunction<Player, String> displayName) {
+    public QuickTabBuilder setDisplayName(TabListFunction<Player, String> displayName) {
         this.displayName = displayName;
         return this;
     }
 
     @Override
-    public QuickTabBuilder prefix(TabListFunction<Player, String> prefix, TabListCondition<Player> condition) {
+    public QuickTabBuilder setPrefix(TabListFunction<Player, String> prefix, TabListCondition<Player> condition) {
         this.prefix.setExtensionFunction(prefix);
         this.prefix.setCondition(condition);
         return this;
     }
 
     @Override
-    public QuickTabBuilder suffix(TabListFunction<Player, String> suffix, TabListCondition<Player> condition) {
+    public QuickTabBuilder setSuffix(TabListFunction<Player, String> suffix, TabListCondition<Player> condition) {
         this.suffix.setExtensionFunction(suffix);
         this.suffix.setCondition(condition);
         return this;
@@ -114,7 +114,7 @@ public class DefaultQuickTabBuilder implements QuickTabBuilder {
      * @param player The player which tab list will be set
      * @param target The current player that will be changed
      * @param color  The {@link QuickTabBuilder#color(TabListFunction) ChatColor} which is used
-     * @return The default {@link QuickTabBuilder#prefix(TabListFunction) prefix} when the
+     * @return The default {@link QuickTabBuilder#setPrefix(TabListFunction) prefix} when the
      * current server version is grater or equals to 1.13, or {@link QuickTabBuilder#color(TabListFunction) ChatColor}
      * is set to null or the prefix ends with a {@link #endsWithColorCode(String) color code}.
      * Otherwise, returns a new prefix which ends with the given {@link QuickTabBuilder#color(TabListFunction) ChatColor}.

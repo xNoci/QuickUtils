@@ -5,11 +5,12 @@ import me.noci.quickutilities.utils.QuickItemStack;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+@Getter
 public class GuiItem {
 
     private static final ItemStack DEFAULT_ITEM_STACK = new QuickItemStack(Material.AIR);
-    @Getter private ItemStack itemStack;
-    @Getter private ClickHandler action;
+    private ItemStack itemStack;
+    private ClickHandler action;
 
     public GuiItem() {
         this(null, null);

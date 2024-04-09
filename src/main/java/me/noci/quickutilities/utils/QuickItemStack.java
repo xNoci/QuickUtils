@@ -3,6 +3,7 @@ package me.noci.quickutilities.utils;
 import com.google.common.collect.Lists;
 import me.noci.quickutilities.inventory.ClickHandler;
 import me.noci.quickutilities.inventory.GuiItem;
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -14,6 +15,7 @@ import org.bukkit.inventory.meta.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class QuickItemStack extends ItemStack {
 
@@ -23,6 +25,10 @@ public class QuickItemStack extends ItemStack {
 
     public QuickItemStack(Material material) {
         super(material);
+    }
+
+    public QuickItemStack(Material material, Component component) {
+        this(material, Legacy.SERIALIZER.serialize(component));
     }
 
     public QuickItemStack(Material material, String displayName) {
@@ -48,6 +54,10 @@ public class QuickItemStack extends ItemStack {
 
     public String toBase64() {
         return ItemSerializer.itemStackToBase64(this);
+    }
+
+    public QuickItemStack displayName(Component component) {
+        return setDisplayName(Legacy.serialize(component));
     }
 
     public String getDisplayName() {
@@ -76,22 +86,27 @@ public class QuickItemStack extends ItemStack {
         return this;
     }
 
+    public QuickItemStack lore(Component... lore) {
+        return lore(Arrays.asList(lore));
+    }
+
+    public QuickItemStack lore(List<Component> lore) {
+        return setLore(lore.stream().map(Legacy::serialize).collect(Collectors.toList()));
+    }
+
     public List<String> getLore() {
         ItemMeta itemMeta = this.getItemMeta();
         if (itemMeta == null) return Lists.newArrayList();
         return itemMeta.getLore();
     }
 
+    public QuickItemStack setLore(String... lore) {
+        return setLore(Arrays.asList(lore));
+    }
+
     public QuickItemStack setLore(List<String> lore) {
         ItemMeta itemMeta = this.getItemMeta();
         itemMeta.setLore(lore);
-        this.setItemMeta(itemMeta);
-        return this;
-    }
-
-    public QuickItemStack setLore(String... lore) {
-        ItemMeta itemMeta = this.getItemMeta();
-        itemMeta.setLore(Arrays.asList(lore));
         this.setItemMeta(itemMeta);
         return this;
     }
@@ -140,6 +155,10 @@ public class QuickItemStack extends ItemStack {
         return this;
     }
 
+    public QuickItemStack bookTitle(Component component) {
+        return setTitle(Legacy.serialize(component));
+    }
+
     public QuickItemStack setTitle(String title) {
         BookMeta bookMeta = (BookMeta) this.getItemMeta();
         bookMeta.setTitle(title);
@@ -147,23 +166,54 @@ public class QuickItemStack extends ItemStack {
         return this;
     }
 
-    public QuickItemStack addPage(List<String> pageContent) {
+    public QuickItemStack addBookPages(Component... pages) {
+        return addBookPages(Arrays.asList(pages));
+    }
+
+    public QuickItemStack addBookPages(List<Component> pages) {
+        return addPage(pages.stream().map(Legacy::serialize).collect(Collectors.toList()));
+    }
+
+    public QuickItemStack addPage(List<String> pages) {
+        return addPage(pages.toArray(String[]::new));
+    }
+
+    public QuickItemStack addPage(String... pages) {
         BookMeta bookMeta = (BookMeta) this.getItemMeta();
-        bookMeta.addPage(pageContent.toString());
+        bookMeta.addPage(pages);
         this.setItemMeta(bookMeta);
         return this;
+    }
+
+    public QuickItemStack bookPages(Component... pages) {
+        return bookPages(Arrays.asList(pages));
+    }
+
+    public QuickItemStack bookPages(List<Component> pages) {
+        return setPages(pages.stream().map(Legacy::serialize).collect(Collectors.toList()));
+    }
+
+    public QuickItemStack setPages(List<String> pages) {
+        BookMeta bookMeta = (BookMeta) this.getItemMeta();
+        bookMeta.setPages(pages);
+        this.setItemMeta(bookMeta);
+        return this;
+    }
+
+    public QuickItemStack setPages(String... pages) {
+        BookMeta bookMeta = (BookMeta) this.getItemMeta();
+        bookMeta.setPages(pages);
+        this.setItemMeta(bookMeta);
+        return this;
+    }
+
+    public QuickItemStack bookAuthor(Component author) {
+        return setAuthor(Legacy.serialize(author));
     }
 
     public QuickItemStack setAuthor(String author) {
         BookMeta bookMeta = (BookMeta) this.getItemMeta();
         bookMeta.setAuthor(author);
-        this.setItemMeta(bookMeta);
-        return this;
-    }
-
-    public QuickItemStack addPage(String... pageContent) {
-        BookMeta bookMeta = (BookMeta) this.getItemMeta();
-        bookMeta.addPage(pageContent);
         this.setItemMeta(bookMeta);
         return this;
     }

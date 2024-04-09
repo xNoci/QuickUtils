@@ -2,6 +2,8 @@ package me.noci.quickutilities.inventory;
 
 import com.google.common.base.Preconditions;
 import lombok.Getter;
+import me.noci.quickutilities.utils.Legacy;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -21,12 +23,20 @@ public abstract class QuickGUIProvider {
         this(InventoryType.CHEST, title, size);
     }
 
+    protected QuickGUIProvider(Component title, int size) {
+        this(InventoryType.CHEST, Legacy.serialize(title), size);
+    }
+
     protected QuickGUIProvider(InventoryType type) {
         this(type, type.getDefaultTitle());
     }
 
     protected QuickGUIProvider(InventoryType type, String title) {
         this(type, title, type.getDefaultSize());
+    }
+
+    protected QuickGUIProvider(InventoryType type, Component title) {
+        this(type, Legacy.serialize(title), type.getDefaultSize());
     }
 
     QuickGUIProvider(InventoryType type, String title, int size) {

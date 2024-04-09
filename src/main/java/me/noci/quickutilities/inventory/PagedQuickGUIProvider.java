@@ -1,5 +1,7 @@
 package me.noci.quickutilities.inventory;
 
+import me.noci.quickutilities.utils.Legacy;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -15,12 +17,20 @@ public abstract class PagedQuickGUIProvider extends QuickGUIProvider {
         this(InventoryType.CHEST, title, size);
     }
 
+    protected PagedQuickGUIProvider(Component title, int size) {
+        this(InventoryType.CHEST, Legacy.serialize(title), size);
+    }
+
     protected PagedQuickGUIProvider(InventoryType type) {
         this(type, type.getDefaultTitle());
     }
 
     protected PagedQuickGUIProvider(InventoryType type, String title) {
         this(type, title, type.getDefaultSize());
+    }
+
+    protected PagedQuickGUIProvider(InventoryType type, Component title) {
+        this(type, Legacy.serialize(title), type.getDefaultSize());
     }
 
     PagedQuickGUIProvider(InventoryType type, String title, int size) {
