@@ -70,4 +70,20 @@ public class DirectionUtils {
         };
     }
 
+    /**
+     * Rotate the given {@link BlockFace} in clock wise order.
+     * @param blockFace
+     * @return the {@link BlockFace} after the given one in clock wise order
+     * @throws IllegalStateException when {@link BlockFace} is non cardinal
+     */
+    public static BlockFace getClockWise(BlockFace blockFace) {
+        return switch (blockFace) {
+            case NORTH -> BlockFace.EAST;
+            case SOUTH -> BlockFace.WEST;
+            case WEST -> BlockFace.NORTH;
+            case EAST-> BlockFace.SOUTH;
+            default -> throw new IllegalStateException("Cannot rotate non cardinal directions.");
+        };
+    }
+
 }
