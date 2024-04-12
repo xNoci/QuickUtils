@@ -9,17 +9,19 @@ import java.util.stream.Stream;
 
 public class EnumUtils {
 
+    @SuppressWarnings("unchecked")
     public static <T extends Enum<?>> T next(T value) {
         int index = value.ordinal();
-        T[] values = (T[]) value.getClass().getEnumConstants();
+        T[] values = (T[]) value.getDeclaringClass().getEnumConstants();
 
         if (index == values.length - 1) return values[0];
         return values[index + 1];
     }
 
+    @SuppressWarnings("unchecked")
     public static <T extends Enum<?>> T previous(T value) {
         int index = value.ordinal();
-        T[] values = (T[]) value.getClass().getEnumConstants();
+        T[] values = (T[]) value.getDeclaringClass().getEnumConstants();
 
         if (index == 0) return values[values.length - 1];
         return values[index - 1];
