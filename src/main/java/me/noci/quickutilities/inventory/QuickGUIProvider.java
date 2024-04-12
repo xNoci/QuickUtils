@@ -9,11 +9,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 
-public abstract class QuickGUIProvider {
+@Getter
+public abstract class QuickGUIProvider implements GuiProvider {
 
-    @Getter final InventoryType type;
-    @Getter final String title;
-    @Getter final int size;
+    final InventoryType type;
+    final String title;
+    final int size;
 
     protected QuickGUIProvider(int size) {
         this(InventoryType.CHEST.getDefaultTitle(), size);
@@ -52,6 +53,7 @@ public abstract class QuickGUIProvider {
         this.size = size;
     }
 
+    @Override
     public void provide(Player player) {
         DefaultInventoryContent inventoryContent = new DefaultInventoryContent(this.type, this.size > 0 ? this.size : this.type.getDefaultSize());
         GuiHolder inventoryHolder = new GuiHolder(this, inventoryContent);
