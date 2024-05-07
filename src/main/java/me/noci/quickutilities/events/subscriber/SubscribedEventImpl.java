@@ -73,7 +73,7 @@ public class SubscribedEventImpl<T extends Event> implements SubscribedEvent<T>,
 
         for (EventAttributeImpl<T, ?> attribute : attributeRegistry.getAttributes()) {
             attribute.updateValue(typedEvent);
-            if (attribute.test(typedEvent)) return;
+            if (!attribute.test(typedEvent)) return; //TODO CHECK
         }
 
         if(delayTicks <= 0) {

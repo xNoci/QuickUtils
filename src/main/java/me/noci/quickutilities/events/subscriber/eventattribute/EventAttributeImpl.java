@@ -28,9 +28,9 @@ public class EventAttributeImpl<E extends Event, A> implements EventAttribute<E,
 
     public boolean test(E event) {
         for (AttributeFilter<E, A> filter : filters) {
-            if (filter.test(event, this)) return true;
+            if (!filter.test(event, this)) return false;
         }
-        return false;
+        return true;
     }
 
     @Override
