@@ -27,12 +27,13 @@ public class SubscribedEventImpl<T extends Event> implements SubscribedEvent<T>,
 
     private final Method getHandlerList;
     private final long delayTicks;
+    private final boolean strict;
     private boolean active = false;
     @Getter private int calls = 0;
     private boolean expired = false;
 
     @SneakyThrows
-    public SubscribedEventImpl(Class<T> eventType, EventHandler<T> eventHandler, long delayTicks, EventPriority priority, JavaPlugin plugin, AttributeRegistryImpl<T> attributeRegistry, List<Predicate<T>> filters, List<Expiry<T>> expiries) {
+    public SubscribedEventImpl(Class<T> eventType, EventHandler<T> eventHandler, long delayTicks, boolean strict, EventPriority priority, JavaPlugin plugin, AttributeRegistryImpl<T> attributeRegistry, List<Predicate<T>> filters, List<Expiry<T>> expiries) {
         this.eventClass = eventType;
         this.priority = priority;
         this.plugin = plugin;
@@ -41,6 +42,7 @@ public class SubscribedEventImpl<T extends Event> implements SubscribedEvent<T>,
         this.expiries = expiries;
         this.attributeRegistry = attributeRegistry;
         this.delayTicks = delayTicks;
+        this.strict = strict;
 
         this.getHandlerList = eventClass.getMethod("getHandlerList");
         register();
@@ -49,7 +51,7 @@ public class SubscribedEventImpl<T extends Event> implements SubscribedEvent<T>,
     @Override
     public void execute(Listener listener, Event event) throws EventException {
         if (expired) return;
-        if (eventClass != event.getClass()) return;
+        if (eventClass != event.getClass() && strict) return;
         T typedEvent = eventClass.cast(event);
 
         boolean expirePre = expiries.stream()
@@ -76,7 +78,7 @@ public class SubscribedEventImpl<T extends Event> implements SubscribedEvent<T>,
             if (!attribute.test(typedEvent)) return; //TODO CHECK
         }
 
-        if(delayTicks <= 0) {
+        if (delayTicks <= 0) {
             eventHandler.handle(typedEvent, attributeRegistry);
         } else {
             Scheduler.delay(delayTicks, () -> eventHandler.handle(typedEvent, attributeRegistry));

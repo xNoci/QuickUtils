@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class DefaultEventBuilder<T extends Event> implements EventBuilder<T> {
+public class SingleEventBuilder<T extends Event> implements EventBuilder<T> {
 
     private final AttributeRegistryImpl<T> attributeRegistry = new AttributeRegistryImpl<>();
     private final List<Predicate<T>> filters = Lists.newArrayList();
@@ -27,8 +27,9 @@ public class DefaultEventBuilder<T extends Event> implements EventBuilder<T> {
     private final EventPriority priority;
     private long delayTicks = 0;
     private JavaPlugin plugin;
+    private boolean strict = true;
 
-    public DefaultEventBuilder(Class<T> event, EventPriority priority) {
+    public SingleEventBuilder(Class<T> event, EventPriority priority) {
         this.eventType = event;
         this.priority = priority;
         this.plugin = QuickUtils.instance();
@@ -79,14 +80,21 @@ public class DefaultEventBuilder<T extends Event> implements EventBuilder<T> {
     }
 
     @Override
+    public EventBuilder<T> strict(boolean useStrict) {
+        this.strict = useStrict;
+        return this;
+    }
+
+    @Override
     public EventBuilder<T> plugin(JavaPlugin plugin) {
         this.plugin = plugin;
         return this;
     }
 
+
     @Override
     public SubscribedEvent<T> handle(EventHandler<T> eventHandler) {
-        return new SubscribedEventImpl<>(eventType, eventHandler, delayTicks, priority, plugin, attributeRegistry, filters, expiries);
+        return new SubscribedEventImpl<>(eventType, eventHandler, delayTicks, strict, priority, plugin, attributeRegistry, filters, expiries);
     }
 
 }

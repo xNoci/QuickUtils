@@ -105,6 +105,16 @@ public interface EventBuilder<T extends Event> {
      */
     EventBuilder<T> delay(int value, BukkitUnit timeUnit);
 
+
+    /**
+     * When set to strict only events of type {@code T extends Events} will trigger.<br>
+     * Otherwise, all subclasses of {@code T extends Events} will also trigger.<br> <br>
+     * Defaults to {@code true}
+     * @param useStrict
+     * @return
+     */
+    EventBuilder<T> strict(boolean useStrict);
+
     /**
      * Handle the event with access to all attributes
      * @param event
