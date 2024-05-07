@@ -44,8 +44,7 @@ public final class GuiManager {
                     clickedSlot.getAction().handle(clickEvent);
                 });
 
-        Scheduler.repeat(BukkitUnit.SECONDS.toTicks(1) / 2, () -> Bukkit.getOnlinePlayers().stream()
-                .filter(player -> player.getOpenInventory().getTopInventory() != null)
+        Scheduler.repeat(5, BukkitUnit.TICKS, () -> Bukkit.getOnlinePlayers().stream()
                 .filter(player -> player.getOpenInventory().getTopInventory().getHolder() instanceof GuiHolder)
                 .forEach(player -> {
                     Inventory inventory = player.getOpenInventory().getTopInventory();
