@@ -41,7 +41,7 @@ public class SkullItem {
     }
 
     private static GameProfile getSkullProfile(String skinURL) {
-        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), null);
+        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), "");
         String base64encoded = Base64.getEncoder().encodeToString(("{textures:{SKIN:{url:\"" + skinURL + "\"}}}").getBytes());
         Property property = new Property("textures", base64encoded);
         gameProfile.getProperties().put("textures", property);
