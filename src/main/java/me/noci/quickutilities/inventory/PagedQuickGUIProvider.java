@@ -2,69 +2,53 @@ package me.noci.quickutilities.inventory;
 
 import me.noci.quickutilities.utils.Legacy;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
 
 public abstract class PagedQuickGUIProvider extends QuickGUIProvider {
 
     protected PagedQuickGUIProvider(int size) {
-        this(InventoryType.CHEST.getDefaultTitle(), size);
-    }
-
-    protected PagedQuickGUIProvider(String title, int size) {
-        this(InventoryType.CHEST, title, size);
-    }
-
-    protected PagedQuickGUIProvider(Component title, int size) {
-        this(InventoryType.CHEST, Legacy.serialize(title), size);
+        super(InventoryType.CHEST.defaultTitle(), size);
     }
 
     protected PagedQuickGUIProvider(InventoryType type) {
-        this(type, type.getDefaultTitle());
+        this(type, type.defaultTitle());
     }
 
+    @Deprecated
+    protected PagedQuickGUIProvider(String title, int size) {
+        this(InventoryType.CHEST, Legacy.deserialize(title), size);
+    }
+
+    @Deprecated
     protected PagedQuickGUIProvider(InventoryType type, String title) {
-        this(type, title, type.getDefaultSize());
+        this(type, Legacy.deserialize(title), type.getDefaultSize());
+    }
+
+    protected PagedQuickGUIProvider(Component title, int size) {
+        this(InventoryType.CHEST, title, size);
     }
 
     protected PagedQuickGUIProvider(InventoryType type, Component title) {
-        this(type, Legacy.serialize(title), type.getDefaultSize());
+        this(type, title, type.getDefaultSize());
     }
 
-    PagedQuickGUIProvider(InventoryType type, String title, int size) {
+    PagedQuickGUIProvider(InventoryType type, Component title, int size) {
         super(type, title, size);
     }
 
-
     @Override
-    public void provide(Player player) {
-        DefaultInventoryContent inventoryContent = new DefaultInventoryContent(this.type, this.size > 0 ? this.size : this.type.getDefaultSize());
-        GuiHolder inventoryHolder = new GuiHolder(this, inventoryContent);
-        inventoryContent.setGuiHolder(inventoryHolder);
-        Inventory inventory;
-
-        if (this.type == InventoryType.CHEST && this.size > 0) {
-            inventory = Bukkit.createInventory(inventoryHolder, this.size, this.title);
-        } else {
-            //Change dropper inventory to dispenser due to wierd IndexOutOfBoundException thrown by minecraft
-            inventory = Bukkit.createInventory(inventoryHolder, this.type == InventoryType.DROPPER ? InventoryType.DISPENSER : this.type, this.title);
-        }
-        inventoryHolder.setInventory(inventory);
-        init(player, inventoryHolder.getContent());
+    protected void initialiseGui(Player player, GuiHolder holder) {
+        super.initialiseGui(player, holder);
 
         PageContent pageContent = new PageContent();
-        inventoryHolder.setPageContent(pageContent);
+        holder.setPageContent(pageContent);
         initPage(player, pageContent);
-
-        inventoryHolder.applyContent();
-        player.openInventory(inventory);
     }
 
     public abstract void initPage(Player player, PageContent pageContent);
 
-    public void updatePageContent(Player player, PageContent content) {
+    public void updatePageContent(Player player, PageContent pageContent) {
     }
 
 }

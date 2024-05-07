@@ -2,6 +2,7 @@ package me.noci.quickutilities.utils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.jetbrains.annotations.NotNull;
 
 public class Legacy {
 
@@ -14,8 +15,11 @@ public class Legacy {
         return component == null ? null : SERIALIZER.serialize(component);
     }
 
-    private Legacy() {
+    public static Component deserialize(@NotNull String text) {
+        return SERIALIZER.deserialize(text);
+    }
 
+    private Legacy() {
     }
 
 }

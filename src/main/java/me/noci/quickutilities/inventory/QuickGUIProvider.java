@@ -4,43 +4,43 @@ import com.google.common.base.Preconditions;
 import lombok.Getter;
 import me.noci.quickutilities.utils.Legacy;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
 
 @Getter
 public abstract class QuickGUIProvider implements GuiProvider {
 
+    final Component title;
     final InventoryType type;
-    final String title;
     final int size;
 
     protected QuickGUIProvider(int size) {
-        this(InventoryType.CHEST.getDefaultTitle(), size);
-    }
-
-    protected QuickGUIProvider(String title, int size) {
-        this(InventoryType.CHEST, title, size);
-    }
-
-    protected QuickGUIProvider(Component title, int size) {
-        this(InventoryType.CHEST, Legacy.serialize(title), size);
+        this(InventoryType.CHEST.defaultTitle(), size);
     }
 
     protected QuickGUIProvider(InventoryType type) {
-        this(type, type.getDefaultTitle());
+        this(type, type.defaultTitle());
     }
 
+    @Deprecated
+    protected QuickGUIProvider(String title, int size) {
+        this(InventoryType.CHEST, Legacy.deserialize(title), size);
+    }
+
+    @Deprecated
     protected QuickGUIProvider(InventoryType type, String title) {
-        this(type, title, type.getDefaultSize());
+        this(type, Legacy.deserialize(title), type.getDefaultSize());
+    }
+
+    protected QuickGUIProvider(Component title, int size) {
+        this(InventoryType.CHEST, title, size);
     }
 
     protected QuickGUIProvider(InventoryType type, Component title) {
-        this(type, Legacy.serialize(title), type.getDefaultSize());
+        this(type, title, type.getDefaultSize());
     }
 
-    QuickGUIProvider(InventoryType type, String title, int size) {
+    QuickGUIProvider(InventoryType type, Component title, int size) {
         Preconditions.checkNotNull(type, "InventoryType cannot be null");
         Preconditions.checkNotNull(title, "Title cannot be null");
 
@@ -55,23 +55,16 @@ public abstract class QuickGUIProvider implements GuiProvider {
 
     @Override
     public void provide(Player player) {
-        DefaultInventoryContent inventoryContent = new DefaultInventoryContent(this.type, this.size > 0 ? this.size : this.type.getDefaultSize());
-        GuiHolder inventoryHolder = new GuiHolder(this, inventoryContent);
-        inventoryContent.setGuiHolder(inventoryHolder);
-        Inventory inventory;
+        GuiHolder inventoryHolder = new GuiHolder(this, this.type, this.size, this.title);
 
-        if (this.type == InventoryType.CHEST && this.size > 0) {
-            inventory = Bukkit.createInventory(inventoryHolder, this.size, this.title);
-        } else {
-            //Change dropper inventory to dispenser due to wierd IndexOutOfBoundException thrown by minecraft
-            inventory = Bukkit.createInventory(inventoryHolder, this.type == InventoryType.DROPPER ? InventoryType.DISPENSER : this.type, this.title);
-        }
-        inventoryHolder.setInventory(inventory);
-        init(player, inventoryHolder.getContent());
-
+        initialiseGui(player, inventoryHolder);
         inventoryHolder.applyContent();
 
-        player.openInventory(inventory);
+        player.openInventory(inventoryHolder.getInventory());
+    }
+
+    protected void initialiseGui(Player player, GuiHolder holder) {
+        init(player, holder.getContent());
     }
 
     public boolean isCancelledClick() {

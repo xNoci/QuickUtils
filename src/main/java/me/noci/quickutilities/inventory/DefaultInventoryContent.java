@@ -8,15 +8,18 @@ import org.bukkit.event.inventory.InventoryType;
 
 public class DefaultInventoryContent implements InventoryContent {
 
+    //TODO Merge this into GuiHolder
+
     private final InventoryType type;
     private final int size;
     private final Slot[] content;
-    @Setter(AccessLevel.PROTECTED) private GuiHolder guiHolder = null;
+    private final GuiHolder guiHolder;
 
-    protected DefaultInventoryContent(InventoryType type, int size) {
+    protected DefaultInventoryContent(GuiHolder holder, InventoryType type, int size) {
         this.type = type;
         this.size = size;
         this.content = new Slot[size];
+        this.guiHolder = holder;
 
         for (int i = 0; i < size; i++) {
             SlotPos slotPos = new SlotPos(type, i);
@@ -27,7 +30,7 @@ public class DefaultInventoryContent implements InventoryContent {
 
     @Override
     public void applyContent() {
-        if(guiHolder != null) guiHolder.applyContent();
+       guiHolder.applyContent();
     }
 
     @Override
