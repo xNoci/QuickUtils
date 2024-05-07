@@ -86,25 +86,21 @@ public class QuickItemStack extends ItemStack {
         return this;
     }
 
-    public QuickItemStack lore(Component... lore) {
-        return lore(Arrays.asList(lore));
+    public QuickItemStack itemLore(Component... lore) {
+        return itemLore(Arrays.asList(lore));
     }
 
-    public QuickItemStack lore(List<Component> lore) {
-        return setLore(lore.stream().map(Legacy::serialize).collect(Collectors.toList()));
+    public QuickItemStack itemLore(List<Component> lore) {
+        return setItemLore(lore.stream().map(Legacy::serialize).collect(Collectors.toList()));
     }
 
-    public List<String> getLore() {
-        ItemMeta itemMeta = this.getItemMeta();
-        if (itemMeta == null) return Lists.newArrayList();
-        return itemMeta.getLore();
+    @Deprecated
+    public QuickItemStack itemLore(String... lore) {
+        return setItemLore(Arrays.asList(lore));
     }
 
-    public QuickItemStack setLore(String... lore) {
-        return setLore(Arrays.asList(lore));
-    }
-
-    public QuickItemStack setLore(List<String> lore) {
+    @Deprecated
+    public QuickItemStack setItemLore(List<String> lore) {
         ItemMeta itemMeta = this.getItemMeta();
         itemMeta.setLore(lore);
         this.setItemMeta(itemMeta);
@@ -131,7 +127,7 @@ public class QuickItemStack extends ItemStack {
 
     public QuickItemStack setUnbreakable(boolean unbreakable) {
         ItemMeta itemMeta = this.getItemMeta();
-        itemMeta.spigot().setUnbreakable(unbreakable);
+        itemMeta.setUnbreakable(unbreakable);
         this.setItemMeta(itemMeta);
         return this;
     }

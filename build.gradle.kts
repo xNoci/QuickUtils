@@ -4,6 +4,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 plugins {
     id("java-library")
     id("com.github.johnrengelman.shadow") version ("8.1.1")
+    id("io.papermc.paperweight.userdev") version "1.7.0"
 }
 
 
@@ -14,10 +15,6 @@ version = "${project.property("version")!!}-b${gitRevision()}.${gitHash()}"
 repositories {
     mavenCentral()
     maven {
-        name = "EngineHub"
-        url = uri("https://maven.enginehub.org/repo/")
-    }
-    maven {
         name = "ProtocolLib"
         url = uri("https://repo.dmulloy2.net/repository/public/")
     }
@@ -25,15 +22,20 @@ repositories {
         name = "ViaVersion"
         url = uri("https://repo.viaversion.com")
     }
+    maven {
+        name = "PaperMC"
+        url = uri("https://repo.papermc.io/repository/maven-public/")
+    }
 }
 
 dependencies {
+    paperweight.paperDevBundle(libs.versions.paper)
+
     implementation(libs.xseries) { isTransitive = false }
     implementation(libs.fastboard)
 
     api(libs.bundles.kyori.adventure);
 
-    compileOnly(libs.spigot)
     compileOnly(libs.protocollib)
     compileOnly(libs.viavsersion)
     compileOnly(libs.jetbrains.annotations)
@@ -44,17 +46,22 @@ dependencies {
 
 tasks {
 
-    shadowJar {
-        val relocatePackage = "${project.group}.dep."
-        archiveFileName.set("${project.property("pluginName")}-${project.property("version")}.jar")
-        relocate("com.cryptomorin.xseries", "${relocatePackage}xseries")
-        relocate("fr.mrmicky.fastboard", "${relocatePackage}fastboard")
-
-        minimize()
+    assemble {
+        dependsOn(reobfJar)
     }
 
     compileJava {
         options.encoding = Charsets.UTF_8.name()
+    }
+
+    shadowJar {
+        archiveFileName.set("${project.property("pluginName")}-${project.property("version")}.jar")
+
+        fun reloc(pkg: String) = relocate(pkg, "${project.group}.dependency.$pkg");
+        reloc("com.cryptomorin.xseries")
+        reloc("fr.mrmicky.fastboard")
+
+        minimize()
     }
 
     java {
