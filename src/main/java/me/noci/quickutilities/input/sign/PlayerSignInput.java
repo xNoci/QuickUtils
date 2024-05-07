@@ -53,7 +53,7 @@ public class PlayerSignInput extends BasePlayerInput implements Listener {
 
     private static int getSignY(Location location) {
         int minHeight = switch (location.getWorld().getEnvironment()) {
-            case NORMAL -> MIN_SIGN_HEIGHT_WORLD;
+            case NORMAL, CUSTOM -> MIN_SIGN_HEIGHT_WORLD;
             case NETHER -> MIN_SIGN_HEIGHT_NETHER;
             case THE_END -> MIN_SIGN_HEIGHT_END;
         };
