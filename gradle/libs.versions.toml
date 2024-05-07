@@ -6,7 +6,6 @@ jetbrains-annotations = "23.0.0"
 xseries = "9.10.0"
 fastboard = "2.0.2"
 viaversion = "4.9.3"
-kyori-adventure = "4.16.0"
 
 [libraries]
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
@@ -15,9 +14,3 @@ jetbrains-annotations = { group = "org.jetbrains", name = "annotations", version
 xseries = { group = "com.github.cryptomorin", name = "XSeries", version.ref = "xseries" }
 fastboard = { group = "fr.mrmicky", name = "fastboard", version.ref = "fastboard" }
 viavsersion = { group = "com.viaversion", name = "viaversion-api", version.ref = "viaversion" }
-kyori-adventure-api = { group = "net.kyori", name = "adventure-api", version.ref = "kyori-adventure" }
-kyori-adventure-text-serializer-gson = { group = "net.kyori", name = "adventure-text-serializer-gson", version.ref = "kyori-adventure" }
-kyori-adventure-text-serializer-legacy = { group = "net.kyori", name = "adventure-text-serializer-legacy", version.ref = "kyori-adventure" }
-
-[bundles]
-kyori-adventure = ["kyori-adventure-api", "kyori-adventure-text-serializer-gson", "kyori-adventure-text-serializer-legacy"]

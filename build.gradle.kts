@@ -34,8 +34,6 @@ dependencies {
     implementation(libs.xseries) { isTransitive = false }
     implementation(libs.fastboard)
 
-    api(libs.bundles.kyori.adventure);
-
     compileOnly(libs.protocollib)
     compileOnly(libs.viavsersion)
     compileOnly(libs.jetbrains.annotations)
