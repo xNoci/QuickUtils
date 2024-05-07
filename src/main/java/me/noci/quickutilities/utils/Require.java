@@ -1,5 +1,7 @@
 package me.noci.quickutilities.utils;
 
+import net.minecraft.core.registries.Registries;
+
 import java.util.Optional;
 
 public class Require {
@@ -37,6 +39,24 @@ public class Require {
             if (!Character.isWhitespace(c)) return false;
         }
         return true;
+    }
+
+    /**
+     * Check if an object is null.
+     * @param object to test
+     * @return {@code true} if object is null, else returns {@code false}
+     */
+    public static boolean isNull(Object object) {
+        return object == null;
+    }
+
+    /**
+     * Check if an object is not null.
+     * @param object to test
+     * @return {@code true} if object is not null, else returns {@code false}
+     */
+    public static boolean isNonNull(Object object) {
+        return object != null;
     }
 
     /**
