@@ -1,8 +1,11 @@
 package me.noci.quickutilities.utils;
 
+import com.google.common.base.Predicates;
 import org.bukkit.event.inventory.InventoryType;
+import org.jetbrains.annotations.Range;
 
 import java.util.function.IntPredicate;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
 public enum InventoryPattern {
@@ -53,7 +56,7 @@ public enum InventoryPattern {
         return IntStream.range(0, size).filter(predicate).toArray();
     }
 
-    public static int[] box(int firstRow, int lastRow) {
+    public static int[] box(@Range(from = 1, to = 6) int firstRow, @Range(from = 1, to = 6) int lastRow) {
         int minSlot = 9 * (firstRow - 1);
         int maxSlot = 9 * (lastRow - 1) + 8;
         return IntStream.range(0, 54)
@@ -61,6 +64,12 @@ public enum InventoryPattern {
                 .filter(i -> (i + 1) % 9 != 0)
                 .filter(i -> i >= minSlot && i <= maxSlot)
                 .toArray();
+    }
+
+    public static int[] range(@Range(from = 1, to = 54) int firstSlot, @Range(from = 1, to = 54) int lastSlot) {
+        int first = firstSlot - 1;
+        int second = lastSlot - 1;
+        return IntStream.range(0, 54).filter(i -> i >= first && i <= second).toArray();
     }
 
     public int[] getDispenserSlots(int size) {
