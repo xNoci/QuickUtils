@@ -1,18 +1,23 @@
 package me.noci.quickutilities.inventory;
 
+import com.google.common.collect.Lists;
 import lombok.AccessLevel;
 import lombok.Setter;
 import me.noci.quickutilities.utils.Require;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.stream.IntStream;
 
 public class PageContent {
 
     @Setter(AccessLevel.PROTECTED) private GuiHolder handle;
     private int currentPage = 0;
     private int[] itemSlots = new int[0];
-    private GuiItem[] pageContent = new GuiItem[0];
+    private List<GuiItem> pageContent = Lists.newArrayList();
     private NavigationItem previousPageItem = null;
     private NavigationItem nextPageItem = null;
 
@@ -26,35 +31,36 @@ public class PageContent {
 
     private int getPageCount() {
         int itemsPerPage = getItemsPerPage();
-        int itemCount = pageContent.length;
+        int itemCount = pageContent.size();
         int pageCount = (int) Math.ceil((double) itemCount / (double) itemsPerPage);
 
         if (pageCount > 0) pageCount -= 1;
         return pageCount;
     }
 
-    private GuiItem[] getPageItems() {
-        return Arrays.copyOfRange(pageContent, currentPage * getItemsPerPage(), (currentPage + 1) * getItemsPerPage());
+    private List<GuiItem> getPageItems() {
+        int pageSize = getItemsPerPage();
+        return pageContent.stream().skip((long) currentPage * pageSize).limit(pageSize).toList();
     }
 
     public void setPageContent(GuiItem... pageContent) {
-        this.pageContent = pageContent;
+        this.pageContent = Lists.newArrayList(pageContent);
     }
 
     public void setItem(int index, GuiItem item) {
         Require.nonNull(pageContent, "pageContent cannot be null");
-        Require.checkState(index <= pageContent.length, "index (%s) has to be less or equal to pageContent.length (%s)", index, pageContent.length);
-        pageContent[index] = item;
+        Require.checkState(index <= pageContent.size(), "index (%s) has to be less or equal to pageContent.length (%s)", index, pageContent.size());
+        pageContent.set(index, item);
     }
 
     public GuiItem getItem(int index) {
         Require.nonNull(pageContent, "pageContent cannot be null");
-        Require.checkState(index <= pageContent.length, "index (%s) has to be less or equal to pageContent.length (%s)", index, pageContent.length);
-        return pageContent[index];
+        Require.checkState(index <= pageContent.size(), "index (%s) has to be less or equal to pageContent.length (%s)", index, pageContent.size());
+        return pageContent.get(index);
     }
 
     public int getTotalItemCount() {
-        return this.pageContent.length;
+        return this.pageContent.size();
     }
 
     public void setItemSlots(int... slots) {
@@ -89,18 +95,9 @@ public class PageContent {
     }
 
     private void fillSlots() {
-        GuiItem[] items = getPageItems();
-        for (int i = 0; i < itemSlots.length; i++) {
-            int slot = itemSlots[i];
-
-            if (i > items.length) {
-                this.handle.getContent().setItem(slot, null);
-                continue;
-            }
-
-            GuiItem item = items[i];
-            this.handle.getContent().setItem(slot, item);
-        }
+        List<GuiItem> items = getPageItems();
+        Consumer<Integer> setItem = slot -> this.handle.getContent().setItem(slot, slot < items.size() ? items.get(slot) : null);
+        IntStream.iterate(0, slot -> slot < itemSlots.length, slot -> slot + 1).forEach(setItem::accept);
     }
 
     private void setPageItems() {
