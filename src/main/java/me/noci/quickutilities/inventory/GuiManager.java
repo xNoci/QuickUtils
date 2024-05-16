@@ -29,18 +29,17 @@ public final class GuiManager {
                     Player player = (Player) event.getWhoClicked();
                     GuiHolder holder = (GuiHolder) event.getInventory().getHolder();
                     QuickGUIProvider provider = holder.getProvider();
-                    InventoryContent content = holder.getContent();
 
                     event.setCancelled(provider.isCancelledClick());
                     if (event.getClickedInventory().equals(event.getView().getBottomInventory())) return;
 
-                    Slot slot = content.getSlot(event.getSlot());
+                    Slot slot = holder.getSlot(event.getSlot());
                     if (slot == null) return;
 
                     ClickType clickType = event.getClick();
                     InventoryAction action = event.getAction();
                     SlotClickEvent clickEvent = new SlotClickEvent(player, slot, slot.getItemStack(), clickType, action);
-                    Slot clickedSlot = holder.getContent().getSlot(event.getSlot());
+                    Slot clickedSlot = holder.getSlot(event.getSlot());
                     clickedSlot.getAction().handle(clickEvent);
                 });
 
@@ -50,7 +49,7 @@ public final class GuiManager {
                     Inventory inventory = player.getOpenInventory().getTopInventory();
                     GuiHolder inventoryHolder = (GuiHolder) inventory.getHolder();
 
-                    inventoryHolder.getProvider().update(player, inventoryHolder.getContent());
+                    inventoryHolder.getProvider().update(player, inventoryHolder);
 
                     if (inventoryHolder.hasPageContent()) {
                         PageContent pageContent = inventoryHolder.getPageContent();

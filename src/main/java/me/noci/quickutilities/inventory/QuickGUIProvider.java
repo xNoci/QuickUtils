@@ -64,7 +64,7 @@ public abstract class QuickGUIProvider implements GuiProvider {
     }
 
     protected void initialiseGui(Player player, GuiHolder holder) {
-        init(player, holder.getContent());
+        init(player, holder);
     }
 
     public boolean isCancelledClick() {

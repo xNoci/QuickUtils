@@ -6,9 +6,7 @@ import lombok.Setter;
 import me.noci.quickutilities.utils.Require;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
@@ -96,7 +94,7 @@ public class PageContent {
 
     private void fillSlots() {
         List<GuiItem> items = getPageItems();
-        Consumer<Integer> setItem = slot -> this.handle.getContent().setItem(slot, slot < items.size() ? items.get(slot) : null);
+        Consumer<Integer> setItem = slot -> this.handle.setItem(slot, slot < items.size() ? items.get(slot) : null);
         IntStream.iterate(0, slot -> slot < itemSlots.length, slot -> slot + 1).forEach(setItem::accept);
     }
 
@@ -106,7 +104,7 @@ public class PageContent {
             GuiItem item = GuiItem.empty();
             item.setItem(!isFirstPage() ? previousPageItem.displayItem : previousPageItem.defaultItem);
             item.setAction(event -> previousPage());
-            this.handle.getContent().setItem(slot, item);
+            this.handle.setItem(slot, item);
         }
 
         if (nextPageItem != null) {
@@ -114,7 +112,7 @@ public class PageContent {
             GuiItem item = GuiItem.empty();
             item.setItem(!isLastPage() ? nextPageItem.displayItem : nextPageItem.defaultItem);
             item.setAction(event -> nextPage());
-            this.handle.getContent().setItem(slot, item);
+            this.handle.setItem(slot, item);
         }
     }
 
