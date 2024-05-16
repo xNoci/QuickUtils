@@ -1,6 +1,7 @@
 package me.noci.quickutilities.utils;
 
-import net.minecraft.core.registries.Registries;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -43,6 +44,7 @@ public class Require {
 
     /**
      * Check if an object is null.
+     *
      * @param object to test
      * @return {@code true} if object is null, else returns {@code false}
      */
@@ -52,6 +54,7 @@ public class Require {
 
     /**
      * Check if an object is not null.
+     *
      * @param object to test
      * @return {@code true} if object is not null, else returns {@code false}
      */
@@ -67,7 +70,7 @@ public class Require {
      * @return The given object
      * @throws NullPointerException Throws if object is null
      */
-    public static <T> T nonNull(T object) throws NullPointerException {
+    public static <T> @NotNull T nonNull(@Nullable T object) throws NullPointerException {
         check(object != null, new NullPointerException());
         return object;
     }
@@ -82,7 +85,7 @@ public class Require {
      * @return The given object
      * @throws NullPointerException Throws if object is null
      */
-    public static <T> T nonNull(T object, String message, Object... args) throws NullPointerException {
+    public static <T> @NotNull T nonNull(@Nullable T object, String message, Object... args) throws NullPointerException {
         return nonNull(object, message.formatted(args));
     }
 
@@ -95,7 +98,7 @@ public class Require {
      * @return The given object
      * @throws NullPointerException Throws if object is null
      */
-    public static <T> T nonNull(T object, String message) throws NullPointerException {
+    public static <T> @NotNull T nonNull(@Nullable T object, String message) throws NullPointerException {
         check(object != null, new NullPointerException(message));
         return object;
     }
