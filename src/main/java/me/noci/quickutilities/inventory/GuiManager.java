@@ -23,12 +23,13 @@ public final class GuiManager {
         Events.subscribe(InventoryClickEvent.class)
                 .filter(event -> event.getWhoClicked() instanceof Player)
                 .filter(event -> event.getClickedInventory() != null)
-                .filter(event -> !event.getView().getBottomInventory().equals(event.getClickedInventory()))
                 .filter(event -> event.getInventory().getHolder() instanceof GuiHolder)
                 .handle(event -> {
                     GuiHolder holder = (GuiHolder) event.getInventory().getHolder();
                     QuickGUIProvider provider = Require.nonNull(holder).getProvider();
                     event.setCancelled(provider.isCancelledClick());
+
+                    if (event.getView().getBottomInventory().equals(event.getClickedInventory())) return;
 
                     Slot slot = holder.getSlot(event.getSlot());
                     SlotClickEvent clickEvent = new SlotClickEvent((Player) event.getWhoClicked(), slot, slot.getItemStack(), event.getClick(), event.getAction());
