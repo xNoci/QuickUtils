@@ -35,6 +35,10 @@ public class Slot {
         return this.item.getAction();
     }
 
+    public void fireClickEvent(SlotClickEvent event) {
+        this.item.getAction().handle(event);
+    }
+
     public GuiItem getGuiItem() {
         return this.item;
     }
