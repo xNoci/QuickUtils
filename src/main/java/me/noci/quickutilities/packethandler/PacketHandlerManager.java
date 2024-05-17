@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public abstract class PacketHandlerManager<T extends PacketHandler<T>> extends GenericType<T> {
+public class PacketHandlerManager<T extends PacketHandler<T>> extends GenericType<T> {
 
     private final PacketHandlerContainer<T> supportedContainer;
     private final boolean requiresProtocolLib;

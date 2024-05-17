@@ -10,6 +10,7 @@ public interface TeamPacketHandler extends PacketHandler<TeamPacketHandler> {
 
     Object createTeamPacket(TabListTeam team);
 
+    @Getter
     enum TeamMode {
         CREATE(0),
         REMOVE(1),
@@ -17,7 +18,7 @@ public interface TeamPacketHandler extends PacketHandler<TeamPacketHandler> {
         ADD_PLAYERS(3),
         REMOVE_PLAYERS(4);
 
-        @Getter private final int mode;
+        private final int mode;
 
         TeamMode(int modeID) {
             this.mode = modeID;
