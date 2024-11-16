@@ -1,14 +1,8 @@
 package me.noci.quickutilities.packethandler;
 
 import com.google.common.collect.Maps;
-import me.noci.quickutilities.input.sign.packets.SignPacketHandlerV1_18;
-import me.noci.quickutilities.input.sign.packets.SignPacketHandlerV1_20;
-import me.noci.quickutilities.input.sign.packets.SignPacketHandlerV1_8;
-import me.noci.quickutilities.input.sign.packets.SignPacketHandlerV1_9;
-import me.noci.quickutilities.quicktab.packets.TeamPacketHandlerV1_13;
-import me.noci.quickutilities.quicktab.packets.TeamPacketHandlerV1_17;
-import me.noci.quickutilities.quicktab.packets.TeamPacketHandlerV1_8;
-import me.noci.quickutilities.quicktab.packets.TeamPacketHandlerV1_9;
+import me.noci.quickutilities.input.sign.packets.*;
+import me.noci.quickutilities.quicktab.packets.*;
 
 import java.util.HashMap;
 
@@ -17,14 +11,18 @@ public class PacketHandlerFactory {
     private static final HashMap<Class<PacketHandler<?>>, PacketHandlerManager<?>> PACKET_HANDLER_MANAGERS = Maps.newHashMap();
 
     static {
-        PacketHandlerFactory.registerPacketManger(true,
+        PacketHandlerFactory.registerPacketManger(
+                true,
+                TeamPacketHandler.class,
                 new TeamPacketHandlerV1_8(),
                 new TeamPacketHandlerV1_9(),
                 new TeamPacketHandlerV1_13(),
                 new TeamPacketHandlerV1_17()
         );
 
-        PacketHandlerFactory.registerPacketManger(true,
+        PacketHandlerFactory.registerPacketManger(
+                true,
+                SignPacketHandler.class,
                 new SignPacketHandlerV1_8(),
                 new SignPacketHandlerV1_9(),
                 new SignPacketHandlerV1_18(),
@@ -43,15 +41,15 @@ public class PacketHandlerFactory {
     }
 
     @SafeVarargs
-    public static <T extends PacketHandler<T>> void registerPacketManger(boolean requireProtocolLib, PacketHandler<T>... handlers) {
-        PacketHandlerManager<T> manager = new PacketHandlerManager<>(requireProtocolLib, handlers);
+    public static <T extends PacketHandler<T>> void registerPacketManger(boolean requireProtocolLib, Class<T> type, PacketHandler<T>... handlers) {
+        PacketHandlerManager<T> manager = new PacketHandlerManager<>(requireProtocolLib, type, handlers);
         registerPacketManger(manager);
     }
 
     @SuppressWarnings("unchecked")
     public static <T extends PacketHandler<T>> void registerPacketManger(PacketHandlerManager<T> handlerManager) {
-        if (PACKET_HANDLER_MANAGERS.containsKey(handlerManager.getHandlerType())) throw new IllegalStateException();
-        PACKET_HANDLER_MANAGERS.put((Class<PacketHandler<?>>) handlerManager.getHandlerType(), handlerManager);
+        if (PACKET_HANDLER_MANAGERS.containsKey(handlerManager.getType())) throw new IllegalStateException();
+        PACKET_HANDLER_MANAGERS.put((Class<PacketHandler<?>>) handlerManager.getType(), handlerManager);
     }
 
     @SuppressWarnings("unchecked")
