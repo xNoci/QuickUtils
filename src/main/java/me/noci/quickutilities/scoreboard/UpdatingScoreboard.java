@@ -9,18 +9,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
-public class UpdatingScoreboard {
+public class UpdatingScoreboard<T> {
 
-    private final ScoreboardUpdate<String> scoreboardHandler;
+    private final QuickBoard<T> handle;
+    private final ScoreboardUpdate<T> scoreboardHandler;
     private final BukkitTask runnable;
     private final SubscribedEvent<PlayerJoinEvent> joinEvent;
     private final SubscribedEvent<PlayerQuitEvent> quitEvent;
 
-    protected UpdatingScoreboard(JavaPlugin plugin, long ticks, ScoreboardUpdate<String> scoreboardHandler) {
+    protected UpdatingScoreboard(QuickBoard<T> quickBoard, long ticks, ScoreboardUpdate<T> scoreboardHandler) {
         Require.checkState(scoreboardHandler != null, "TabListTeamBuilder cannot be null.");
+        this.handle = quickBoard;
         this.scoreboardHandler = scoreboardHandler;
         this.joinEvent = Events.subscribe(PlayerJoinEvent.class, EventPriority.MONITOR).handle(event -> updateAll());
         this.quitEvent = Events.subscribe(PlayerQuitEvent.class, EventPriority.MONITOR).handle(event -> {
@@ -38,7 +39,7 @@ public class UpdatingScoreboard {
     }
 
     public void update(Player player) {
-        Scoreboard<String> scoreboard = QuickBoard.getScoreboardInternal(player);
+        Scoreboard<T> scoreboard = handle.getScoreboardInternal(player);
         scoreboardHandler.update(player, scoreboard);
     }
 
