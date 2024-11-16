@@ -2,9 +2,9 @@ import org.apache.commons.io.output.ByteArrayOutputStream
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
-    id("java-library")
-    id("com.github.johnrengelman.shadow") version ("8.1.1")
-    id("io.papermc.paperweight.userdev") version "1.7.0"
+    `java-library`
+    alias(libs.plugins.paperweight)
+    alias(libs.plugins.shadow)
 }
 
 
@@ -12,8 +12,15 @@ var pluginName = project.property("pluginName")!!
 group = project.property("group")!!
 version = "${project.property("version")!!}-b${gitRevision()}.${gitHash()}"
 
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+}
+
+paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
+
 repositories {
     mavenCentral()
+    gradlePluginPortal()
     maven {
         name = "ProtocolLib"
         url = uri("https://repo.dmulloy2.net/repository/public/")
@@ -43,13 +50,12 @@ dependencies {
 
 
 tasks {
-
-    assemble {
-        dependsOn(reobfJar)
+    compileJava {
+        options.release = 21
     }
 
-    compileJava {
-        options.encoding = Charsets.UTF_8.name()
+    javadoc {
+        options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
     }
 
     shadowJar {
@@ -60,14 +66,6 @@ tasks {
         reloc("fr.mrmicky.fastboard")
 
         minimize()
-    }
-
-    java {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(17))
-    }
-
-    jar {
-        archiveFileName.set("${pluginName}-${version}.jar")
     }
 
     processResources {
@@ -83,7 +81,7 @@ tasks {
 
 }
 
-fun gitRevision() : String {
+fun gitRevision(): String {
     val out = ByteArrayOutputStream();
     exec {
         commandLine("git", "rev-list", "--count", "HEAD")
@@ -92,7 +90,7 @@ fun gitRevision() : String {
     return out.toString("UTF-8").trim();
 }
 
-fun gitHash() : String {
+fun gitHash(): String {
     val out = ByteArrayOutputStream();
     exec {
         commandLine("git", "rev-parse", "--short", "HEAD")

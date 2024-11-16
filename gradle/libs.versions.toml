@@ -7,6 +7,10 @@ xseries = "9.10.0"
 fastboard = "2.0.2"
 viaversion = "4.9.3"
 
+[plugins]
+shadow = "io.github.goooler.shadow:8.1.7"
+paperweight = "io.papermc.paperweight.userdev:1.7.1"
+
 [libraries]
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
 protocollib = { group = "com.comphenix.protocol", name = "ProtocolLib", version.ref = "protocollib" }
