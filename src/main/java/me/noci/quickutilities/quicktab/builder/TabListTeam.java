@@ -1,6 +1,6 @@
 package me.noci.quickutilities.quicktab.builder;
 
-import com.cryptomorin.xseries.ReflectionUtils;
+import com.cryptomorin.xseries.reflection.XReflection;
 import lombok.Getter;
 import me.noci.quickutilities.quicktab.utils.CollisionRule;
 import me.noci.quickutilities.quicktab.utils.NameTagVisibility;
@@ -60,7 +60,7 @@ public class TabListTeam {
     }
 
     private String chopString(String string) {
-        if (ReflectionUtils.supports(18) || string.length() <= 16) return string;
+        if (XReflection.supports(18) || string.length() <= 16) return string;
         return string.substring(0, 16);
     }
 

@@ -2,7 +2,7 @@ package me.noci.quickutilities.input.sign;
 
 import com.comphenix.protocol.wrappers.BlockPosition;
 import com.comphenix.protocol.wrappers.WrappedBlockData;
-import com.cryptomorin.xseries.ReflectionUtils;
+import com.cryptomorin.xseries.reflection.XReflection;
 import me.noci.quickutilities.input.BasePlayerInput;
 import me.noci.quickutilities.input.functions.InputExecutor;
 import me.noci.quickutilities.input.sign.packets.SignPacketHandler;
@@ -18,7 +18,7 @@ public class PlayerSignInput extends BasePlayerInput implements Listener {
 
     private static final int MIN_SIGN_HEIGHT_NETHER = 5;
     private static final int MIN_SIGN_HEIGHT_END = 1;
-    private static final int MIN_SIGN_HEIGHT_WORLD = ReflectionUtils.v(18, -59).orElse(6);
+    private static final int MIN_SIGN_HEIGHT_WORLD = XReflection.v(18, -59).orElse(6);
     private static final int SIGN_Y_DISTANCE = 5;
 
     private final SignPacketHandler handler;

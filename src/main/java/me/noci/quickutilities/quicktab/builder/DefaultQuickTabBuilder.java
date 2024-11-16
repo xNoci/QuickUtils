@@ -1,6 +1,6 @@
 package me.noci.quickutilities.quicktab.builder;
 
-import com.cryptomorin.xseries.ReflectionUtils;
+import com.cryptomorin.xseries.reflection.XReflection;
 import com.google.common.collect.Lists;
 import me.noci.quickutilities.quicktab.utils.*;
 import org.bukkit.ChatColor;
@@ -18,7 +18,7 @@ public class DefaultQuickTabBuilder implements QuickTabBuilder {
     private TabListFunction<Player, Integer> sortID = (player, target) -> Integer.MAX_VALUE; //Default sorted as last
     private TabListFunction<Player, String[]> entries = (player, target) -> new String[]{target.getName()}; //Default only at the target to the team
     //If the server does not support 1.13 color is set to null because it will be used as the color of the end of the prefix
-    private TabListFunction<Player, ChatColor> color = (player, target) -> ReflectionUtils.v(13, DEFAULT_COLOR).orElse(null);
+    private TabListFunction<Player, ChatColor> color = (player, target) -> XReflection.v(13, DEFAULT_COLOR).orElse((ChatColor) null);
     private TabListFunction<Player, NameTagVisibility> nameTagVisibility = (player, target) -> NameTagVisibility.ALWAYS;
     private TabListFunction<Player, CollisionRule> collisionRule = (player, target) -> CollisionRule.ALWAYS;
     private TabListFunction<Player, Boolean> allowFriendlyFire = (player, target) -> true;
@@ -123,7 +123,7 @@ public class DefaultQuickTabBuilder implements QuickTabBuilder {
     private String convertPrefix(Player player, Player target, ChatColor color) {
         String prefix = this.prefix.getExtension(player, target);
 
-        if (ReflectionUtils.supports(13) || color == null) return prefix;
+        if (XReflection.supports(13) || color == null) return prefix;
         if (endsWithColorCode(prefix)) return prefix;
         if (prefix.length() <= 14) return prefix + color;
         return prefix.substring(0, 14) + color;

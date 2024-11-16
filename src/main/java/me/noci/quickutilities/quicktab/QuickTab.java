@@ -1,6 +1,6 @@
 package me.noci.quickutilities.quicktab;
 
-import com.cryptomorin.xseries.ReflectionUtils;
+import com.cryptomorin.xseries.reflection.minecraft.MinecraftConnection;
 import com.google.common.collect.Sets;
 import me.noci.quickutilities.packethandler.PacketHandlerFactory;
 import me.noci.quickutilities.quicktab.builder.DefaultQuickTabBuilder;
@@ -129,8 +129,8 @@ public class QuickTab {
             createPackets.add(teamPacketHandler.createTeamPacket(team));
         }
 
-        ReflectionUtils.sendPacketSync(player, removePackets.toArray());
-        ReflectionUtils.sendPacketSync(player, createPackets.toArray());
+        MinecraftConnection.sendPacket(player, removePackets.toArray());
+        MinecraftConnection.sendPacket(player, createPackets.toArray());
     }
 
 }

@@ -1,6 +1,6 @@
 package me.noci.quickutilities.utils;
 
-import com.cryptomorin.xseries.ReflectionUtils;
+import com.cryptomorin.xseries.reflection.XReflection;
 import lombok.SneakyThrows;
 import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
@@ -36,7 +36,7 @@ public class ServerProperties {
     }
 
     public static GameMode getGamemode() {
-        return ReflectionUtils.v(14, GameMode.valueOf(instance().getString("gamemode"))).orElse(GameMode.values()[instance().getInt("gamemode") % GameMode.values().length]);
+        return XReflection.v(14, GameMode.valueOf(instance().getString("gamemode"))).orElse(GameMode.values()[instance().getInt("gamemode") % GameMode.values().length]);
     }
 
     public static String getDefaultWorld() {
@@ -52,7 +52,7 @@ public class ServerProperties {
     }
 
     public static Difficulty getDifficulty() {
-        return ReflectionUtils.v(14, Difficulty.valueOf(instance().getString("difficulty"))).orElse(Difficulty.values()[instance().getInt("difficulty") % Difficulty.values().length]);
+        return XReflection.v(14, Difficulty.valueOf(instance().getString("difficulty"))).orElse(Difficulty.values()[instance().getInt("difficulty") % Difficulty.values().length]);
     }
 
     public static boolean isSpawnAnimals() {

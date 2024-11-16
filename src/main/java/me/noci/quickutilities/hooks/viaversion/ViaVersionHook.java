@@ -1,6 +1,6 @@
 package me.noci.quickutilities.hooks.viaversion;
 
-import com.cryptomorin.xseries.ReflectionUtils;
+import com.cryptomorin.xseries.reflection.XReflection;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.ViaAPI;
 import me.noci.quickutilities.hooks.PluginHook;
@@ -25,7 +25,7 @@ public class ViaVersionHook extends PluginHook {
 
     public static MinecraftVersion getVersion(Player player) {
         if (!isEnabled())
-            return new MinecraftVersion(ReflectionUtils.MINOR_NUMBER, ReflectionUtils.getLatestPatchNumberOf(ReflectionUtils.MINOR_NUMBER), false);
+            return new MinecraftVersion(XReflection.MINOR_NUMBER, XReflection.getLatestPatchNumberOf(XReflection.MINOR_NUMBER), false);
         return Version.getVersion(player);
     }
 

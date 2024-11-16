@@ -1,6 +1,6 @@
 package me.noci.quickutilities.utils;
 
-import com.cryptomorin.xseries.ReflectionUtils;
+import com.cryptomorin.xseries.reflection.XReflection;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class EntityCountAccessor {
 
     private static final Field ENTITY_ID_COUNT;
-    private static final boolean IS_ATOMIC_INTEGER = ReflectionUtils.supports(14);
+    private static final boolean IS_ATOMIC_INTEGER = XReflection.supports(14);
 
     static {
         //8 - entityCount : int
@@ -26,15 +26,14 @@ public class EntityCountAccessor {
         //19 - d : AtomicInteger
         //20 - d : AtomicInteger
 
-        String fieldName = ReflectionUtils.v(19, "d").v(18, "c").v(17, "b").orElse("entityCount");
-        Class<?> entityClass = ReflectionUtils.getNMSClass("world.entity", "Entity");
 
         Field field = null;
         try {
-            if (entityClass != null) {
-                field = entityClass.getDeclaredField(fieldName);
-            }
-        } catch (NoSuchFieldException ignore) {
+            Class<?> entityClass = XReflection.ofMinecraft().inPackage("net.minecraft.world.entity").named("Entity").reflect();
+            String fieldName = XReflection.v(20, 5, "ENTITY_COUNTER").v(19, "d").v(18, "c").v(17, "b").orElse("entityCount");
+            field = entityClass.getDeclaredField(fieldName);
+        } catch (NoSuchFieldException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
         ENTITY_ID_COUNT = field;

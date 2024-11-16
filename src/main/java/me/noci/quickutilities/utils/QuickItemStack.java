@@ -235,9 +235,9 @@ public class QuickItemStack extends ItemStack {
     public QuickItemStack glow(boolean remove) {
         addItemFlags();
         if (!remove) {
-            setUnsafeEnchantment(Enchantment.DURABILITY, 1);
+            setUnsafeEnchantment(Enchantment.UNBREAKING, 1);
         } else {
-            removeEnchantment(Enchantment.DURABILITY);
+            removeEnchantment(Enchantment.UNBREAKING);
         }
         return this;
     }
@@ -252,10 +252,6 @@ public class QuickItemStack extends ItemStack {
 
     public String getRawDisplayName() {
         return ChatColor.stripColor(getDisplayName());
-    }
-
-    public boolean isNull() {
-        return getType() == null || getType() == Material.AIR;
     }
 
 }
