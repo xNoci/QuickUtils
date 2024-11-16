@@ -33,11 +33,15 @@ public class Scheduler {
             return task.get();
         }
 
-        execute(() -> future.complete(task.get()));
+        execute((Task) () -> future.complete(task.get()));
         return future.join();
     }
 
     public static BukkitTask execute(Task task) {
+        if(isMainThread()) {
+            task.run();
+        }
+
         return bukkitScheduler().runTask(QuickUtils.instance(), task::run);
     }
 
