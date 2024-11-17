@@ -55,6 +55,33 @@ public class QuickTab {
     }
 
     /**
+     * Replace the current {@link UpdatingTabList} which will automatically update the current used {@link QuickTabBuilder} when a player joins the server.
+     *
+     * @param builder The {@link QuickTabBuilder} which should be used
+     */
+    public static void replaceUpdatingTabList(QuickTabBuilder builder) {
+        replaceUpdatingTabList(builder, -1, BukkitUnit.TICKS);
+    }
+
+    /**
+     * Replace the current {@link UpdatingTabList} which will automatically update the current used {@link QuickTabBuilder} when a player joins the server.
+     * It also updates in a specific interval which can be set using {@param interval} and {@param intervalUnit}.
+     *
+     * <br> When {@param interval} <= 0 then, the scoreboard will only update when player joins the server.
+     *
+     * @param builder      The {@link QuickTabBuilder} which should be used
+     * @param interval     interval to update scoreboard
+     * @param intervalUnit interval unit
+     */
+    public static void replaceUpdatingTabList(QuickTabBuilder builder, int interval, BukkitUnit intervalUnit) {
+        if (updatingTabList != null) {
+            removeUpdatingTabList();
+        }
+
+        setUpdatingTabList(builder, interval, intervalUnit);
+    }
+
+    /**
      * Sets the {@link UpdatingTabList} which will automatically update the current used {@link QuickTabBuilder} when a player joins the server.
      *
      * @param builder The {@link QuickTabBuilder} which should be used
@@ -66,16 +93,18 @@ public class QuickTab {
 
     /**
      * Sets the {@link UpdatingTabList} which will automatically update the current used {@link QuickTabBuilder} when a player joins the server.
-     * It also updates in a specific interval which can be set using {@param value} and {@param timeUnit}.
+     * It also updates in a specific interval which can be set using {@param interval} and {@param intervalUnit}.
      *
-     * @param builder  The {@link QuickTabBuilder} which should be used
-     * @param value    interval to update scoreboard
-     * @param timeUnit interval unit
+     * <br> When {@param interval} <= 0 then, the scoreboard will only update when player joins the server.
+     *
+     * @param builder      The {@link QuickTabBuilder} which should be used
+     * @param interval     interval to update scoreboard
+     * @param intervalUnit interval unit
      * @throws IllegalStateException When a {@link UpdatingTabList} is already set. Use {@link #removeUpdatingTabList()} to remove the current one.
      */
-    public static void setUpdatingTabList(QuickTabBuilder builder, int value, BukkitUnit timeUnit) {
+    public static void setUpdatingTabList(QuickTabBuilder builder, int interval, BukkitUnit intervalUnit) {
         Require.checkState(updatingTabList == null, "Cannot set updating tab list while one is already set.");
-        updatingTabList = new UpdatingTabList(builder, value <= 0 ? -1 : timeUnit.toTicks(value));
+        updatingTabList = new UpdatingTabList(builder, interval <= 0 ? -1 : intervalUnit.toTicks(interval));
         updatingTabList.updateAll();
     }
 
