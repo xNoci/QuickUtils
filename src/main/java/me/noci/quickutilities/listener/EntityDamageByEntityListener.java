@@ -3,7 +3,6 @@ package me.noci.quickutilities.listener;
 import lombok.Getter;
 import me.noci.quickutilities.events.Events;
 import me.noci.quickutilities.events.PlayerDamagedPlayerEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -27,11 +26,17 @@ public class EntityDamageByEntityListener {
                     .handle((e, attribute) -> {
                         EventAttacker eventAttacker = attribute.get(EventAttacker.class).get();
                         Player player = (Player) e.getEntity();
-                        PlayerDamagedPlayerEvent playerDamageByPlayerEvent = new PlayerDamagedPlayerEvent(player, eventAttacker.getAttacker(), e.getCause(), eventAttacker.getProjectile(), e.getDamage(), e.isCancelled());
-                        Bukkit.getPluginManager().callEvent(playerDamageByPlayerEvent);
+                        var damageEvent = Events.call(new PlayerDamagedPlayerEvent(
+                                player,
+                                eventAttacker.getAttacker(),
+                                e.getCause(),
+                                eventAttacker.getProjectile(),
+                                e.getDamage(),
+                                e.isCancelled()
+                        ));
 
-                        e.setDamage(playerDamageByPlayerEvent.getDamage());
-                        e.setCancelled(playerDamageByPlayerEvent.isCancelled());
+                        e.setDamage(damageEvent.getDamage());
+                        e.setCancelled(damageEvent.isCancelled());
                     });
         }
     }
