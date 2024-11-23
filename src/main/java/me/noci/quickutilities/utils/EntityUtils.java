@@ -8,6 +8,7 @@ import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class EntityUtils {
@@ -35,6 +36,23 @@ public class EntityUtils {
         }
 
         Scheduler.delay(ticks, () -> player.spigot().respawn());
+    }
+
+    public static void respawn(Player player, long delay, BukkitUnit timeUnit, Consumer<Player> callback) {
+        respawn(player, timeUnit.toTicks(delay), callback);
+    }
+
+    public static void respawn(Player player, long ticks, Consumer<Player> callback) {
+        if (ticks <= 0) {
+            player.spigot().respawn();
+            callback.accept(player);
+            return;
+        }
+
+        Scheduler.delay(ticks, () -> {
+            player.spigot().respawn();
+            callback.accept(player);
+        });
     }
 
     public static void setLevelProgress(Player player, int value, int max) {
