@@ -1,7 +1,7 @@
 [versions]
 lombok = "1.18.36"
 paper = "1.20.6-R0.1-SNAPSHOT"
-protocollib = "5.0.0"
+protocollib = "5.3.0"
 jetbrains-annotations = "23.0.0"
 xseries = "11.3.0"
 fastboard = "2.1.3"
