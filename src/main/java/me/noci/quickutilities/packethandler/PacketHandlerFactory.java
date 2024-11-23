@@ -17,7 +17,8 @@ public class PacketHandlerFactory {
                 new TeamPacketHandlerV1_8(),
                 new TeamPacketHandlerV1_9(),
                 new TeamPacketHandlerV1_13(),
-                new TeamPacketHandlerV1_17()
+                new TeamPacketHandlerV1_17(),
+                new TeamPacketHandlerV1_20_4()
         );
 
         PacketHandlerFactory.registerPacketManger(
@@ -33,7 +34,7 @@ public class PacketHandlerFactory {
     public static <T extends PacketHandler<T>> T getPacketHandler(Class<T> type) {
         try {
             PacketHandlerManager<T> packetManager = getPacketManager(type);
-            return packetManager.getHandler();
+            return packetManager.handle();
         } catch (Exception e) {
             e.fillInStackTrace();
             throw e;
@@ -41,7 +42,7 @@ public class PacketHandlerFactory {
     }
 
     @SafeVarargs
-    public static <T extends PacketHandler<T>> void registerPacketManger(boolean requireProtocolLib, Class<T> type, PacketHandler<T>... handlers) {
+    public static <T extends PacketHandler<T>> void registerPacketManger(boolean requireProtocolLib, Class<T> type, T... handlers) {
         PacketHandlerManager<T> manager = new PacketHandlerManager<>(requireProtocolLib, type, handlers);
         registerPacketManger(manager);
     }

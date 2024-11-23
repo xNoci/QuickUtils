@@ -77,13 +77,8 @@ public class SignPacketHandlerV1_20 implements SignPacketHandler {
     }
 
     @Override
-    public String protocolVersion() {
-        return "v1.20";
-    }
-
-    @Override
-    public int[] supportedVersions() {
-        return new int[]{20};
+    public int version() {
+        return 20;
     }
 
     private NbtCompound signCompound(SignData signData) {

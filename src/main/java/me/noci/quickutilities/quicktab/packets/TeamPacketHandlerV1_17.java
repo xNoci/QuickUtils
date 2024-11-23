@@ -55,13 +55,8 @@ public class TeamPacketHandlerV1_17 implements TeamPacketHandler {
     }
 
     @Override
-    public String protocolVersion() {
-        return "v1.17";
-    }
-
-    @Override
-    public int[] supportedVersions() {
-        return new int[]{17, 18, 19, 20};
+    public int version() {
+        return 17;
     }
 
 }

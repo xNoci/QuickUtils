@@ -78,13 +78,8 @@ public class SignPacketHandlerV1_18 implements SignPacketHandler {
     }
 
     @Override
-    public String protocolVersion() {
-        return "v1.18";
-    }
-
-    @Override
-    public int[] supportedVersions() {
-        return new int[]{18, 19};
+    public int version() {
+        return 18;
     }
 
     private NbtCompound signText(SignData signData) {

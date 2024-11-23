@@ -77,13 +77,8 @@ public class SignPacketHandlerV1_9 implements SignPacketHandler {
     }
 
     @Override
-    public String protocolVersion() {
-        return "v1.9";
-    }
-
-    @Override
-    public int[] supportedVersions() {
-        return new int[]{9, 10, 11, 12, 13, 14, 15, 16, 17};
+    public int version() {
+        return 9;
     }
 
     private NbtCompound signText(SignData signData) {

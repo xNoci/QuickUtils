@@ -40,13 +40,8 @@ public class TeamPacketHandlerV1_8 implements TeamPacketHandler {
     }
 
     @Override
-    public String protocolVersion() {
-        return "v1.8";
-    }
-
-    @Override
-    public int[] supportedVersions() {
-        return new int[]{8};
+    public int version() {
+        return 8;
     }
 
 }

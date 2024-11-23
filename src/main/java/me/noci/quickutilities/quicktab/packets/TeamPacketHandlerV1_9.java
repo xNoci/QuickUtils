@@ -41,13 +41,8 @@ public class TeamPacketHandlerV1_9 implements TeamPacketHandler {
     }
 
     @Override
-    public String protocolVersion() {
-        return "v1.9";
-    }
-
-    @Override
-    public int[] supportedVersions() {
-        return new int[]{9, 10, 11, 12};
+    public int version() {
+        return 9;
     }
 
 }

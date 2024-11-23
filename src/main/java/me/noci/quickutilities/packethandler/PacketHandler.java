@@ -6,16 +6,14 @@ public interface PacketHandler<T extends PacketHandler<T>> {
         return PacketHandlerFactory.getPacketHandler(packetHandlerType);
     }
 
-    String protocolVersion();
-
     default String protocolInfo() {
-        return protocolVersion() + " (" + getClass().getSimpleName() + ")";
+        return "v1." + version() + "." + patch() + " (" + getClass().getSimpleName() + ")";
     }
 
-    int[] supportedVersions();
+    int version();
 
-    default PacketHandlerContainer<T> createContainer() {
-        return PacketHandlerContainer.version(this, supportedVersions());
+    default int patch() {
+        return 0;
     }
 
 }
