@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 public class PacketHandlerFactory {
 
-    private static final HashMap<Class<PacketHandler<?>>, PacketHandlerManager<?>> PACKET_HANDLER_MANAGERS = Maps.newHashMap();
+    private static final HashMap<Class<PacketHandler<?>>, PacketHandlerContainer<?>> PACKET_HANDLER_MANAGERS = Maps.newHashMap();
 
     static {
         PacketHandlerFactory.registerPacketManger(
@@ -33,7 +33,7 @@ public class PacketHandlerFactory {
 
     public static <T extends PacketHandler<T>> T getPacketHandler(Class<T> type) {
         try {
-            PacketHandlerManager<T> packetManager = getPacketManager(type);
+            PacketHandlerContainer<T> packetManager = getPacketManager(type);
             return packetManager.handle();
         } catch (Exception e) {
             e.fillInStackTrace();
@@ -43,21 +43,21 @@ public class PacketHandlerFactory {
 
     @SafeVarargs
     public static <T extends PacketHandler<T>> void registerPacketManger(boolean requireProtocolLib, Class<T> type, T... handlers) {
-        PacketHandlerManager<T> manager = new PacketHandlerManager<>(requireProtocolLib, type, handlers);
+        PacketHandlerContainer<T> manager = new PacketHandlerContainer<>(requireProtocolLib, type, handlers);
         registerPacketManger(manager);
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends PacketHandler<T>> void registerPacketManger(PacketHandlerManager<T> handlerManager) {
+    public static <T extends PacketHandler<T>> void registerPacketManger(PacketHandlerContainer<T> handlerManager) {
         if (PACKET_HANDLER_MANAGERS.containsKey(handlerManager.getType())) throw new IllegalStateException();
         PACKET_HANDLER_MANAGERS.put((Class<PacketHandler<?>>) handlerManager.getType(), handlerManager);
     }
 
     @SuppressWarnings("unchecked")
-    private static <T extends PacketHandler<T>> PacketHandlerManager<T> getPacketManager(Class<T> type) {
+    private static <T extends PacketHandler<T>> PacketHandlerContainer<T> getPacketManager(Class<T> type) {
         if (PACKET_HANDLER_MANAGERS.containsKey(type))
-            return (PacketHandlerManager<T>) PACKET_HANDLER_MANAGERS.get(type);
-        throw new IllegalStateException("Could not find '%s' for %s of type '%s'.".formatted(PacketHandlerManager.class.getSimpleName(), PacketHandler.class.getSimpleName(), type.getName()));
+            return (PacketHandlerContainer<T>) PACKET_HANDLER_MANAGERS.get(type);
+        throw new IllegalStateException("Could not find '%s' for %s of type '%s'.".formatted(PacketHandlerContainer.class.getSimpleName(), PacketHandler.class.getSimpleName(), type.getName()));
     }
 
 }

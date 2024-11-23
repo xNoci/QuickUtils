@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class PacketHandlerManager<T extends PacketHandler<T>> {
+public class PacketHandlerContainer<T extends PacketHandler<T>> {
 
     @Getter private final Class<T> type;
     private final @Nullable T handle;
     private final boolean requiresProtocolLib;
 
     @SafeVarargs
-    public PacketHandlerManager(boolean requiresProtocolLib, Class<T> type, T... packetHandlers) {
+    public PacketHandlerContainer(boolean requiresProtocolLib, Class<T> type, T... packetHandlers) {
         this.requiresProtocolLib = requiresProtocolLib;
         this.type = type;
 
