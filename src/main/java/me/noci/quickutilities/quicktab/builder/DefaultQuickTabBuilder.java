@@ -14,77 +14,77 @@ public class DefaultQuickTabBuilder implements QuickTabBuilder {
 
     private final TeamExtension prefix = new TeamExtension();
     private final TeamExtension suffix = new TeamExtension();
-    private TabListFunction<Player, String> displayName = null;
-    private TabListFunction<Player, Integer> sortID = (player, target) -> Integer.MAX_VALUE; //Default sorted as last
-    private TabListFunction<Player, String[]> entries = (player, target) -> new String[]{target.getName()}; //Default only at the target to the team
+    private TabListFunction<String> displayName = null;
+    private TabListFunction<Integer> sortID = (player, target) -> Integer.MAX_VALUE; //Default sorted as last
+    private TabListFunction<String[]> entries = (player, target) -> new String[]{target.getName()}; //Default only at the target to the team
     //If the server does not support 1.13 color is set to null because it will be used as the color of the end of the prefix
-    private TabListFunction<Player, ChatColor> color = (player, target) -> XReflection.v(13, DEFAULT_COLOR).orElse((ChatColor) null);
-    private TabListFunction<Player, NameTagVisibility> nameTagVisibility = (player, target) -> NameTagVisibility.ALWAYS;
-    private TabListFunction<Player, CollisionRule> collisionRule = (player, target) -> CollisionRule.ALWAYS;
-    private TabListFunction<Player, Boolean> allowFriendlyFire = (player, target) -> true;
-    private TabListFunction<Player, Boolean> seeFriendlyInvisible = (player, target) -> true;
+    private TabListFunction<ChatColor> color = (player, target) -> XReflection.v(13, DEFAULT_COLOR).orElse((ChatColor) null);
+    private TabListFunction<NameTagVisibility> nameTagVisibility = (player, target) -> NameTagVisibility.ALWAYS;
+    private TabListFunction<CollisionRule> collisionRule = (player, target) -> CollisionRule.ALWAYS;
+    private TabListFunction<Boolean> allowFriendlyFire = (player, target) -> true;
+    private TabListFunction<Boolean> seeFriendlyInvisible = (player, target) -> true;
 
     public DefaultQuickTabBuilder() {
     }
 
     @Override
-    public QuickTabBuilder sortID(TabListFunction<Player, Integer> sortID) {
+    public QuickTabBuilder sortID(TabListFunction<Integer> sortID) {
         this.sortID = sortID;
         return this;
     }
 
     @Override
-    public QuickTabBuilder entries(TabListFunction<Player, String[]> entries) {
+    public QuickTabBuilder entries(TabListFunction<String[]> entries) {
         this.entries = entries;
         return this;
     }
 
     @Override
-    public QuickTabBuilder setDisplayName(TabListFunction<Player, String> displayName) {
+    public QuickTabBuilder setDisplayName(TabListFunction<String> displayName) {
         this.displayName = displayName;
         return this;
     }
 
     @Override
-    public QuickTabBuilder setPrefix(TabListFunction<Player, String> prefix, TabListCondition<Player> condition) {
+    public QuickTabBuilder setPrefix(TabListFunction<String> prefix, TabListCondition<Player> condition) {
         this.prefix.setExtensionFunction(prefix);
         this.prefix.setCondition(condition);
         return this;
     }
 
     @Override
-    public QuickTabBuilder setSuffix(TabListFunction<Player, String> suffix, TabListCondition<Player> condition) {
+    public QuickTabBuilder setSuffix(TabListFunction<String> suffix, TabListCondition<Player> condition) {
         this.suffix.setExtensionFunction(suffix);
         this.suffix.setCondition(condition);
         return this;
     }
 
     @Override
-    public QuickTabBuilder color(TabListFunction<Player, ChatColor> color) {
+    public QuickTabBuilder color(TabListFunction<ChatColor> color) {
         this.color = color;
         return this;
     }
 
     @Override
-    public QuickTabBuilder allowFriendlyFire(TabListFunction<Player, Boolean> allowFriendlyFire) {
+    public QuickTabBuilder allowFriendlyFire(TabListFunction<Boolean> allowFriendlyFire) {
         this.allowFriendlyFire = allowFriendlyFire;
         return this;
     }
 
     @Override
-    public QuickTabBuilder seeFriendlyInvisible(TabListFunction<Player, Boolean> seeFriendlyInvisible) {
+    public QuickTabBuilder seeFriendlyInvisible(TabListFunction<Boolean> seeFriendlyInvisible) {
         this.seeFriendlyInvisible = seeFriendlyInvisible;
         return this;
     }
 
     @Override
-    public QuickTabBuilder nameTagVisibility(TabListFunction<Player, NameTagVisibility> nameTagVisibility) {
+    public QuickTabBuilder nameTagVisibility(TabListFunction<NameTagVisibility> nameTagVisibility) {
         this.nameTagVisibility = nameTagVisibility;
         return this;
     }
 
     @Override
-    public QuickTabBuilder collisionRule(TabListFunction<Player, CollisionRule> collisionRule) {
+    public QuickTabBuilder collisionRule(TabListFunction<CollisionRule> collisionRule) {
         this.collisionRule = collisionRule;
         return this;
     }

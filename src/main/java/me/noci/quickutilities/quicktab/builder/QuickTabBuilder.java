@@ -24,7 +24,7 @@ public interface QuickTabBuilder {
      * @param sortID The sort order for the given player.
      * @return the used {@link QuickTabBuilder}
      */
-    QuickTabBuilder sortID(TabListFunction<Player, Integer> sortID);
+    QuickTabBuilder sortID(TabListFunction<Integer> sortID);
 
     /**
      * Adds the specified entry into this builder.
@@ -34,7 +34,7 @@ public interface QuickTabBuilder {
      * @param entries The entries that are in the team of the given player.
      * @return the used {@link QuickTabBuilder}
      */
-    QuickTabBuilder entries(TabListFunction<Player, String[]> entries);
+    QuickTabBuilder entries(TabListFunction<String[]> entries);
 
     /**
      * This method sets the displayname for scoreboard team. If this is not set,
@@ -44,7 +44,7 @@ public interface QuickTabBuilder {
      * @param displayName The display name for the team of the given player
      * @return the used {@link QuickTabBuilder}
      */
-    QuickTabBuilder setDisplayName(TabListFunction<Player, String> displayName);
+    QuickTabBuilder setDisplayName(TabListFunction<String> displayName);
 
     /**
      * This method sets the displayname for scoreboard team. If this is not set,
@@ -54,7 +54,7 @@ public interface QuickTabBuilder {
      * @param displayName The display name for the team of the given player
      * @return the used {@link QuickTabBuilder}
      */
-    default QuickTabBuilder displayName(TabListFunction<Player, Component> displayName) {
+    default QuickTabBuilder displayName(TabListFunction<Component> displayName) {
         return setDisplayName((p1, p2) -> Legacy.serialize(displayName.apply(p1, p2)));
     }
 
@@ -67,7 +67,7 @@ public interface QuickTabBuilder {
      * @param condition if the condition equals to false the suffix will not be set
      * @return the used {@link QuickTabBuilder}
      */
-    QuickTabBuilder setPrefix(TabListFunction<Player, String> prefix, TabListCondition<Player> condition);
+    QuickTabBuilder setPrefix(TabListFunction<String> prefix, TabListCondition<Player> condition);
 
     /**
      * This method set the prefix for the given player if the {@link TabListCondition condition} is true, otherwise the prefix will be empty.
@@ -78,7 +78,7 @@ public interface QuickTabBuilder {
      * @param condition if the condition equals to false the suffix will not be set
      * @return the used {@link QuickTabBuilder}
      */
-    default QuickTabBuilder prefix(TabListFunction<Player, Component> prefix, TabListCondition<Player> condition) {
+    default QuickTabBuilder prefix(TabListFunction<Component> prefix, TabListCondition<Player> condition) {
         return setPrefix((p1, p2) -> Legacy.serialize(prefix.apply(p1, p2)), condition);
     }
 
@@ -91,7 +91,7 @@ public interface QuickTabBuilder {
      * @param prefix The string that will be in front of the given player name
      * @return the used {@link QuickTabBuilder}
      */
-    default QuickTabBuilder setPrefix(TabListFunction<Player, String> prefix) {
+    default QuickTabBuilder setPrefix(TabListFunction<String> prefix) {
         return setPrefix(prefix, (player, target) -> true);
     }
 
@@ -104,7 +104,7 @@ public interface QuickTabBuilder {
      * @param prefix The prefix that will be in front of the given player name
      * @return the used {@link QuickTabBuilder}
      */
-    default QuickTabBuilder prefix(TabListFunction<Player, Component> prefix) {
+    default QuickTabBuilder prefix(TabListFunction<Component> prefix) {
         return prefix(prefix, (player, target) -> true);
     }
 
@@ -117,7 +117,7 @@ public interface QuickTabBuilder {
      * @param condition if the condition equals to false the suffix will not be set
      * @return the used {@link QuickTabBuilder}
      */
-    QuickTabBuilder setSuffix(TabListFunction<Player, String> suffix, TabListCondition<Player> condition);
+    QuickTabBuilder setSuffix(TabListFunction<String> suffix, TabListCondition<Player> condition);
 
     /**
      * This method set the suffix for the given player if the {@link TabListCondition condition} is true, otherwise the suffix will be empty.
@@ -128,7 +128,7 @@ public interface QuickTabBuilder {
      * @param condition if the condition equals to false the suffix will not be set
      * @return the used {@link QuickTabBuilder}
      */
-    default QuickTabBuilder suffix(TabListFunction<Player, Component> suffix, TabListCondition<Player> condition) {
+    default QuickTabBuilder suffix(TabListFunction<Component> suffix, TabListCondition<Player> condition) {
         return setSuffix((p1, p2) -> Legacy.serialize(suffix.apply(p1, p2)), condition);
     }
 
@@ -141,7 +141,7 @@ public interface QuickTabBuilder {
      * @param suffix The string that will be behind the given player name
      * @return the used {@link QuickTabBuilder}
      */
-    default QuickTabBuilder setSuffix(TabListFunction<Player, String> suffix) {
+    default QuickTabBuilder setSuffix(TabListFunction<String> suffix) {
         return setSuffix(suffix, (player, target) -> true);
     }
 
@@ -154,7 +154,7 @@ public interface QuickTabBuilder {
      * @param suffix The suffix that will be behind the given player name
      * @return the used {@link QuickTabBuilder}
      */
-    default QuickTabBuilder suffix(TabListFunction<Player, Component> suffix) {
+    default QuickTabBuilder suffix(TabListFunction<Component> suffix) {
         return suffix(suffix, (player, target) -> true);
     }
 
@@ -167,7 +167,7 @@ public interface QuickTabBuilder {
      * @param color The color in which the name of the given player will be displayed
      * @return the used {@link QuickTabBuilder}
      */
-    QuickTabBuilder color(TabListFunction<Player, ChatColor> color);
+    QuickTabBuilder color(TabListFunction<ChatColor> color);
 
     /**
      * Set if friendly fire is allowed for all entries.
@@ -176,7 +176,7 @@ public interface QuickTabBuilder {
      * @param allowFriendlyFire Whether friendly fire is allowed or not
      * @return the used {@link QuickTabBuilder}
      */
-    QuickTabBuilder allowFriendlyFire(TabListFunction<Player, Boolean> allowFriendlyFire);
+    QuickTabBuilder allowFriendlyFire(TabListFunction<Boolean> allowFriendlyFire);
 
     /**
      * Sets if invisible teammates can be seen.
@@ -185,7 +185,7 @@ public interface QuickTabBuilder {
      * @param seeFriendlyInvisible Whether the entries of this team can see invisible friendlies or not
      * @return the used {@link QuickTabBuilder}
      */
-    QuickTabBuilder seeFriendlyInvisible(TabListFunction<Player, Boolean> seeFriendlyInvisible);
+    QuickTabBuilder seeFriendlyInvisible(TabListFunction<Boolean> seeFriendlyInvisible);
 
     /**
      * Sets the {@link NameTagVisibility} of this team.
@@ -194,7 +194,7 @@ public interface QuickTabBuilder {
      * @param nameTagVisibility The {@link NameTagVisibility} for the entries of this team.
      * @return the used {@link QuickTabBuilder}
      */
-    QuickTabBuilder nameTagVisibility(TabListFunction<Player, NameTagVisibility> nameTagVisibility);
+    QuickTabBuilder nameTagVisibility(TabListFunction<NameTagVisibility> nameTagVisibility);
 
     /**
      * The collision rule is only available for version <strong>1.9+</strong>.
@@ -203,7 +203,7 @@ public interface QuickTabBuilder {
      * @param collisionRule The applied {@link CollisionRule} to the entry of this team.
      * @return the used {@link QuickTabBuilder}
      */
-    QuickTabBuilder collisionRule(TabListFunction<Player, CollisionRule> collisionRule);
+    QuickTabBuilder collisionRule(TabListFunction<CollisionRule> collisionRule);
 
     /**
      * Build a {@link TeamInfo} to get the data structured and formatted.
