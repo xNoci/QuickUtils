@@ -90,7 +90,7 @@ public class DefaultQuickTabBuilder implements QuickTabBuilder {
     }
 
     @Override
-    public TabListTeam build(Player player, Player target) {
+    public TeamInfo build(Player player, Player target) {
         int sortID = Math.min(this.sortID.apply(player, target), 999);
         List<String> entries = Lists.newArrayList(this.entries.apply(player, target));
 
@@ -105,7 +105,7 @@ public class DefaultQuickTabBuilder implements QuickTabBuilder {
         boolean allowFriendlyFire = this.allowFriendlyFire.apply(player, target);
         boolean seeFriendlyInvisible = this.seeFriendlyInvisible.apply(player, target);
 
-        return new TabListTeam(target, sortID, displayName, entries, prefix, suffix, color == null ? DEFAULT_COLOR : color, nameTagVisibility, collisionRule, allowFriendlyFire, seeFriendlyInvisible);
+        return new TeamInfo(target, sortID, displayName, entries, prefix, suffix, color == null ? DEFAULT_COLOR : color, nameTagVisibility, collisionRule, allowFriendlyFire, seeFriendlyInvisible);
     }
 
     /**

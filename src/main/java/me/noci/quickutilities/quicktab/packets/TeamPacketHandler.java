@@ -2,13 +2,13 @@ package me.noci.quickutilities.quicktab.packets;
 
 import lombok.Getter;
 import me.noci.quickutilities.packethandler.PacketHandler;
-import me.noci.quickutilities.quicktab.builder.TabListTeam;
+import me.noci.quickutilities.quicktab.builder.TeamInfo;
 
 public interface TeamPacketHandler extends PacketHandler<TeamPacketHandler> {
 
-    Object removeTeamPacket(TabListTeam team);
+    Object removeTeamPacket(TeamInfo team);
 
-    Object createTeamPacket(TabListTeam team);
+    Object createTeamPacket(TeamInfo team);
 
     @Getter
     enum TeamMode {

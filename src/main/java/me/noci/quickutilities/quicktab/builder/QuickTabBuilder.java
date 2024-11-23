@@ -206,7 +206,7 @@ public interface QuickTabBuilder {
     QuickTabBuilder collisionRule(TabListFunction<Player, CollisionRule> collisionRule);
 
     /**
-     * Build a {@link TabListTeam} to get the data structured and formatted.
+     * Build a {@link TeamInfo} to get the data structured and formatted.
      * <br> This will be used internally to create packets.
      *
      * @param player
@@ -214,6 +214,6 @@ public interface QuickTabBuilder {
      * @return
      */
     @ApiStatus.Internal
-    TabListTeam build(Player player, Player target);
+    TeamInfo build(Player player, Player target);
 
 }
