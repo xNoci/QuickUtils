@@ -210,7 +210,7 @@ public final class QuickBoard<T> {
      * @throws NullPointerException when {@param player} is null
      */
     @ApiStatus.Internal
-    protected Scoreboard<T> getScoreboardInternal(Player player) {
+    Scoreboard<T> getScoreboardInternal(Player player) {
         Require.nonNull(player, "Player cannot be null");
         Scoreboard<T> scoreboard = PLAYER_BOARDS.get(player.getUniqueId());
         if (scoreboard == null || scoreboard.isDeleted()) {
