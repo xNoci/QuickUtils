@@ -2,7 +2,7 @@ package me.noci.quickutilities.quicktab;
 
 import com.cryptomorin.xseries.reflection.minecraft.MinecraftConnection;
 import com.google.common.collect.Sets;
-import me.noci.quickutilities.packethandler.PacketHandlerFactory;
+import me.noci.quickutilities.packethandler.PacketHandler;
 import me.noci.quickutilities.quicktab.builder.DefaultQuickTabBuilder;
 import me.noci.quickutilities.quicktab.builder.QuickTabBuilder;
 import me.noci.quickutilities.quicktab.builder.TeamInfo;
@@ -17,6 +17,7 @@ import java.util.Set;
 
 public class QuickTab {
 
+    private static final TeamPacketHandler TEAM_PACKET = PacketHandler.handler(TeamPacketHandler.class);
     private static UpdatingTabList updatingTabList = null;
 
     private QuickTab() {
@@ -153,9 +154,8 @@ public class QuickTab {
         for (Player target : Bukkit.getOnlinePlayers()) {
             TeamInfo team = builder.build(player, target);
 
-            TeamPacketHandler teamPacketHandler = PacketHandlerFactory.getPacketHandler(TeamPacketHandler.class);
-            removePackets.add(teamPacketHandler.removeTeamPacket(team));
-            createPackets.add(teamPacketHandler.createTeamPacket(team));
+            removePackets.add(TEAM_PACKET.removeTeamPacket(team));
+            createPackets.add(TEAM_PACKET.createTeamPacket(team));
         }
 
         MinecraftConnection.sendPacket(player, removePackets.toArray());
