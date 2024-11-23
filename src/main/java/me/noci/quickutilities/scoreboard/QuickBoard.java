@@ -2,6 +2,7 @@ package me.noci.quickutilities.scoreboard;
 
 import com.google.common.collect.Maps;
 import me.noci.quickutilities.events.Events;
+import me.noci.quickutilities.quicktab.builder.QuickTabBuilder;
 import me.noci.quickutilities.utils.BukkitUnit;
 import me.noci.quickutilities.utils.Require;
 import net.kyori.adventure.text.Component;
@@ -87,12 +88,83 @@ public final class QuickBoard<T> {
     }
 
     /**
+     * Replace the current {@link UpdatingScoreboard<T>}
+     *
+     * <br>
+     * <br>
+     * The scoreboard for each player will be updated every time a player leaves or joins.
+     *
+     * <br>
+     * <br> When {@param interval} <= 0 then, the scoreboard will only update when player joins the server.
+     *
+     * @param scoreboard The {@link QuickTabBuilder} which should be used
+     */
+    public void replaceUpdatingScoreboard(ScoreboardUpdate<T> scoreboard) {
+        replaceUpdatingScoreboard(-1, BukkitUnit.TICKS, scoreboard);
+    }
+
+    /**
+     * Replace the current {@link UpdatingScoreboard<T>}
+     *
+     * <br>
+     * <br>
+     * The scoreboard for each player will be updated every time a player leaves or joins.
+     * It also updates in a specific interval which can be set using {@param value} and {@param timeUnit}.
+     *
+     * <br>
+     * <br> When {@param interval} <= 0 then, the scoreboard will only update when player joins the server.
+     *
+     * @param scoreboard The {@link QuickTabBuilder} which should be used
+     * @param value      interval to update scoreboard
+     * @param timeUnit   interval unit
+     */
+    public void replaceUpdatingScoreboard(int value, BukkitUnit timeUnit, ScoreboardUpdate<T> scoreboard) {
+        if (updatingScoreboard != null) {
+            removeUpdatingScoreboard();
+        }
+
+        setUpdatingScoreboard(value, timeUnit, scoreboard);
+    }
+
+    /**
      * Remove the current updating scoreboard instance. This also allows to set a new instance using {@link QuickBoard#setUpdatingScoreboard(int, BukkitUnit, ScoreboardUpdate)}
      */
     public synchronized void removeUpdatingScoreboard() {
         checkScoreboardSet();
         updatingScoreboard.delete();
         updatingScoreboard = null;
+    }
+
+    /**
+     * Setting a new updating scoreboard instance.
+     * <br>
+     * <br>
+     * The scoreboard for each player will be updated every time a player leaves or joins.
+     *
+     * @param scoreboard the scoreboard which will be set for every player
+     * @throws IllegalStateException when an updating scoreboard instance is already set
+     */
+    public synchronized void setUpdatingScoreboard(ScoreboardUpdate<T> scoreboard) {
+        setUpdatingScoreboard(-1, BukkitUnit.TICKS, scoreboard);
+    }
+
+    /**
+     * Setting a new updating scoreboard instance.
+     * <br>
+     * <br>
+     * The scoreboard for each player will be updated every time a player leaves or joins.
+     * It also updates in a specific interval which can be set using {@param value} and {@param timeUnit}.
+     * <br>
+     * <br> When {@param interval} <= 0 then, the scoreboard will only update when player joins the server.
+     *
+     * @param value      interval to update scoreboard
+     * @param timeUnit   interval unit
+     * @param scoreboard the scoreboard which will be set for every player
+     * @throws IllegalStateException when an updating scoreboard instance is already set
+     */
+    public synchronized void setUpdatingScoreboard(int value, BukkitUnit timeUnit, ScoreboardUpdate<T> scoreboard) {
+        checkScoreboardNotSet();
+        updatingScoreboard = new UpdatingScoreboard<>(this, value <= 0 ? -1 : timeUnit.toTicks(value), scoreboard);
     }
 
     /**
@@ -127,32 +199,6 @@ public final class QuickBoard<T> {
     public void updateAll() {
         checkScoreboardSet();
         updatingScoreboard.updateAll();
-    }
-
-    /**
-     * Setting a new updating scoreboard instance.
-     * The scoreboard for each player will be updated every time a player leaves or joins.
-     *
-     * @param scoreboard the scoreboard which will be set for every player
-     * @throws IllegalStateException when an updating scoreboard instance is already set
-     */
-    public synchronized void setUpdatingScoreboard(ScoreboardUpdate<T> scoreboard) {
-        setUpdatingScoreboard(-1, BukkitUnit.TICKS, scoreboard);
-    }
-
-    /**
-     * Setting a new updating scoreboard instance.
-     * The scoreboard for each player will be updated every time a player leaves or joins.
-     * It also updates in a specific interval which can be set using {@param value} and {@param timeUnit}.
-     *
-     * @param value      interval to update scoreboard
-     * @param timeUnit   interval unit
-     * @param scoreboard the scoreboard which will be set for every player
-     * @throws IllegalStateException when an updating scoreboard instance is already set
-     */
-    public synchronized void setUpdatingScoreboard(int value, BukkitUnit timeUnit, ScoreboardUpdate<T> scoreboard) {
-        checkScoreboardNotSet();
-        updatingScoreboard = new UpdatingScoreboard<>(this, value <= 0 ? -1 : timeUnit.toTicks(value), scoreboard);
     }
 
     /**
