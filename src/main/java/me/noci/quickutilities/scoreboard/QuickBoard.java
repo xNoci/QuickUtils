@@ -36,8 +36,9 @@ public final class QuickBoard<T> {
 
     /**
      * Create a new instance {@link QuickBoard} of type {@link String}, or returns it if already created.
+     *
      * @return {@link QuickBoard<String>}
-     * @throws IllegalStateException    if the current {@link QuickBoard} instance is not of type {@link String}.
+     * @throws IllegalStateException if the current {@link QuickBoard} instance is not of type {@link String}.
      */
     @SuppressWarnings("unchecked")
     public static QuickBoard<String> string() {
@@ -49,7 +50,7 @@ public final class QuickBoard<T> {
             }
         }
 
-        if (instance.type == String.class) {
+        if (instance.type != String.class) {
             throw new IllegalStateException(
                     "Cannot access quickboard instance. QuickBoard is of type '%s' instead of type '%s'."
                             .formatted(instance.type.getSimpleName(), String.class.getSimpleName())
@@ -61,8 +62,9 @@ public final class QuickBoard<T> {
 
     /**
      * Create a new instance {@link QuickBoard} of type {@link Component}, or returns it if already created.
+     *
      * @return {@link QuickBoard<Component>}
-     * @throws IllegalStateException    if the current {@link QuickBoard} instance is not of type {@link Component}.
+     * @throws IllegalStateException if the current {@link QuickBoard} instance is not of type {@link Component}.
      */
     @SuppressWarnings("unchecked")
     public static QuickBoard<Component> component() {
@@ -74,7 +76,7 @@ public final class QuickBoard<T> {
             }
         }
 
-        if (instance.type == Component.class) {
+        if (instance.type != Component.class) {
             throw new IllegalStateException(
                     "Cannot access quickboard instance. QuickBoard is of type '%s' instead of type '%s'."
                             .formatted(instance.type.getSimpleName(), Component.class.getSimpleName())
