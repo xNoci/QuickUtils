@@ -1,9 +1,7 @@
 package me.noci.quickutilities.listener;
 
-import lombok.Getter;
 import me.noci.quickutilities.events.Events;
 import me.noci.quickutilities.events.PlayerDamagedPlayerEvent;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventPriority;
@@ -19,18 +17,19 @@ public class EntityDamageByEntityListener {
         synchronized (EntityDamageByEntityListener.class) {
             if (initialised) return;
             initialised = true;
+
             Events.subscribe(EntityDamageByEntityEvent.class, EventPriority.HIGHEST)
                     .attribute(EventAttacker.class, EntityDamageByEntityListener::getEventAttacker)
                     .filter(e -> e.getEntity() instanceof Player)
-                    .filterAttribute(EventAttacker.class, (e, a) -> a.get().getAttacker() != null)
+                    .filterAttribute(EventAttacker.class, (e, a) -> a.get().attacker() != null)
                     .handle((e, attribute) -> {
                         EventAttacker eventAttacker = attribute.get(EventAttacker.class).get();
                         Player player = (Player) e.getEntity();
                         var damageEvent = Events.call(new PlayerDamagedPlayerEvent(
                                 player,
-                                eventAttacker.getAttacker(),
+                                eventAttacker.attacker(),
                                 e.getCause(),
-                                eventAttacker.getProjectile(),
+                                eventAttacker.projectile(),
                                 e.getDamage(),
                                 e.isCancelled()
                         ));
@@ -42,30 +41,23 @@ public class EntityDamageByEntityListener {
     }
 
     private static EventAttacker getEventAttacker(EntityDamageByEntityEvent event) {
-        Entity entity = event.getDamager();
-        if (entity instanceof Player player) {
-            return new EventAttacker(player, null);
-        }
-
-        if (entity instanceof Projectile projectile && projectile.getShooter() instanceof Player shooter) {
-            return new EventAttacker(shooter, projectile);
-        }
-
-        return new EventAttacker();
+        return switch (event.getDamager()) {
+            case Player player -> new EventAttacker(player);
+            case Projectile projectile when projectile.getShooter() instanceof Player player ->
+                    new EventAttacker(player, projectile);
+            default -> new EventAttacker();
+        };
     }
 
-    private static class EventAttacker {
-
-        @Getter private final Player attacker;
-        @Getter private final Projectile projectile;
+    private record EventAttacker(Player attacker, Projectile projectile) {
 
         public EventAttacker() {
             this(null, null);
         }
 
-        public EventAttacker(Player attacker, Projectile projectile) {
-            this.attacker = attacker;
-            this.projectile = projectile;
+        public EventAttacker(Player attacker) {
+            this(attacker, null);
         }
+
     }
 }
