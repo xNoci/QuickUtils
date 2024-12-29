@@ -40,6 +40,7 @@ public class Scheduler {
     public static BukkitTask execute(Task task) {
         if(isMainThread()) {
             task.run();
+            return;
         }
 
         return bukkitScheduler().runTask(QuickUtils.instance(), task::run);
