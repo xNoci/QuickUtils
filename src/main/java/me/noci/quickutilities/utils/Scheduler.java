@@ -37,13 +37,13 @@ public class Scheduler {
         return future.join();
     }
 
-    public static BukkitTask execute(Task task) {
-        if(isMainThread()) {
+    public static void execute(Task task) {
+        if (isMainThread()) {
             task.run();
             return;
         }
 
-        return bukkitScheduler().runTask(QuickUtils.instance(), task::run);
+        bukkitScheduler().runTask(QuickUtils.instance(), task::run);
     }
 
     public static BukkitTask executeAsync(Task task) {
