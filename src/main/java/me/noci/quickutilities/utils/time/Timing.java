@@ -1,15 +1,17 @@
 package me.noci.quickutilities.utils.time;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.concurrent.TimeUnit;
 
 public class Timing {
 
-    private final String profile;
-    private final TimeUnit timeUnit;
+    @NotNull private final String profile;
+    @NotNull private final TimeUnit timeUnit;
     private final boolean log;
     private final long startTime;
 
-    private Timing(String profile, TimeUnit timeUnit, boolean log) {
+    private Timing(@NotNull String profile, @NotNull TimeUnit timeUnit) {
         this.profile = profile;
         this.timeUnit = timeUnit;
         this.log = log;
@@ -20,11 +22,11 @@ public class Timing {
         }
     }
 
-    public static <T> T track(String profile, ThrowableSupplier<T> task) {
+    public static <T> T track(@NotNull String profile, ThrowableSupplier<T> task) {
         return track(profile, TimeUnit.MILLISECONDS, task);
     }
 
-    public static <T> T track(String profile, TimeUnit measuringUnit, ThrowableSupplier<T> task) {
+    public static <T> T track(@NotNull String profile, @NotNull TimeUnit measuringUnit, ThrowableSupplier<T> task) {
         try {
             return trackThrows(profile, measuringUnit, task);
         } catch (Exception e) {
@@ -33,11 +35,11 @@ public class Timing {
 
     }
 
-    public static void track(String profile, ThrowableRunnable task) {
+    public static void track(@NotNull String profile, ThrowableRunnable task) {
         track(profile, TimeUnit.MILLISECONDS, task);
     }
 
-    public static void track(String profile, TimeUnit measuringUnit, ThrowableRunnable task) {
+    public static void track(@NotNull String profile, @NotNull TimeUnit measuringUnit, ThrowableRunnable task) {
         try {
             trackThrows(profile, measuringUnit, task);
         } catch (Exception e) {
@@ -45,27 +47,27 @@ public class Timing {
         }
     }
 
-    public static <T> T trackThrows(String profile, ThrowableSupplier<T> task) throws Exception {
+    public static <T> T trackThrows(@NotNull String profile, ThrowableSupplier<T> task) throws Exception {
         return trackThrows(profile, TimeUnit.MILLISECONDS, task);
     }
 
-    public static <T> T trackThrows(String profile, TimeUnit measuringUnit, ThrowableSupplier<T> task) throws Exception {
+    public static <T> T trackThrows(@NotNull String profile, @NotNull TimeUnit measuringUnit, ThrowableSupplier<T> task) throws Exception {
         return of(profile, measuringUnit).trackThrows(task);
     }
 
-    public static void trackThrows(String profile, ThrowableRunnable task) throws Exception {
+    public static void trackThrows(@NotNull String profile, ThrowableRunnable task) throws Exception {
         trackThrows(profile, TimeUnit.MILLISECONDS, task);
     }
 
-    public static void trackThrows(String profile, TimeUnit measuringUnit, ThrowableRunnable task) throws Exception {
+    public static void trackThrows(@NotNull String profile, @NotNull TimeUnit measuringUnit, ThrowableRunnable task) throws Exception {
         of(profile, measuringUnit).trackThrows(task);
     }
 
-    public static Timing of(String profile) {
+    public static Timing of(@NotNull String profile) {
         return of(profile, TimeUnit.MILLISECONDS);
     }
 
-    public static Timing of(String profile, TimeUnit measuringUnit) {
+    public static Timing of(@NotNull String profile, @NotNull TimeUnit measuringUnit) {
         return new Timing(profile, measuringUnit, true);
     }
 
@@ -112,6 +114,7 @@ public class Timing {
                 case MINUTES -> "min";
                 case HOURS -> "hr";
                 case DAYS -> "days";
+                default -> timeUnit.name();
             };
 
             System.out.printf("Stopping measuring profiler '%s' - Took: %s %s. %n", this.profile, endTime, suffix);
