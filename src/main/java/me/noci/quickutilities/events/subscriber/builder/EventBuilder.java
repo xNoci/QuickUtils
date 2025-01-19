@@ -3,7 +3,7 @@ package me.noci.quickutilities.events.subscriber.builder;
 import me.noci.quickutilities.events.subscriber.EventHandler;
 import me.noci.quickutilities.events.subscriber.SubscribedEvent;
 import me.noci.quickutilities.events.subscriber.eventattribute.AttributeFilter;
-import me.noci.quickutilities.utils.BukkitUnit;
+import me.noci.quickutilities.utils.time.BukkitUnit;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
 

@@ -7,7 +7,7 @@ import me.noci.quickutilities.quicktab.builder.DefaultQuickTabBuilder;
 import me.noci.quickutilities.quicktab.builder.QuickTabBuilder;
 import me.noci.quickutilities.quicktab.builder.TeamInfo;
 import me.noci.quickutilities.quicktab.packets.TeamPacketHandler;
-import me.noci.quickutilities.utils.BukkitUnit;
+import me.noci.quickutilities.utils.time.BukkitUnit;
 import me.noci.quickutilities.utils.Require;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

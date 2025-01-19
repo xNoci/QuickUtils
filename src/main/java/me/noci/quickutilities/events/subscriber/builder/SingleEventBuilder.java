@@ -9,7 +9,7 @@ import me.noci.quickutilities.events.subscriber.SubscribedEventImpl;
 import me.noci.quickutilities.events.subscriber.eventattribute.AttributeFilter;
 import me.noci.quickutilities.events.subscriber.eventattribute.AttributeRegistryImpl;
 import me.noci.quickutilities.events.subscriber.eventattribute.EventAttributeImpl;
-import me.noci.quickutilities.utils.BukkitUnit;
+import me.noci.quickutilities.utils.time.BukkitUnit;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.java.JavaPlugin;

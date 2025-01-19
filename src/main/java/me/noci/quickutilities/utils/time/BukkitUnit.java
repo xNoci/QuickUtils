@@ -1,4 +1,4 @@
-package me.noci.quickutilities.utils;
+package me.noci.quickutilities.utils.time;
 
 public enum BukkitUnit {
 

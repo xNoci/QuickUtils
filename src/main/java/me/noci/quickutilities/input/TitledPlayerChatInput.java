@@ -2,8 +2,8 @@ package me.noci.quickutilities.input;
 
 import com.cryptomorin.xseries.messages.Titles;
 import me.noci.quickutilities.input.functions.InputExecutor;
-import me.noci.quickutilities.utils.BukkitUnit;
-import me.noci.quickutilities.utils.Scheduler;
+import me.noci.quickutilities.utils.time.BukkitUnit;
+import me.noci.quickutilities.utils.time.Scheduler;
 import org.bukkit.entity.Player;
 
 public class TitledPlayerChatInput extends BaseChatInput {

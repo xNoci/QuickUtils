@@ -3,7 +3,7 @@ package me.noci.quickutilities.scoreboard;
 import com.google.common.collect.Maps;
 import me.noci.quickutilities.events.Events;
 import me.noci.quickutilities.quicktab.builder.QuickTabBuilder;
-import me.noci.quickutilities.utils.BukkitUnit;
+import me.noci.quickutilities.utils.time.BukkitUnit;
 import me.noci.quickutilities.utils.Require;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;

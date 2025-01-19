@@ -3,7 +3,7 @@ package me.noci.quickutilities.scoreboard;
 import me.noci.quickutilities.events.Events;
 import me.noci.quickutilities.events.subscriber.SubscribedEvent;
 import me.noci.quickutilities.utils.Require;
-import me.noci.quickutilities.utils.Scheduler;
+import me.noci.quickutilities.utils.time.Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
