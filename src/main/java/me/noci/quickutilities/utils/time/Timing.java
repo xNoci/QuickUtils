@@ -6,20 +6,32 @@ import java.util.concurrent.TimeUnit;
 
 public class Timing {
 
+    private static boolean LOG = true;
+
     @NotNull private final String profile;
     @NotNull private final TimeUnit timeUnit;
-    private final boolean log;
     private final long startTime;
 
     private Timing(@NotNull String profile, @NotNull TimeUnit timeUnit) {
         this.profile = profile;
         this.timeUnit = timeUnit;
-        this.log = log;
         this.startTime = System.nanoTime();
 
-        if (this.log) {
+        if (LOG) {
             System.out.println("Starting measuring: " + this.profile);
         }
+    }
+
+    public static boolean isLogging() {
+        return LOG;
+    }
+
+    public static void enableLogging() {
+        LOG = true;
+    }
+
+    public static void disableLogging() {
+        LOG = false;
     }
 
     public static <T> T track(@NotNull String profile, ThrowableSupplier<T> task) {
@@ -68,7 +80,7 @@ public class Timing {
     }
 
     public static Timing of(@NotNull String profile, @NotNull TimeUnit measuringUnit) {
-        return new Timing(profile, measuringUnit, true);
+        return new Timing(profile, measuringUnit);
     }
 
     public <T> T track(ThrowableSupplier<T> task) {
@@ -104,7 +116,7 @@ public class Timing {
     }
 
     private void close() {
-        if (this.log) {
+        if (LOG) {
             long endTime = timeUnit.convert(System.nanoTime() - startTime, TimeUnit.NANOSECONDS);
             String suffix = switch (timeUnit) {
                 case NANOSECONDS -> "ns";
