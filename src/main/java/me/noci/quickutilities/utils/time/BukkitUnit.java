@@ -1,90 +1,146 @@
 package me.noci.quickutilities.utils.time;
 
+import lombok.Getter;
+
 public enum BukkitUnit {
 
-    MILLISECONDS {
-        public long toMilliseconds(long d)     { return d; }
-        public long toTicks(long d)            { return convertUp(d, C_MILLISECOND, C_TICK); }
-        public long toSeconds(long d)          { return convertUp(d, C_MILLISECOND, C_SECOND); }
-        public long toMinutes(long d)          { return convertUp(d, C_MILLISECOND, C_MINUTE); }
-        public long toHours(long d)            { return convertUp(d, C_MILLISECOND, C_HOUR); }
-        public long toDays(long d)             { return convertUp(d, C_MILLISECOND, C_DAY); }
-        public long convert(long d, BukkitUnit u) { return u.toMilliseconds(d); }
-    },
-    TICKS {
-        public long toMilliseconds(long d)     { return convertDown(d, C_TICK, C_MILLISECOND); }
-        public long toTicks(long d)            { return d; }
-        public long toSeconds(long d)          { return convertUp(d, C_TICK, C_SECOND); }
-        public long toMinutes(long d)          { return convertUp(d, C_TICK, C_MINUTE); }
-        public long toHours(long d)            { return convertUp(d, C_TICK, C_HOUR); }
-        public long toDays(long d)             { return convertUp(d, C_TICK, C_DAY); }
-        public long convert(long d, BukkitUnit u) { return u.toTicks(d); }
-    },
-    SECONDS {
-        public long toMilliseconds(long d)     { return convertDown(d, C_SECOND, C_MILLISECOND); }
-        public long toTicks(long d)            { return convertDown(d, C_SECOND, C_TICK); }
-        public long toSeconds(long d)          { return d; }
-        public long toMinutes(long d)          { return convertUp(d, C_SECOND, C_MILLISECOND); }
-        public long toHours(long d)            { return convertUp(d, C_SECOND, C_HOUR); }
-        public long toDays(long d)             { return convertUp(d, C_SECOND, C_DAY); }
-        public long convert(long d, BukkitUnit u) { return u.toSeconds(d); }
-    },
-    MINUTES {
-        public long toMilliseconds(long d)     { return convertDown(d, C_MINUTE, C_MILLISECOND); }
-        public long toTicks(long d)            { return convertDown(d, C_MINUTE, C_TICK); }
-        public long toSeconds(long d)          { return convertDown(d, C_MINUTE, C_SECOND); }
-        public long toMinutes(long d)          { return d; }
-        public long toHours(long d)            { return convertUp(d, C_MINUTE, C_HOUR); }
-        public long toDays(long d)             { return convertUp(d, C_MINUTE, C_DAY); }
-        public long convert(long d, BukkitUnit u) { return u.toMinutes(d); }
-    },
-    HOURS {
-        public long toMilliseconds(long d)     { return convertDown(d, C_HOUR, C_MILLISECOND); }
-        public long toTicks(long d)            { return convertDown(d, C_HOUR, C_TICK); }
-        public long toSeconds(long d)          { return convertDown(d, C_HOUR, C_SECOND); }
-        public long toMinutes(long d)          { return convertDown(d, C_HOUR, C_MINUTE); }
-        public long toHours(long d)            { return d; }
-        public long toDays(long d)             { return convertUp(d, C_HOUR, C_DAY); }
-        public long convert(long d, BukkitUnit u) { return u.toHours(d); }
-    },
-    DAYS {
-        public long toMilliseconds(long d)     { return convertDown(d, C_DAY, C_MILLISECOND); }
-        public long toTicks(long d)            { return convertDown(d, C_DAY, C_TICK); }
-        public long toSeconds(long d)          { return convertDown(d, C_DAY, C_SECOND); }
-        public long toMinutes(long d)          { return convertDown(d, C_DAY, C_MINUTE); }
-        public long toHours(long d)            { return convertDown(d, C_DAY, C_HOUR); }
-        public long toDays(long d)             { return d; }
-        public long convert(long d, BukkitUnit u) { return u.toDays(d); }
-    };
+    NANOSECONDS(BukkitUnit.NANO_SCALE, "ns"),
+    MICROSECONDS(BukkitUnit.MICRO_SCALE, "μs"),
+    MILLISECONDS(BukkitUnit.MILLI_SCALE, "ms"),
+    TICKS(BukkitUnit.TICK_SCALE, "ticks"),
+    SECONDS(BukkitUnit.SECOND_SCALE, "sec"),
+    MINUTES(BukkitUnit.MINUTE_SCALE, "min"),
+    HOURS(BukkitUnit.HOUR_SCALE, "hr"),
+    DAYS(BukkitUnit.DAY_SCALE, "days");
 
-    private static final long C_MILLISECOND = 1L; //ONE MILLISECOND
-    private static final long C_TICK = C_MILLISECOND * 50L; //ONE TICK
-    private static final long C_SECOND = C_TICK * 20L; //ONE SECOND
-    private static final long C_MINUTE = C_SECOND * 60L; //ONE MINUTE
-    private static final long C_HOUR = C_MINUTE * 60L; //ONE HOUR
-    private static final long C_DAY = C_HOUR * 24L; //ONE DAY
+    private static final long NANO_SCALE = 1L;
+    private static final long MICRO_SCALE = 1000L * NANO_SCALE;
+    private static final long MILLI_SCALE = 1000L * MICRO_SCALE;
+    private static final long TICK_SCALE = MILLI_SCALE * 50L;
+    private static final long SECOND_SCALE = TICK_SCALE * 20L;
+    private static final long MINUTE_SCALE = SECOND_SCALE * 60L;
+    private static final long HOUR_SCALE = MINUTE_SCALE * 60L;
+    private static final long DAY_SCALE = HOUR_SCALE * 24L;
 
-    private static final long MAX = Long.MAX_VALUE;
+    @Getter private final String abbreviation;
 
-    private static long convertDown(long d, long thisConstant, long otherConstant) {
-        long m = thisConstant / otherConstant;
-        long over = MAX / m;
-        if (d > over) return Long.MAX_VALUE;
-        if (d < -over) return Long.MIN_VALUE;
-        return d * m;
+    /*
+     * Instances cache conversion ratios and saturation cutoffs for
+     * the units up through SECONDS. Other cases compute them, in
+     * method cvt.
+     */
+
+    private final long scale;
+    private final long maxNanos;
+    private final long maxMicros;
+    private final long maxMillis;
+    private final long maxTicks;
+    private final long maxSecs;
+    private final long microRatio;
+    private final int milliRatio;   // fits in 32 bits
+    private final int tickRatio;    // fits in 32 bit
+    private final int secRatio;     // fits in 32 bits
+
+    BukkitUnit(long scale, String abbreviation) {
+        this.abbreviation = abbreviation;
+        this.scale = scale;
+        this.maxNanos = Long.MAX_VALUE / scale;
+        this.microRatio = (scale >= MICRO_SCALE) ? (scale / MICRO_SCALE) : (MICRO_SCALE / scale);
+        this.maxMicros = Long.MAX_VALUE / microRatio;
+        this.milliRatio = (int) ((scale >= MILLI_SCALE) ? (scale / MILLI_SCALE) : (MILLI_SCALE / scale));
+        this.maxMillis = Long.MAX_VALUE / milliRatio;
+        this.tickRatio = (int) ((scale >= TICK_SCALE) ? (scale / TICK_SCALE) : (TICK_SCALE / scale));
+        this.maxTicks = Long.MAX_VALUE / tickRatio;
+        this.secRatio = (int) ((scale >= SECOND_SCALE) ? (scale / SECOND_SCALE) : (SECOND_SCALE / scale));
+        this.maxSecs = Long.MAX_VALUE / secRatio;
     }
 
-    private static long convertUp(long d, long thisConstant, long otherConstant) {
-        return d / (otherConstant / thisConstant);
+
+    private static long cvt(long d, long dst, long src) {
+        long r, m;
+        if (src == dst) {
+            return d;
+        }
+        if (src < dst) {
+            return d / (dst / src);
+        }
+        if (d > (m = Long.MAX_VALUE / (r = src / dst))) {
+            return Long.MAX_VALUE;
+        }
+        if (d < -m) {
+            return Long.MIN_VALUE;
+        }
+        return d * r;
     }
 
-    public abstract long convert(long sourceDuration, BukkitUnit sourceUnit);
+    private static long cvtCache(long duration, long tickScale, long tickRatio, long maxTicks, long scale) {
+        if (scale == tickScale) {
+            return duration;
+        }
+        if (scale < tickScale) {
+            return duration / tickRatio;
+        }
+        if (duration > maxTicks) {
+            return Long.MAX_VALUE;
+        }
+        if (duration < -maxTicks) {
+            return Long.MIN_VALUE;
+        }
+        return duration * tickRatio;
+    }
 
-    public abstract long toMilliseconds(long duration);
-    public abstract long toTicks(long duration);
-    public abstract long toSeconds(long duration);
-    public abstract long toMinutes(long duration);
-    public abstract long toHours(long duration);
-    public abstract long toDays(long duration);
+
+    public long convert(long sourceDuration, BukkitUnit sourceUnit) {
+        return switch (this) {
+            case NANOSECONDS -> sourceUnit.toNanos(sourceDuration);
+            case MICROSECONDS -> sourceUnit.toMicros(sourceDuration);
+            case MILLISECONDS -> sourceUnit.toMillis(sourceDuration);
+            case TICKS -> sourceUnit.toTicks(sourceDuration);
+            case SECONDS -> sourceUnit.toSeconds(sourceDuration);
+            default -> cvt(sourceDuration, scale, sourceUnit.scale);
+        };
+    }
+
+    public long toNanos(long duration) {
+        if (scale == NANO_SCALE) {
+            return duration;
+        }
+        if (duration > maxNanos) {
+            return Long.MAX_VALUE;
+        }
+        if (duration < -maxNanos) {
+            return Long.MIN_VALUE;
+        }
+        return duration * scale;
+    }
+
+    public long toMicros(long duration) {
+        return cvtCache(duration, MICRO_SCALE, microRatio, maxMicros, scale);
+    }
+
+    public long toMillis(long duration) {
+        return cvtCache(duration, MILLI_SCALE, milliRatio, maxMillis, scale);
+    }
+
+
+    public long toSeconds(long duration) {
+        return cvtCache(duration, SECOND_SCALE, secRatio, maxSecs, scale);
+    }
+
+    public long toTicks(long duration) {
+        return cvtCache(duration, TICK_SCALE, tickRatio, maxTicks, scale);
+    }
+
+    public long toMinutes(long duration) {
+        return cvt(duration, MINUTE_SCALE, scale);
+    }
+
+    public long toHours(long duration) {
+        return cvt(duration, HOUR_SCALE, scale);
+    }
+
+    public long toDays(long duration) {
+        return cvt(duration, DAY_SCALE, scale);
+    }
 
 }

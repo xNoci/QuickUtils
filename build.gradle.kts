@@ -46,10 +46,16 @@ dependencies {
     compileOnly(libs.jetbrains.annotations)
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
+
+    testImplementation(libs.junit.jupiter)
 }
 
 
 tasks {
+    test {
+        useJUnitPlatform()
+    }
+
     compileJava {
         options.release = 21
     }
