@@ -3,10 +3,10 @@ package me.noci.quickutilities.quicktab.packets;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.InternalStructure;
 import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.utility.MinecraftReflection;
+import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import me.noci.quickutilities.quicktab.builder.TeamInfo;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -37,14 +37,19 @@ public class TeamPacketHandlerV1_17 implements TeamPacketHandler {
         if (structureOptional.isPresent()) {
             InternalStructure structure = structureOptional.get();
 
-            structure.getChatComponents().write(0, WrappedChatComponent.fromLegacyText(team.displayName()));
-            structure.getChatComponents().write(1, WrappedChatComponent.fromLegacyText(team.prefix()));
-            structure.getChatComponents().write(2, WrappedChatComponent.fromLegacyText(team.suffix()));
+            String displayName = JSONComponentSerializer.json().serialize(team.displayName());
+            String prefix = JSONComponentSerializer.json().serialize(team.prefix());
+            String suffix = JSONComponentSerializer.json().serialize(team.suffix());
+
+            structure.getChatComponents().write(0, WrappedChatComponent.fromJson(displayName));
+            structure.getChatComponents().write(1, WrappedChatComponent.fromJson(prefix));
+            structure.getChatComponents().write(2, WrappedChatComponent.fromJson(suffix));
 
             structure.getStrings().write(0, team.nameTagVisibility().getId());
             structure.getStrings().write(1, team.collisionRule().getId());
 
-            structure.getEnumModifier(ChatColor.class, MinecraftReflection.getMinecraftClass("EnumChatFormat")).write(0, team.color());
+            structure.getModifier().withType(EnumWrappers.getChatFormattingClass())
+                    .write(0, EnumWrappers.getChatFormattingConverter().getGeneric(team.color()));
 
             structure.getIntegers().write(0, team.packOptionData());
 
@@ -55,8 +60,12 @@ public class TeamPacketHandlerV1_17 implements TeamPacketHandler {
     }
 
     @Override
-    public int version() {
-        return 17;
+    public int major() {
+        return 1;
     }
 
+    @Override
+    public int minor() {
+        return 17;
+    }
 }

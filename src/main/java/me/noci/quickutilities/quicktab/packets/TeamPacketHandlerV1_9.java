@@ -3,6 +3,7 @@ package me.noci.quickutilities.quicktab.packets;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import me.noci.quickutilities.quicktab.builder.TeamInfo;
+import me.noci.quickutilities.utils.Legacy;
 
 import java.util.Collection;
 
@@ -25,9 +26,9 @@ public class TeamPacketHandlerV1_9 implements TeamPacketHandler {
         packet.getIntegers().write(1, TeamMode.CREATE.getMode());
         packet.getStrings().write(0, team.teamName());
 
-        packet.getStrings().write(1, team.displayName());
-        packet.getStrings().write(2, team.prefix());
-        packet.getStrings().write(3, team.suffix());
+        packet.getStrings().write(1, Legacy.serialize(team.displayName()).substring(0, 16));
+        packet.getStrings().write(2, Legacy.serialize(team.prefix()).substring(0, 16));
+        packet.getStrings().write(3, Legacy.serialize(team.prefix()).substring(0, 16));
         packet.getStrings().write(4, team.nameTagVisibility().getId());
         packet.getStrings().write(5, team.collisionRule().getId());
 
@@ -41,8 +42,12 @@ public class TeamPacketHandlerV1_9 implements TeamPacketHandler {
     }
 
     @Override
-    public int version() {
-        return 9;
+    public int major() {
+        return 1;
     }
 
+    @Override
+    public int minor() {
+        return 9;
+    }
 }

@@ -7,7 +7,7 @@ import me.noci.quickutilities.quicktab.utils.TabListCondition;
 import me.noci.quickutilities.quicktab.utils.TabListFunction;
 import me.noci.quickutilities.utils.Legacy;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -44,30 +44,7 @@ public interface QuickTabBuilder {
      * @param displayName The display name for the team of the given player
      * @return the used {@link QuickTabBuilder}
      */
-    QuickTabBuilder setDisplayName(TabListFunction<String> displayName);
-
-    /**
-     * This method sets the displayname for scoreboard team. If this is not set,
-     * the default display name will be the display name of the player,
-     * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
-     *
-     * @param displayName The display name for the team of the given player
-     * @return the used {@link QuickTabBuilder}
-     */
-    default QuickTabBuilder displayName(TabListFunction<Component> displayName) {
-        return setDisplayName((p1, p2) -> Legacy.serialize(displayName.apply(p1, p2)));
-    }
-
-    /**
-     * This method set the prefix for the given player if the {@link TabListCondition condition} is true, otherwise the prefix will be empty.
-     * <br>If the version is below <strong>1.18</strong> the max prefix length will be limited to 16 characters.
-     * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
-     *
-     * @param prefix    The string that will be in front of the given player name
-     * @param condition if the condition equals to false the suffix will not be set
-     * @return the used {@link QuickTabBuilder}
-     */
-    QuickTabBuilder setPrefix(TabListFunction<String> prefix, TabListCondition<Player> condition);
+    QuickTabBuilder displayName(TabListFunction<Component> displayName);
 
     /**
      * This method set the prefix for the given player if the {@link TabListCondition condition} is true, otherwise the prefix will be empty.
@@ -78,22 +55,8 @@ public interface QuickTabBuilder {
      * @param condition if the condition equals to false the suffix will not be set
      * @return the used {@link QuickTabBuilder}
      */
-    default QuickTabBuilder prefix(TabListFunction<Component> prefix, TabListCondition<Player> condition) {
-        return setPrefix((p1, p2) -> Legacy.serialize(prefix.apply(p1, p2)), condition);
-    }
+    QuickTabBuilder prefix(TabListFunction<Component> prefix, TabListCondition<Player> condition);
 
-    /**
-     * This method will always set the prefix for the given player.
-     * <br>If the version is below <strong>1.18</strong> the max prefix length will be limited to 16 characters.
-     * <br>Equivalent to {@link #setPrefix(TabListFunction, TabListCondition) prefix(String, player -> true)}.
-     * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
-     *
-     * @param prefix The string that will be in front of the given player name
-     * @return the used {@link QuickTabBuilder}
-     */
-    default QuickTabBuilder setPrefix(TabListFunction<String> prefix) {
-        return setPrefix(prefix, (player, target) -> true);
-    }
 
     /**
      * This method will always set the prefix for the given player.
@@ -113,37 +76,11 @@ public interface QuickTabBuilder {
      * <br>If the version is below <strong>1.18</strong> the max suffix length will be limited to 16 characters.
      * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
      *
-     * @param suffix    The string that will be behind the given player name
-     * @param condition if the condition equals to false the suffix will not be set
-     * @return the used {@link QuickTabBuilder}
-     */
-    QuickTabBuilder setSuffix(TabListFunction<String> suffix, TabListCondition<Player> condition);
-
-    /**
-     * This method set the suffix for the given player if the {@link TabListCondition condition} is true, otherwise the suffix will be empty.
-     * <br>If the version is below <strong>1.18</strong> the max suffix length will be limited to 16 characters.
-     * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
-     *
      * @param suffix    The suffix that will be behind the given player name
      * @param condition if the condition equals to false the suffix will not be set
      * @return the used {@link QuickTabBuilder}
      */
-    default QuickTabBuilder suffix(TabListFunction<Component> suffix, TabListCondition<Player> condition) {
-        return setSuffix((p1, p2) -> Legacy.serialize(suffix.apply(p1, p2)), condition);
-    }
-
-    /**
-     * This method will always set the suffix for the given player.
-     * <br>If the version is below <strong>1.18</strong> the max suffix length will be limited to 16 characters.
-     * <br>Equivalent to {@link #setSuffix(TabListFunction, TabListCondition) suffix(String, player -> true)}.
-     * <br> The {@link TabListFunction} will offer two players: the first one will be the player for which the tab list will be set; the second one is the target player - the first player will be included.
-     *
-     * @param suffix The string that will be behind the given player name
-     * @return the used {@link QuickTabBuilder}
-     */
-    default QuickTabBuilder setSuffix(TabListFunction<String> suffix) {
-        return setSuffix(suffix, (player, target) -> true);
-    }
+    QuickTabBuilder suffix(TabListFunction<Component> suffix, TabListCondition<Player> condition);
 
     /**
      * This method will always set the suffix for the given player.
@@ -167,7 +104,7 @@ public interface QuickTabBuilder {
      * @param color The color in which the name of the given player will be displayed
      * @return the used {@link QuickTabBuilder}
      */
-    QuickTabBuilder color(TabListFunction<ChatColor> color);
+    QuickTabBuilder color(TabListFunction<NamedTextColor> color);
 
     /**
      * Set if friendly fire is allowed for all entries.
