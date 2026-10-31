@@ -37,7 +37,7 @@ public class SingleEventBuilder<T extends Event> implements EventBuilder<T> {
 
     @Override
     public EventBuilder<T> expireAfter(int value, BukkitUnit timeUnit) {
-        long expiredTime = Math.addExact(System.currentTimeMillis(), timeUnit.toMilliseconds(value));
+        long expiredTime = Math.addExact(System.currentTimeMillis(), timeUnit.toMillis(value));
         expiries.add(Expiry.pre((handler, e) -> System.currentTimeMillis() >= expiredTime));
         return this;
     }
