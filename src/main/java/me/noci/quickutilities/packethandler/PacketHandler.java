@@ -7,10 +7,12 @@ public interface PacketHandler<T extends PacketHandler<T>> {
     }
 
     default String protocolInfo() {
-        return "v1." + version() + "." + patch() + " (" + getClass().getSimpleName() + ")";
+        return "v." + major() + "." + minor() + "." + patch() + " (" + getClass().getSimpleName() + ")";
     }
 
-    int version();
+    int major();
+
+    int minor();
 
     default int patch() {
         return 0;

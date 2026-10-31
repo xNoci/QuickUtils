@@ -76,11 +76,6 @@ public class SignPacketHandlerV1_20 implements SignPacketHandler {
         });
     }
 
-    @Override
-    public int version() {
-        return 20;
-    }
-
     private NbtCompound signCompound(SignData signData) {
         List<NbtBase<?>> tags = Lists.newArrayList();
 
@@ -110,4 +105,13 @@ public class SignPacketHandlerV1_20 implements SignPacketHandler {
         return NbtFactory.ofCompound(compoundName, tags);
     }
 
+    @Override
+    public int major() {
+        return 1;
+    }
+
+    @Override
+    public int minor() {
+        return 20;
+    }
 }

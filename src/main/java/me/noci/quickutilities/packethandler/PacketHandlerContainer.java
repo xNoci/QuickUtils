@@ -15,7 +15,8 @@ import java.util.stream.Collectors;
 
 public class PacketHandlerContainer<T extends PacketHandler<T>> {
 
-    @Getter private final Class<T> type;
+    @Getter
+    private final Class<T> type;
     private final @Nullable T handle;
     private final boolean requiresProtocolLib;
 
@@ -27,7 +28,9 @@ public class PacketHandlerContainer<T extends PacketHandler<T>> {
 
         List<T> handlers = Arrays.stream(packetHandlers)
                 .sorted(
-                        Comparator.<PacketHandler<T>>comparingInt(PacketHandler::version).thenComparing(PacketHandler::patch).reversed()
+                        Comparator.<PacketHandler<T>>comparingInt(PacketHandler::major)
+                                .thenComparing(PacketHandler::minor)
+                                .thenComparing(PacketHandler::patch).reversed()
                 )
                 .collect(Collectors.toList());
 
@@ -35,7 +38,9 @@ public class PacketHandlerContainer<T extends PacketHandler<T>> {
     }
 
     private static <T extends PacketHandler<T>> T findSupportedContainer(Class<T> type, List<T> handlers) {
-        T supportedHandle = handlers.stream().filter(handler -> XReflection.supports(handler.version(), handler.patch())).findFirst().orElse(null);
+        T supportedHandle = handlers.stream().peek(System.out::println)
+                .filter(handler -> XReflection.supports(handler.major(), handler.minor(), handler.patch())).findFirst()
+                .orElseThrow(() -> new IllegalStateException("Failed to find packet handler"));
 
         String info = "Using %s version mapping '%s'. Current server version: %s"
                 .formatted(
@@ -51,8 +56,9 @@ public class PacketHandlerContainer<T extends PacketHandler<T>> {
 
     public T handle() {
         if (handle == null) {
-            throw new UnsupportedOperationException("%s of type '%s' currently does not support your version: %s.".formatted(PacketHandler.class.getSimpleName(), type.getName(), Bukkit.getMinecraftVersion()));
-
+            String error = "%s of type '%s' currently does not support your version: %s."
+                    .formatted(PacketHandler.class.getSimpleName(), type.getName(), Bukkit.getMinecraftVersion());
+            throw new UnsupportedOperationException(error);
         }
         checkProtocolLib();
         return handle;
@@ -61,7 +67,9 @@ public class PacketHandlerContainer<T extends PacketHandler<T>> {
     private void checkProtocolLib() {
         if (!requiresProtocolLib) return;
         if (ProtocolLibHook.isEnabled()) return;
-        throw new UnsupportedOperationException("%s of type '%s' currently only works with ProtocolLib.".formatted(PacketHandler.class.getSimpleName(), type.getName()));
+        throw new UnsupportedOperationException(
+                "%s of type '%s' currently only works with ProtocolLib.".formatted(PacketHandler.class.getSimpleName(),
+                        type.getName()));
     }
 
 }

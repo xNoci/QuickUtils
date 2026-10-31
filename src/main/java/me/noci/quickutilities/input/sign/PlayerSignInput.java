@@ -18,7 +18,7 @@ public class PlayerSignInput extends BasePlayerInput implements Listener {
 
     private static final int MIN_SIGN_HEIGHT_NETHER = 5;
     private static final int MIN_SIGN_HEIGHT_END = 1;
-    private static final int MIN_SIGN_HEIGHT_WORLD = XReflection.v(18, -59).orElse(6);
+    private static final int MIN_SIGN_HEIGHT_WORLD = XReflection.v(1, 18, -59).orElse(6);
     private static final int SIGN_Y_DISTANCE = 5;
 
     private final SignPacketHandler handler;

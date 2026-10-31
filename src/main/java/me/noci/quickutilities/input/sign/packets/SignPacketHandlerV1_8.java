@@ -73,11 +73,6 @@ public class SignPacketHandlerV1_8 implements SignPacketHandler {
         });
     }
 
-    @Override
-    public int version() {
-        return 8;
-    }
-
     private WrappedChatComponent[] signText(SignData signData) {
         List<String> lines = signData.signLines();
 
@@ -96,4 +91,13 @@ public class SignPacketHandlerV1_8 implements SignPacketHandler {
         return components;
     }
 
+    @Override
+    public int major() {
+        return 1;
+    }
+
+    @Override
+    public int minor() {
+        return 8;
+    }
 }
