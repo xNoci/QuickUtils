@@ -19,13 +19,20 @@ public class ViaVersionHook extends PluginHook {
     }
 
     public static int getPlayerVersionProtocol(UUID uuid) {
-        if (!isEnabled()) return -1;
+        if (!isEnabled()) {
+            return -1;
+        }
         return api().getPlayerVersion(uuid);
     }
 
     public static MinecraftVersion getVersion(Player player) {
-        if (!isEnabled())
-            return new MinecraftVersion(XReflection.MINOR_NUMBER, XReflection.getLatestPatchNumberOf(XReflection.MINOR_NUMBER), false);
+        if (!isEnabled()) {
+            int major = XReflection.MAJOR_NUMBER;
+            int minor = XReflection.MINOR_NUMBER;
+            int patch = XReflection.PATCH_NUMBER;
+
+            return new MinecraftVersion(major, minor, patch, false);
+        }
         return Version.getVersion(player);
     }
 
