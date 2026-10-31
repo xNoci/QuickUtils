@@ -8,15 +8,18 @@ plugins {
 }
 
 
-var pluginName = project.property("pluginName")!!
-group = project.property("group")!!
-version = "${project.property("version")!!}-b${gitRevision()}.${gitHash()}"
+var pluginName = project.property("pluginName").toString()
+var javaVersion = 25
+
+group = project.property("group").toString()
+version = "${project.property("version")}-b${gitRevision()}.${gitHash()}"
+
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(javaVersion))
+    }
 }
-
-paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 
 repositories {
     mavenCentral()
@@ -36,13 +39,13 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle(libs.versions.paper)
+    paperweight.paperDevBundle(libs.versions.paper.get())
 
     implementation(libs.xseries) { isTransitive = false }
     implementation(libs.fastboard)
 
     compileOnly(libs.protocollib)
-    compileOnly(libs.viavsersion)
+    compileOnly(libs.viaversion)
     compileOnly(libs.jetbrains.annotations)
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
@@ -51,27 +54,27 @@ dependencies {
 }
 
 
+tasks.shadowJar {
+    archiveFileName.set("${project.property("pluginName")}-${project.property("version")}.jar")
+
+    fun relocate(pkg: String) = relocate(pkg, "${project.group}.dependency.$pkg");
+    relocate("com.cryptomorin.xseries")
+    relocate("fr.mrmicky.fastboard")
+
+    minimize()
+}
+
 tasks {
     test {
         useJUnitPlatform()
     }
 
     compileJava {
-        options.release = 21
+        options.release = javaVersion
     }
 
     javadoc {
         options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
-    }
-
-    shadowJar {
-        archiveFileName.set("${project.property("pluginName")}-${project.property("version")}.jar")
-
-        fun reloc(pkg: String) = relocate(pkg, "${project.group}.dependency.$pkg");
-        reloc("com.cryptomorin.xseries")
-        reloc("fr.mrmicky.fastboard")
-
-        minimize()
     }
 
     processResources {
@@ -88,19 +91,21 @@ tasks {
 }
 
 fun gitRevision(): String {
-    val out = ByteArrayOutputStream();
-    exec {
-        commandLine("git", "rev-list", "--count", "HEAD")
-        standardOutput = out;
+    return try {
+        providers.exec {
+            commandLine("git", "rev-list", "--count", "HEAD")
+        }.standardOutput.asText.get().trim()
+    } catch (e: Exception) {
+        "0"
     }
-    return out.toString("UTF-8").trim();
 }
 
 fun gitHash(): String {
-    val out = ByteArrayOutputStream();
-    exec {
-        commandLine("git", "rev-parse", "--short", "HEAD")
-        standardOutput = out;
+    return try {
+        providers.exec {
+            commandLine("git", "rev-parse", "--short", "HEAD")
+        }.standardOutput.asText.get().trim()
+    } catch (e: Exception) {
+        "unknown"
     }
-    return out.toString("UTF-8").trim();
 }
