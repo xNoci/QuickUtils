@@ -6,9 +6,13 @@ description: Utility Library
 api-version: "26.3"
 bootstrapper: me.noci.quickutilities.QuickUtilsBootstrap
 
-ProtocolLib:
-  load: BEFORE
-  required: false
-ViaVersion:
-  load: BEFORE
-  required: false
+dependencies:
+  server:
+    ProtocolLib:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    ViaVersion:
+      load: BEFORE
+      required: false
+      join-classpath: true
