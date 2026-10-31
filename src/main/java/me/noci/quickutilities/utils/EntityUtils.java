@@ -111,9 +111,4 @@ public class EntityUtils {
                 .map(entity -> (T) entity)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
-
-    public static int generateEntityID() {
-        return EntityCountAccessor.get();
-    }
-
 }
