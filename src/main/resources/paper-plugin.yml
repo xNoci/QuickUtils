@@ -1,0 +1,14 @@
+name: ${name}
+version: ${version}
+author: nociixD
+main: me.noci.quickutilities.QuickUtils
+description: Utility Library
+api-version: "26.3"
+bootstrapper: me.noci.quickutilities.QuickUtilsBootstrap
+
+ProtocolLib:
+  load: BEFORE
+  required: false
+ViaVersion:
+  load: BEFORE
+  required: false

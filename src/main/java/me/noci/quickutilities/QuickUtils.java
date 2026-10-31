@@ -1,5 +1,6 @@
 package me.noci.quickutilities;
 
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import me.noci.quickutilities.commands.QuickUtilsCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,12 +15,5 @@ public class QuickUtils extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-
-        registerCommands();
     }
-
-    private void registerCommands() {
-        new QuickUtilsCommand(this);
-    }
-
 }
