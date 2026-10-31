@@ -42,17 +42,7 @@ public final class GuiManager {
                     Inventory inventory = player.getOpenInventory().getTopInventory();
                     GuiHolder inventoryHolder = (GuiHolder) inventory.getHolder();
 
-                    inventoryHolder.getProvider().update(player, inventoryHolder);
-
-                    if (inventoryHolder.hasPageContent()) {
-                        PageContent pageContent = inventoryHolder.getPageContent();
-
-                        if (inventoryHolder.getProvider() instanceof PagedQuickGUIProvider pagedProvider) {
-                            pagedProvider.updatePageContent(player, pageContent);
-                        }
-
-                        pageContent.updatePage();
-                    }
+                    inventoryHolder.getProvider().updateGui(player, inventoryHolder);
 
                     inventoryHolder.applyContent();
                 }));

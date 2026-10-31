@@ -1,14 +1,13 @@
 package me.noci.quickutilities.inventory;
 
 import lombok.Getter;
-import me.noci.quickutilities.utils.QuickItemStack;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 @Getter
 public class GuiItem {
 
-    private static final ItemStack DEFAULT_ITEM_STACK = new QuickItemStack(Material.AIR);
+    private static final ItemStack DEFAULT_ITEM_STACK = new ItemStack(Material.AIR);
     private ItemStack itemStack;
     private ClickHandler action;
 

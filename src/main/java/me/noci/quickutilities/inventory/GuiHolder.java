@@ -20,7 +20,6 @@ public class GuiHolder implements InventoryHolder, InventoryContent {
     }
 
     @Getter private final QuickGUIProvider provider;
-    @Getter private PageContent pageContent = null;
     private final Inventory handle;
 
     private final InventoryType type;
@@ -47,15 +46,9 @@ public class GuiHolder implements InventoryHolder, InventoryContent {
         if (type == InventoryType.CHEST && size > 0) {
             handle = Bukkit.createInventory(this, size, title);
         } else {
-            //Change dropper inventory to dispenser due to wierd IndexOutOfBoundException thrown by minecraft
+            //Change dropper inventory to dispenser due to wired IndexOutOfBoundException thrown by minecraft
             handle = Bukkit.createInventory(this, type == InventoryType.DROPPER ? InventoryType.DISPENSER : type, title);
         }
-    }
-
-    protected void setPageContent(PageContent pageContent) {
-        if (this.pageContent != null) return;
-        this.pageContent = pageContent;
-        this.pageContent.setHandle(this);
     }
 
     public void applyContent() {
@@ -108,9 +101,5 @@ public class GuiHolder implements InventoryHolder, InventoryContent {
     @Override
     public void fillSlots(GuiItem item, int[] slots) {
         Arrays.stream(slots).forEach(slot -> setItem(slot, item));
-    }
-
-    public boolean hasPageContent() {
-        return pageContent != null;
     }
 }

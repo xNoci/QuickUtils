@@ -54,8 +54,8 @@ public abstract class QuickGUIProvider implements GuiProvider {
     }
 
     @Override
-    public void provide(Player player) {
-        GuiHolder inventoryHolder = new GuiHolder(this, this.type, this.size, this.title);
+    public final void provide(Player player) {
+        GuiHolder inventoryHolder = holder();
 
         initialiseGui(player, inventoryHolder);
         inventoryHolder.applyContent();
@@ -67,14 +67,20 @@ public abstract class QuickGUIProvider implements GuiProvider {
         init(player, holder);
     }
 
+    protected void updateGui(Player player, GuiHolder holder) {
+        update(player, holder);
+    }
+
     public boolean isCancelledClick() {
         return true;
     }
 
-    public void update(Player player, InventoryContent content) {
-    }
-
     public abstract void init(Player player, InventoryContent content);
 
+    public abstract void update(Player player, InventoryContent content);
+
+    protected GuiHolder holder() {
+        return new GuiHolder(this, this.type, this.size, this.title);
+    }
 
 }

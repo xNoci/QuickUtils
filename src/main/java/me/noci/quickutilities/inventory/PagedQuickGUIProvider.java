@@ -38,17 +38,28 @@ public abstract class PagedQuickGUIProvider extends QuickGUIProvider {
     }
 
     @Override
-    protected void initialiseGui(Player player, GuiHolder holder) {
+    protected final void initialiseGui(Player player, GuiHolder holder) {
         super.initialiseGui(player, holder);
 
-        PageContent pageContent = new PageContent();
-        holder.setPageContent(pageContent);
-        initPage(player, pageContent);
+        if (holder instanceof PagedGuiHolder pagedGuiHolder) {
+            initPage(player, pagedGuiHolder);
+        }
     }
 
-    public abstract void initPage(Player player, PageContent pageContent);
-
-    public void updatePageContent(Player player, PageContent pageContent) {
+    @Override
+    protected final void updateGui(Player player, GuiHolder holder) {
+        super.updateGui(player, holder);
+        if (holder instanceof PagedGuiHolder pagedGuiHolder) {
+            updatePageContent(player, pagedGuiHolder);
+        }
     }
 
+    public abstract void initPage(Player player, InventoryPageContent pageContent);
+
+    public abstract void updatePageContent(Player player, InventoryPageContent pageContent);
+
+    @Override
+    protected final GuiHolder holder() {
+        return new PagedGuiHolder(this, this.type, this.size, this.title);
+    }
 }
