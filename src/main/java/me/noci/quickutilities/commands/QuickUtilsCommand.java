@@ -17,13 +17,13 @@ import me.noci.quickutilities.inventory.GuiItem;
 import me.noci.quickutilities.inventory.InventoryContent;
 import me.noci.quickutilities.inventory.InventoryPageContent;
 import me.noci.quickutilities.inventory.PagedQuickGUIProvider;
-import me.noci.quickutilities.items.ItemBuilder;
 import me.noci.quickutilities.quicktab.QuickTab;
+import me.noci.quickutilities.quicktab.builder.QuickTabBuilder;
 import me.noci.quickutilities.scoreboard.QuickBoard;
 import me.noci.quickutilities.utils.EnumUtils;
 import me.noci.quickutilities.utils.InventoryPattern;
+import me.noci.quickutilities.utils.ItemBuilder;
 import me.noci.quickutilities.utils.Legacy;
-import me.noci.quickutilities.utils.QuickItemStack;
 import me.noci.quickutilities.utils.time.BukkitUnit;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -59,8 +59,8 @@ public class QuickUtilsCommand {
 
     @SneakyThrows
     private static int giveItem(CommandContext<CommandSourceStack> context) {
-        return giveItem(context, new QuickItemStack(XMaterial.DIAMOND_SWORD.get()).setUnbreakable(true),
-                "Diamond Sword");
+        ItemStack item = ItemBuilder.of(XMaterial.DIAMOND_SWORD.get()).withUnbreakable(true).build();
+        return giveItem(context, item, "Diamond Sword");
     }
 
     @SneakyThrows
@@ -81,10 +81,12 @@ public class QuickUtilsCommand {
     }
 
     private static int tab(CommandContext<CommandSourceStack> context) {
-        var builder = QuickTab.builder().color((_, _) -> NamedTextColor.RED)
-                .setPrefix((_, _) -> "§9QuickUtils §7| ")
-                .setSuffix((player, _) -> " §a(%s)".formatted(ViaVersionHook.getVersion(player).getName()));
-        QuickTab.setUpdatingTabList(builder);
+        QuickTabBuilder builder = QuickTab.builder().color((_, _) -> NamedTextColor.RED)
+                .prefix((_, _) -> Component.text("QuickUtils").color(NamedTextColor.BLUE)
+                        .append(Component.text(" | ").color(NamedTextColor.GRAY)), (player, player2) -> player.isSneaking())
+                .suffix((player, _) -> Component.text(" (" + ViaVersionHook.getVersion(player).getName() + ")")
+                        .color(NamedTextColor.GREEN));
+        QuickTab.setUpdatingTabList(builder, 1, BukkitUnit.SECONDS);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -117,7 +119,7 @@ public class QuickUtilsCommand {
 
         @Override
         public void init(Player player, InventoryContent content) {
-            content.fillPattern(new QuickItemStack(Material.GRAY_STAINED_GLASS_PANE).asGuiItem(),
+            content.fillPattern(ItemBuilder.of(Material.GRAY_STAINED_GLASS_PANE).asGuiItem(),
                     InventoryPattern.FULL);
         }
 
@@ -132,10 +134,15 @@ public class QuickUtilsCommand {
                     .filter(Predicate.not(material -> XMaterial.POTTED_GOLDEN_DANDELION.equals(material)))
                     .filter(Predicate.not(XTag.INVENTORY_NOT_DISPLAYABLE::isTagged)).map(XMaterial::get)
                     .filter(Objects::nonNull)
-                    .map(material -> new QuickItemStack(material,
-                            Component.text(material.name(),
-                                    TextColor.color((float) Math.random(), (float) Math.random(),
-                                            (float) Math.random())))).map(QuickItemStack::asGuiItem)
+                    .map(material -> ItemBuilder.of(
+                                    material,
+                                    Component.text(
+                                            material.name(),
+                                            TextColor.color((float) Math.random(), (float) Math.random(), (float) Math.random())
+                                    )
+                            )
+                    )
+                    .map(ItemBuilder::asGuiItem)
                     .toArray(GuiItem[]::new);
             pageContent.pageContent(items);
             pageContent.itemSlots(InventoryPattern.range(1, 45));
