@@ -124,6 +124,11 @@ public class QuickUtilsCommand {
         }
 
         @Override
+        public void update(Player player, InventoryContent content) {
+
+        }
+
+        @Override
         public void initPage(Player player, InventoryPageContent pageContent) {
             var items = EnumUtils.asStream(XMaterial.values())
                     .filter(Predicate.not(material -> XMaterial.BEETROOTS.equals(material)))
@@ -150,6 +155,11 @@ public class QuickUtilsCommand {
                     new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
             pageContent.nextPageButton(53, new ItemStack(Material.ARROW),
                     new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
+        }
+
+        @Override
+        public void updatePageContent(Player player, InventoryPageContent pageContent) {
+
         }
     }
 
